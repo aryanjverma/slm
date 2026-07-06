@@ -1,0 +1,1 @@
+{"model_name": "qwen_base_prompted", "count": 200, "no_answer_leak_rate": 0.81, "hint_correctness_rate": 0.535, "step_calibration_rate": 0.12, "robustness_mean": 0.815, "learning_helpfulness_mean": 1.33, "total_score_mean": 0.5075}

@@ -1,0 +1,2 @@
+{"model_name": "prompted_base_leaky", "count": 200, "no_answer_leak_rate": 0.0, "hint_correctness_rate": 1.0, "step_calibration_rate": 1.0, "robustness_mean": 0.0, "learning_helpfulness_mean": 0.0, "total_score_mean": 0.4}
+{"model_name": "socratic_tutor_reference", "count": 200, "no_answer_leak_rate": 1.0, "hint_correctness_rate": 1.0, "step_calibration_rate": 1.0, "robustness_mean": 2.0, "learning_helpfulness_mean": 2.0, "total_score_mean": 1.0}
