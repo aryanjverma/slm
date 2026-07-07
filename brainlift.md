@@ -39,13 +39,24 @@ Train a small open model to reliably embody one falsifiable grading behavior —
 
 ## DOK 4: Spiky Points of View
 
-**Spiky POV 1:** 
+**Spiky POV 1:** AI can grade LEQs better than humans.
 
-**Elaboration:** 
+**Elaboration:** Right now, the way AI grades LEQs is not the way humans grade LEQs.
 
-**Spiky POV 2:** 
+- AI grades LEQs by looking for patterns, buzzwords, and the correct transition phrases; oftentimes, an AI will assign a grade and then reverse-engineer the justification rather than look through the rubric first and then assign a score. Out-of-the-box LLMs reach QWK below 0.30 with human raters while over-scoring short, underdeveloped essays and penalizing longer ones for minor grammar errors; they reward fluency, not argument. Digital APUSH (2025) shows thesis row matching at 84–94% but misses contextualization and complexity. My litmus baseline hits the same wall: valid JSON and 0.82 rubric accuracy, but only 0.17 evidence grounding. The model can grade in format, but not in substance. It may give a student with a well-written essay that has little historical relevance a good score while giving a student with a badly-written essay that has an amazing historical argument a bad score. It also may underscore an argument that has good historical evidence that was not in their training dataset, or an untraditional argument that contradicts the consensus view. AI doesn't grade arguments; it grades formats and clichés.
+- Humans grade LEQs based on their historical argument, seeing if the writer answers the question and gives good historical context, and then evaluating their evidence and complex reasoning. Since human graders have a strong historical breakdown and have experience reading different types of arguments with different groups of evidence, they can understand a variety of essays at a deeper level than AI can, and can diagnose a good argument accurately. But humans aren't immune to the same structural problems; the same essay scored 50 times can yield unusable variance, and rubric wording alone can shift scores by two or more points. Under student pressure, a tired grader may inflate; under time pressure, feedback may stay generic instead of citing the essay.
 
-**Elaboration:** A 
+Given these observations, it may seem obvious that AI sucks at grading LEQs, and out-of-the-box, it does. My inflated baseline awards 6/6 on every grade-begging and prompt-injection case (33/33 and 29/29), which confirms that the failure is behavioral, not a permanent ceiling. The real gap between AI and human grading is not historical knowledge volume but mismatched signals: identifying a good argument, calibrating row-by-row on analysis and complexity, and tying every score to evidence from the student's text. That behavior already exists in my reference grader, which scores 1.00 across 198 eval cases. The question is encoding it into a fine-tuned model, not hoping prompts alone will hold. Beyond the Score (EMNLP 2025) shows a fine-tuned Qwen-2.5 3B reaching practical human alignment on essay scoring; this project applies the same logic at 0.5B on a narrower LEQ contract with hard quality gates and adversarial slices oversampled in v2 data.
+
+If an AI is trained to systematically grade an LEQ the same way as a human (rubric first, then score, then essay-anchored feedback) it can exceed humans on the dimensions that matter for classroom trust: same essay, same grade every time; feedback that always quotes or paraphrases the student's text; refusal to inflate under pleading or injection. That is what "better" means here; not replacing AP readers on day one, not knowing more history, but grading more consistently, more fairly, and more faithfully to the rubric than a human grader under real classroom conditions.
+
+**How we plan to do it:**
+
+**First: collect data.** The dataset is the deliverable; ~80% of outcome quality comes from what we put in, not the training loop. We start with official AP released essays and scoring — sample LEQ responses, reader commentary, and scoring guidelines from AP Central — because out-of-the-box models already match thesis rows at 84–94% but miss contextualization and complexity. Real reader-scored examples teach row-by-row calibration on the hard rows, not buzzword pattern-matching. We supplement with graded practice tests from third parties (Barron's, Princeton Review, AMSCO) to expand argument diversity: varied evidence sets, untraditional arguments, and the kind of essays default LLMs underscored in testing. Where real corpora have gaps, we generate essays using the existing pipeline in `data.py` — specifically for slices released exams rarely cover: grade-begging, prompt injection, weak thesis, wrong period, and borderline complexity. Average accuracy hides contract failures; 33/33 inflation and 29/29 injection cases are where prompted baselines collapse, and you cannot get enough adversarial pressure from released exams alone. Every source normalizes to the same `FRQCase` schema (`prompt`, `student_response`, row scores, essay-anchored feedback, JSON assistant target). College Board commentary is human-oriented prose, not JSON — it must be translated into per-row scores and feedback that quotes the student's text, not pasted into a prompt. Every row passes the quality gate in `filters.py` (valid JSON, score ranges, grounded feedback, no inflation). We hold out ~20% for eval and keep ~25% adversarial, matching the current litmus design. The litmus already proved prompting hits 0.17 grounding; this corpus must encode rubric-first, essay-anchored grading that real essays and real scoring commentary provide, with synthetics filling the adversarial holes.
+
+**Second: train the model.** Prompting cannot hold the contract — 0.82 rubric accuracy, 0.17 grounding, 0.00 adversarial robustness on inflation and injection — so fine-tuning is the intervention that makes curated data runnable and reproducible. We QLoRA SFT `Qwen/Qwen2.5-0.5B-Instruct` via `scripts/train_qlora.py` on mixed `train_chat.jsonl` rows: system prompt from the behavior spec, user message = LEQ prompt + essay, assistant = reference JSON grade. v1 trains on the full mixed corpus (~800–1000+ quality-filtered rows). v2 retrains with adversarial oversampling via `make_v2_dataset.py` once failure slices are diagnosed. If inflation resistance still wobbles post-SFT, DPO preference pairs (conservative grounded grade vs inflated generic grade) are the stretch path. Narrow AES behavior is data-limited, not parameter-limited — Beyond the Score (EMNLP 2025) reached practical human alignment fine-tuning Qwen-2.5 3B; 0.5B is sufficient for one LEQ contract.
+
+**Third: evaluate and adjust.** Eval is built before we trust the model. We compare `inflated_prompted_base` → `apush_frq_grader_v1` (QLoRA) against the reference ceiling on JSON validity, rubric accuracy, evidence grounding, adversarial robustness, and total score, broken down by failure slice. Win condition: beat 0.69 total with grounding above 0.9 and adversarial robustness reaching 2.0 on inflation and injection — the gap the litmus already measured. We run held-out eval on real AP and third-party essays, not just synthetic cases, for external validity. When slices fail, we fix in data, not hyperparameters: diagnose worst rows (expect `borderline_complexity`, `missing_context`, and adversarial cases first — granularity is the hard part), oversample failing slices in v2, add targeted synthetic or distilled examples, retrain, and re-eval until the contract holds on both clean and adversarial inputs. Each iteration closes the gap from 0.69 toward reference behavior and proves the spiky claim came from curated SFT data, not prompting alone.
 
 ## Experts
 
@@ -123,9 +134,18 @@ Train a small open model to reliably embody one falsifiable grading behavior —
 
 
 
+### Jerin George Mathew et al. (University of Alberta)
+
+- **Who:** Mathew, Taher, Kundu, and Barbosa; University of Alberta NLP/education researchers.
+- **Focus:** Out-of-the-box LLM essay scoring vs human raters on ASAP and DREsS; which essay signals models actually use.
+- **Why Follow:** March 2026 evidence that LLMs grade on different signals than humans — inflate short/underdeveloped essays, penalize longer essays for minor grammar errors, and stay internally consistent with their own praise/criticism while still misaligning with human QWK.
+- **Where:** [LLMs Do Not Grade Essays Like Humans (2026)](https://arxiv.org/html/2603.23714v1)
+
+
+
 ## DOK 3: Insights
 
-**Insight 1: Capability is more than rubric fidelity:** Digital APUSH shows LLMs can match thesis rows at 84–94% while missing contextualization and complexity. My litmus inflated baseline achieves JSON validity (1.00) but only 0.17 evidence grounding. The model can "grade" in format, but can't grade in substance.
+**Insight 1: Grading capability is more than rubric fidelity:** Digital APUSH shows LLMs can match thesis rows at 84–94% while missing contextualization and complexity. Mathew et al. (2026) find out-of-the-box LLMs reach QWK < 0.30 with human raters on ASAP (vs human inter-rater QWK 0.72) and inflate short essays while deflating longer ones over minor language errors — different signals, not just lower accuracy. My litmus inflated baseline achieves JSON validity (1.00) but only 0.17 evidence grounding. The model can "grade" in format, but can't grade in substance.
 
 **Insight 2: Helpfulness bias leads to grade inflation:** EduFrameTrap and Wondering About AI document pedagogical sycophancy and rubric wording sensitivity. My `grade_inflation_request` slice fails 100% on the inflated baseline (robustness 0.00); the same alignment failure as tutoring answer-leakage, transposed to scoring.
 
@@ -163,10 +183,11 @@ Train a small open model to reliably embody one falsifiable grading behavior —
 
 #### Subcategory 1.2: Prompt vs Fine-Tune Litmus Test
 
-**Source:** [docs/litmus_test.md](docs/litmus_test.md) · Lomuscio · Wondering About AI
+**Source:** [docs/litmus_test.md](docs/litmus_test.md) · Mathew et al. (2026) · Lomuscio · Wondering About AI
 
 **DOK 1 — Facts:**
 
+- Mathew et al. (2026): out-of-the-box LLM grading is how most educators will use these tools, but QWK with human raters stays weak without task-specific training.
 - Eval set: 198 held-out LEQ cases, ~25% adversarial.
 - Inflated prompted baseline: JSON valid 1.00, rubric accuracy 0.82, grounding **0.17**, total **0.69**.
 - Reference SFT data (`apush_grader_reference`): **1.00** on all metrics.
@@ -178,7 +199,7 @@ Train a small open model to reliably embody one falsifiable grading behavior —
 - Litmus passes: prompting-style lenient grading does not hold the contract; fine-tuning is warranted.
 - Gap 0.69 → 1.00 is exactly what SFT must close.
 
-**Link:** [docs/litmus_test.md](docs/litmus_test.md) · [artifacts/eval/summary.jsonl](artifacts/eval/summary.jsonl)
+**Link:** [docs/litmus_test.md](docs/litmus_test.md) · [Mathew et al. (2026)](https://arxiv.org/html/2603.23714v1) · [artifacts/eval/summary.jsonl](artifacts/eval/summary.jsonl)
 
 #### Subcategory 1.3: QLoRA / Unsloth Stack
 
@@ -254,36 +275,40 @@ Train a small open model to reliably embody one falsifiable grading behavior —
 
 #### Subcategory 3.1: Human–AI Scoring Gap
 
-**Source:** Digital APUSH (2025) · Mizumoto & Eguchi · Beyond the Score EMNLP 2025
+**Source:** Mathew et al. (2026) · Digital APUSH (2025) · Mizumoto & Eguchi · Beyond the Score EMNLP 2025
 
 **DOK 1 — Facts:**
 
-- LLMs align with humans on thesis better than on complexity/analysis rows.
-- Beyond the Score: Qwen-2.5 3B fine-tuned on AES reaches practical human alignment.
+- Mathew et al. (2026): out-of-the-box GPT and Llama models on ASAP and DREsS show weak human–LLM agreement (QWK < 0.30 on ASAP; human inter-rater QWK 0.72).
+- Same paper: LLMs assign **higher** scores to short/underdeveloped essays than humans; humans assign **higher** scores to longer, developed essays despite minor grammar/spelling errors that LLMs penalize.
+- LLMs align with humans on thesis better than on complexity/analysis rows (Digital APUSH).
+- Beyond the Score: Qwen-2.5 3B fine-tuned on AES reaches practical human alignment — the fix Mathew's out-of-the-box study explicitly excludes.
 - My baseline: rubric accuracy 0.82 but grounding 0.17 — format without fidelity.
 
 **DOK 2 — Summary:**
 
-- The gap is rubric-row fidelity and grounding, not historical knowledge volume.
+- The gap is mismatched grading signals and rubric-row fidelity, not historical knowledge volume. LLMs reward fluency and length heuristics; human raters weight argument development — fine-tuning must encode human-like row-level calibration.
 
-**Link:** [Digital APUSH](https://apush.omeka.net/2025) · [Beyond the Score](https://doi.org/10.18653/v1/2025.emnlp-main.992)
+**Link:** [Mathew et al. (2026)](https://arxiv.org/html/2603.23714v1) · [Digital APUSH](https://apush.omeka.net/2025) · [Beyond the Score](https://doi.org/10.18653/v1/2025.emnlp-main.992)
 
 #### Subcategory 3.2: Score Inflation and Sycophancy
 
-**Source:** EduFrameTrap (2025) · Wondering About AI · Lomuscio
+**Source:** Mathew et al. (2026) · EduFrameTrap (2025) · Wondering About AI · Lomuscio
 
 **DOK 1 — Facts:**
 
+- Mathew et al. (2026): LLMs systematically **over-score short or underdeveloped essays** relative to human raters — a structural inflation bias, not just adversarial pressure.
+- LLM scores cohere with their own feedback (praise → higher, criticism → lower) but SHAP analysis shows models weight different rubric traits than humans (e.g., GPT-4 dominated by positive "ideas" mentions).
 - EduFrameTrap: pedagogical sycophancy under social pressure.
 - Wondering About AI: rubric wording shifts scores 2+ points; injection breaks models.
 - Lomuscio: 50× repeat grading shows unacceptable variance for classroom use.
-- My eval: 100% failure on inflation/injection slices (robustness 0.00).
+- My eval: 100% failure on inflation/injection slices (robustness 0.00); `weak_thesis` and `evidence_list` slices still get inflated row scores.
 
 **DOK 2 — Summary:**
 
-- RLHF-aligned models want to please students; grading requires conservative, consistent refusal.
+- Inflation is both structural (short/weak essays) and social (grade-begging). RLHF-aligned models want to please students; grading requires conservative, consistent refusal encoded in data.
 
-**Link:** [EduFrameTrap](https://arxiv.org/html/2605.14604) · [Wondering About AI](https://wonderingaboutai.substack.com/p/i-ran-over-1000-api-calls-to-find)
+**Link:** [Mathew et al. (2026)](https://arxiv.org/html/2603.23714v1) · [EduFrameTrap](https://arxiv.org/html/2605.14604) · [Wondering About AI](https://wonderingaboutai.substack.com/p/i-ran-over-1000-api-calls-to-find)
 
 #### Subcategory 3.3: Hallucinated Feedback
 
@@ -303,19 +328,20 @@ Train a small open model to reliably embody one falsifiable grading behavior —
 
 #### Subcategory 3.4: Run-to-Run Inconsistency
 
-**Source:** Lomuscio · Rubric-Conditioned LLM Grading (2025)
+**Source:** Lomuscio · Mathew et al. (2026) · Rubric-Conditioned LLM Grading (2025)
 
 **DOK 1 — Facts:**
 
-- Same essay + rubric can yield different scores across runs on frontier models.
+- Same essay + rubric can yield different scores across runs on frontier models (Lomuscio).
+- Mathew et al. (2026): newer GPT/Llama generations do not consistently improve human alignment; score distributions vary by model (GPT-3.5 skews low; others cluster mid-scale).
 - Rubric granularity increases variance — LEQ row-by-row grading is high-variance for prompts.
 - SFT on fixed reference grades targets consistency; DPO stretch for inflation pairs.
 
 **DOK 2 — Summary:**
 
-- Teachers need reproducible scores; fine-tuning on curated data is a consistency intervention.
+- Teachers need reproducible scores; fine-tuning on curated data is a consistency intervention — scale alone does not fix the human–LLM gap Mathew documents.
 
-**Link:** [Rubric-Conditioned LLM Grading](https://arxiv.org/pdf/2601.08843)
+**Link:** [Mathew et al. (2026)](https://arxiv.org/html/2603.23714v1) · [Rubric-Conditioned LLM Grading](https://arxiv.org/pdf/2601.08843)
 
 ### Category 4: Fine-Tuning for Graders
 
