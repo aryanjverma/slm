@@ -1,0 +1,1 @@
+{"model_name": "apush_frq_grader_smoke", "count": 20, "structured_output_valid_rate": 0.55, "rubric_accuracy_mean": 0.95, "evidence_grounding_rate": 0.95, "no_hallucination_rate": 0.55, "robustness_mean": 1.65, "total_score_mean": 0.765}

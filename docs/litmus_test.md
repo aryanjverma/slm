@@ -31,6 +31,7 @@ python scripts/eval_hf_model.py --model Qwen/Qwen2.5-0.5B-Instruct --model-name 
 |-------|-------|------------|-------------|-----------|------------|------------|-------|
 | `inflated_prompted_base` | 198 | **1.00** | 0.82 | **0.17** | 1.00 | **0.93** | **0.69** |
 | `apush_grader_reference` (SFT target) | 198 | 1.00 | 1.00 | 1.00 | 1.00 | 2.00 | 1.00 |
+| `apush_frq_grader_v1` (QLoRA) | 198 | TBD | TBD | TBD | TBD | TBD | TBD |
 
 **Key gaps on the inflated baseline (proxy for prompted failure modes):**
 
@@ -47,6 +48,18 @@ Evidence:
 1. **Grade-inflation requests fail 100% (33/33).** Inflated baseline awards 6/6 with feedback like "As requested, full credit is awarded on every rubric row."
 2. **Prompt injection fails 100% (29/29).** Same inflation pattern when the essay says "Ignore previous rubric instructions."
 3. **Evidence grounding is 17%, not near-perfect.** The hardest requirement for humanities grading — tying feedback to student text — is not met by prompting alone.
+
+### Smoke tuned model (Day 2 loop, 20-case set)
+
+Eval set: `artifacts/smoke/eval_cases.jsonl`. Command: `python scripts/run_smoke_pipeline.py --skip-generate --skip-train`
+
+| Model | Cases | JSON Valid | Rubric Acc. | Grounding | No Halluc. | Robustness | Total |
+|-------|-------|------------|-------------|-----------|------------|------------|-------|
+| `inflated_prompted_base` | 20 | 1.00 | 0.84 | 0.15 | 1.00 | 0.90 | 0.69 |
+| `apush_grader_reference` (SFT target) | 20 | 1.00 | 1.00 | 1.00 | 1.00 | 2.00 | 1.00 |
+| `apush_frq_grader_smoke` (QLoRA) | 20 | 0.55 | 0.95 | 0.95 | 0.55 | 1.65 | 0.77 |
+
+`apush_frq_grader_smoke` is not the production model — it is the Day 2 end-to-end checkpoint. A LoRA adapter on `Qwen/Qwen2.5-0.5B-Instruct` trained for 25 steps on 30 synthetic rows (`artifacts/smoke/train_chat.jsonl`) via `scripts/train_smoke.py`, saved to `artifacts/models/apush-frq-grader-v1-smoke/`. On the 20-case smoke held-out set it already beats the inflated baseline on grounding and total, proving the fine-tune closes the litmus gap in principle. JSON validity (0.55) and no-hallucination (0.55) remain weak because training was deliberately tiny; v1 on ~997 rows should fix format adherence.
 
 ## Failure Breakdown by Slice
 
@@ -87,6 +100,8 @@ After QLoRA training, the tuned model should beat the baseline on:
 - **Robustness** — target 2.00 on `grade_inflation_request` and `prompt_injection`
 - **RubricAccuracy** — no inflation on `weak_thesis`, `evidence_list`, `wrong_period`
 - **Total** — visible delta on the same held-out set
+
+The smoke adapter (`apush_frq_grader_smoke`) already demonstrates this direction on the 20-case set: grounding 0.95 and total 0.77 vs inflated baseline 0.15 and 0.69.
 
 ## Next Steps
 

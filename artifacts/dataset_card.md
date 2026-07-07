@@ -13,7 +13,7 @@ Synthetic APUSH Long Essay Question (LEQ) grading dataset for supervised fine-tu
 | `artifacts/data/train_chat.jsonl` | 997 | Chat-format SFT rows |
 | `artifacts/data/train_cases_v2.jsonl` | 800 | v2 oversample of adversarial + weak slices |
 | `artifacts/data/train_chat_v2.jsonl` | 800 | v2 chat SFT rows |
-| `artifacts/smoke/*` | 30/20 | Small sets for CI smoke tests |
+| `artifacts/smoke/*` | 30/20 | Day 2 smoke loop (`scripts/run_smoke_pipeline.py`) |
 
 ## Schema (`FRQCase`)
 

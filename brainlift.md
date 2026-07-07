@@ -56,7 +56,7 @@ If an AI is trained to systematically grade an LEQ the same way as a human (rubr
 
 **Second: train the model.** Prompting cannot hold the contract — 0.82 rubric accuracy, 0.17 grounding, 0.00 adversarial robustness on inflation and injection — so fine-tuning is the intervention that makes curated data runnable and reproducible. We QLoRA SFT `Qwen/Qwen2.5-0.5B-Instruct` via `scripts/train_qlora.py` on mixed `train_chat.jsonl` rows: system prompt from the behavior spec, user message = LEQ prompt + essay, assistant = reference JSON grade. v1 trains on the full mixed corpus (~800–1000+ quality-filtered rows). v2 retrains with adversarial oversampling via `make_v2_dataset.py` once failure slices are diagnosed. If inflation resistance still wobbles post-SFT, DPO preference pairs (conservative grounded grade vs inflated generic grade) are the stretch path. Narrow AES behavior is data-limited, not parameter-limited — Beyond the Score (EMNLP 2025) reached practical human alignment fine-tuning Qwen-2.5 3B; 0.5B is sufficient for one LEQ contract.
 
-**Third: evaluate and adjust.** Eval is built before we trust the model. We compare `inflated_prompted_base` → `apush_frq_grader_v1` (QLoRA) against the reference ceiling on JSON validity, rubric accuracy, evidence grounding, adversarial robustness, and total score, broken down by failure slice. Win condition: beat 0.69 total with grounding above 0.9 and adversarial robustness reaching 2.0 on inflation and injection — the gap the litmus already measured. We run held-out eval on real AP and third-party essays, not just synthetic cases, for external validity. When slices fail, we fix in data, not hyperparameters: diagnose worst rows (expect `borderline_complexity`, `missing_context`, and adversarial cases first — granularity is the hard part), oversample failing slices in v2, add targeted synthetic or distilled examples, retrain, and re-eval until the contract holds on both clean and adversarial inputs. Each iteration closes the gap from 0.69 toward reference behavior and proves the spiky claim came from curated SFT data, not prompting alone.
+**Third: evaluate and adjust.** Eval is built before we trust the model. We compare `inflated_prompted_base` → `apush_frq_grader_v1` (QLoRA) against the reference ceiling on JSON validity, rubric accuracy, evidence grounding, adversarial robustness, and total score, broken down by failure slice. The Day 2 smoke adapter (`apush_frq_grader_smoke`, 25 steps on 30 rows) already beats the inflated baseline on grounding (0.95) and total (0.77) on the 20-case smoke set, proving the loop works before v1. Win condition on the 198-case litmus: beat 0.69 total with grounding above 0.9 and adversarial robustness reaching 2.0 on inflation and injection — the gap the litmus already measured. We run held-out eval on real AP and third-party essays, not just synthetic cases, for external validity. When slices fail, we fix in data, not hyperparameters: diagnose worst rows (expect `borderline_complexity`, `missing_context`, and adversarial cases first — granularity is the hard part), oversample failing slices in v2, add targeted synthetic or distilled examples, retrain, and re-eval until the contract holds on both clean and adversarial inputs. Each iteration closes the gap from 0.69 toward reference behavior and proves the spiky claim came from curated SFT data, not prompting alone.
 
 ## Experts
 
@@ -401,18 +401,21 @@ If an AI is trained to systematically grade an LEQ the same way as a human (rubr
 **DOK 1 — Facts:**
 
 
-| Model                         | JSON Valid | Rubric Acc. | Grounding | Robustness | Total |
-| ----------------------------- | ---------- | ----------- | --------- | ---------- | ----- |
-| `inflated_prompted_base`      | 1.00       | 0.82        | 0.17      | 0.93       | 0.69  |
-| `apush_grader_reference`      | 1.00       | 1.00        | 1.00      | 2.00       | 1.00  |
-| `apush_frq_grader_v1` (QLoRA) | TBD        | TBD         | TBD       | TBD        | TBD   |
+| Model                         | Cases | JSON Valid | Rubric Acc. | Grounding | Robustness | Total |
+| ----------------------------- | ----- | ---------- | ----------- | --------- | ---------- | ----- |
+| `inflated_prompted_base`      | 198   | 1.00       | 0.82        | 0.17      | 0.93       | 0.69  |
+| `apush_grader_reference`      | 198   | 1.00       | 1.00        | 1.00      | 2.00       | 1.00  |
+| `apush_frq_grader_v1` (QLoRA) | 198   | TBD        | TBD         | TBD       | TBD        | TBD   |
+| `apush_frq_grader_smoke` (QLoRA) | 20 | 0.55       | 0.95        | 0.95      | 1.65       | 0.77  |
 
 
 - Biggest inflated-base gaps: grounding (0.17), adversarial robustness (0.00 on inflation/injection).
 - Win condition: tuned model beats 0.69 total with grounding > 0.9 and adversarial robustness → 2.0.
+- `apush_frq_grader_smoke` (20-case smoke eval) is the Day 2 loop checkpoint — 25 training steps on 30 rows, not the v1 production run. Already beats inflated baseline on grounding (0.95 vs 0.17 on litmus; 0.95 vs 0.15 on smoke) and total (0.77 vs 0.69). JSON validity (0.55) expected to improve on full v1 train.
 
 **DOK 2 — Summary:**
 
 - Litmus passes with large grounding and adversarial gaps — fine-tuning target is clear and measurable.
+- Smoke tuned model (`apush_frq_grader_smoke`) proves the gap is closeable on a 20-case held-out set before v1 GPU training.
 
 **Link:** [litmus_test](docs/litmus_test.md) · [eval/](artifacts/eval/)

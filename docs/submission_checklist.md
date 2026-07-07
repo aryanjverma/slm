@@ -9,6 +9,7 @@
 - [x] **Data pipeline** — `src/apush_frq_grader_slm/data.py`, `filters.py`
 - [x] **Train/eval artifacts** — `artifacts/data/`, `artifacts/eval/`
 - [x] **QLoRA script** — `scripts/train_qlora.py`
+- [x] **Day 2 smoke loop** — `scripts/run_smoke_pipeline.py`, `scripts/train_smoke.py`, `artifacts/smoke/`, `artifacts/smoke_eval/`
 - [ ] **Trained model** — `artifacts/models/apush-frq-grader-v1` (requires GPU run)
 
 ## Commands
@@ -22,6 +23,9 @@ python -m apush_frq_grader_slm.cli.generate_dataset --train-count 1000 --eval-co
 
 # Deterministic eval
 python -m apush_frq_grader_slm.cli.run_eval
+
+# Day 2 smoke loop (30 train / 20 eval, CPU-friendly)
+python scripts/run_smoke_pipeline.py
 
 # Demo (paste LEQ prompt + essay → JSON grade)
 python -m apush_frq_grader_slm.cli.demo
@@ -58,4 +62,5 @@ python scripts/eval_hf_model.py --model artifacts/models/apush-frq-grader-v1 --m
 - [x] `python -m pytest tests/ -v` passes
 - [x] `apush_grader_reference` scores 1.00 on held-out eval
 - [x] `inflated_prompted_base` scores below reference (litmus gap documented)
+- [x] Smoke loop runs end-to-end (`scripts/run_smoke_pipeline.py`)
 - [ ] Tuned model beats baseline on grounding + robustness (after GPU train)

@@ -25,6 +25,25 @@ python -m apush_frq_grader_slm.cli.run_eval --eval-path artifacts/data/eval_case
 python -m apush_frq_grader_slm.cli.demo
 ```
 
+## Day 2 Smoke Test (50 cases, full loop)
+
+Proves generate → train → eval on a tiny dataset before the real v1 run:
+
+```powershell
+python -m pip install -e ".[train]"
+python scripts/run_smoke_pipeline.py
+```
+
+This writes 30 train / 20 eval rows to `artifacts/smoke/`, fine-tunes a LoRA adapter to
+`artifacts/models/apush-frq-grader-v1-smoke/` (CPU-friendly via `scripts/train_smoke.py`),
+and evaluates baselines plus the tuned model under `artifacts/smoke_eval/`.
+
+To re-run eval only (adapter already trained):
+
+```powershell
+python scripts/run_smoke_pipeline.py --skip-generate --skip-train
+```
+
 ## Train With QLoRA
 
 Run on a GPU machine after installing training extras:
@@ -39,9 +58,20 @@ python scripts/eval_hf_model.py --model artifacts/models/apush-frq-grader-v1 --m
 
 On the same eval harness used for the litmus test:
 
-| Model | JSON Valid | Rubric Acc. | Grounding | Robustness | Total |
-|-------|------------|-------------|-----------|------------|-------|
-| `inflated_prompted_base` | 1.00 | 0.82 | 0.17 | 0.93 | 0.69 |
-| `apush_grader_reference` (SFT target) | 1.00 | 1.00 | 1.00 | 2.00 | 1.00 |
+| Model | Cases | JSON Valid | Rubric Acc. | Grounding | Robustness | Total |
+|-------|-------|------------|-------------|-----------|------------|-------|
+| `inflated_prompted_base` | 198 | 1.00 | 0.82 | 0.17 | 0.93 | 0.69 |
+| `apush_grader_reference` (SFT target) | 198 | 1.00 | 1.00 | 1.00 | 2.00 | 1.00 |
+| `apush_frq_grader_v1` (QLoRA) | 198 | TBD | TBD | TBD | TBD | TBD |
 
 The inflated baseline simulates a lenient prompted model: valid JSON but generic feedback and score inflation on weak essays. Fine-tuning should close the gap to the reference grader on grounding and adversarial slices.
+
+### Smoke tuned model (Day 2 loop, 20-case held-out set)
+
+| Model | Cases | JSON Valid | Rubric Acc. | Grounding | Robustness | Total |
+|-------|-------|------------|-------------|-----------|------------|-------|
+| `inflated_prompted_base` | 20 | 1.00 | 0.84 | 0.15 | 0.90 | 0.69 |
+| `apush_grader_reference` (SFT target) | 20 | 1.00 | 1.00 | 1.00 | 2.00 | 1.00 |
+| `apush_frq_grader_smoke` (QLoRA) | 20 | 0.55 | 0.95 | 0.95 | 1.65 | 0.77 |
+
+`apush_frq_grader_smoke` is the Day 2 proof-of-loop adapter: LoRA fine-tuned on 30 synthetic train rows for 25 steps (`scripts/train_smoke.py`), evaluated on `artifacts/smoke/eval_cases.jsonl`. It confirms generate → train → eval works end-to-end and already beats the inflated baseline on grounding (0.95 vs 0.15) and total (0.77 vs 0.69). JSON validity is still low (0.55) because 25 steps on 30 examples is intentionally minimal — the full v1 run on ~997 rows is the real target.

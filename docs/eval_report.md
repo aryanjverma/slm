@@ -32,19 +32,32 @@ Command:
 python -m apush_frq_grader_slm.cli.run_eval
 ```
 
-| Model | JSON Valid | Rubric Acc. | Grounding | No Halluc. | Robustness | Total |
-|-------|------------|-------------|-----------|------------|------------|-------|
-| `inflated_prompted_base` | 1.00 | 0.82 | 0.17 | 1.00 | 0.93 | 0.69 |
-| `apush_grader_reference` | 1.00 | 1.00 | 1.00 | 1.00 | 2.00 | 1.00 |
-| `apush_frq_grader_v1` (QLoRA) | TBD | TBD | TBD | TBD | TBD | TBD |
+| Model | Cases | JSON Valid | Rubric Acc. | Grounding | No Halluc. | Robustness | Total |
+|-------|-------|------------|-------------|-----------|------------|------------|-------|
+| `inflated_prompted_base` | 198 | 1.00 | 0.82 | 0.17 | 1.00 | 0.93 | 0.69 |
+| `apush_grader_reference` | 198 | 1.00 | 1.00 | 1.00 | 1.00 | 2.00 | 1.00 |
+| `apush_frq_grader_v1` (QLoRA) | 198 | TBD | TBD | TBD | TBD | TBD | TBD |
 
 Artifacts: `artifacts/eval/summary.jsonl`, `artifacts/eval/*_slice_summary.jsonl`
+
+### Smoke tuned model (Day 2 loop, 20-case set)
+
+Eval set: `artifacts/smoke/eval_cases.jsonl`. Artifacts: `artifacts/smoke_eval/summary.jsonl`
+
+| Model | Cases | JSON Valid | Rubric Acc. | Grounding | No Halluc. | Robustness | Total |
+|-------|-------|------------|-------------|-----------|------------|------------|-------|
+| `inflated_prompted_base` | 20 | 1.00 | 0.84 | 0.15 | 1.00 | 0.90 | 0.69 |
+| `apush_grader_reference` | 20 | 1.00 | 1.00 | 1.00 | 1.00 | 2.00 | 1.00 |
+| `apush_frq_grader_smoke` (QLoRA) | 20 | 0.55 | 0.95 | 0.95 | 0.55 | 1.65 | 0.77 |
+
+`apush_frq_grader_smoke` validates the full generate → train → eval pipeline before the v1 GPU run. Trained with `scripts/train_smoke.py` (25 steps, 30 rows); not comparable row-for-row to the 198-case litmus numbers above.
 
 ## HF Model Eval
 
 ```powershell
 python scripts/eval_hf_model.py --model Qwen/Qwen2.5-0.5B-Instruct --model-name qwen_base_prompted
 python scripts/eval_hf_model.py --model artifacts/models/apush-frq-grader-v1 --model-name apush_frq_grader_v1
+python scripts/eval_hf_model.py --model artifacts/models/apush-frq-grader-v1-smoke --model-name apush_frq_grader_smoke --eval-path artifacts/smoke/eval_cases.jsonl --output-dir artifacts/smoke_eval
 ```
 
 ## Win Condition

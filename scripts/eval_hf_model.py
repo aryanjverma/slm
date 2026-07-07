@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 import torch
@@ -15,14 +16,46 @@ from apush_frq_grader_slm.io import read_jsonl, write_jsonl
 from apush_frq_grader_slm.schemas import FRQCase
 
 
+def load_model_and_tokenizer(model_id: str):
+    path = Path(model_id)
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    dtype = torch.float16 if device == "cuda" else torch.float32
+
+    adapter_config = path / "adapter_config.json"
+    if adapter_config.exists():
+        from peft import PeftModel
+
+        base_model_id = json.loads(adapter_config.read_text())["base_model_name_or_path"]
+        tokenizer = AutoTokenizer.from_pretrained(path)
+        base = AutoModelForCausalLM.from_pretrained(
+            base_model_id,
+            dtype=dtype,
+            low_cpu_mem_usage=True,
+        )
+        model = PeftModel.from_pretrained(base, path)
+    else:
+        tokenizer = AutoTokenizer.from_pretrained(model_id)
+        if device == "cuda":
+            model = AutoModelForCausalLM.from_pretrained(
+                model_id,
+                device_map="auto",
+                dtype=dtype,
+            )
+        else:
+            model = AutoModelForCausalLM.from_pretrained(
+                model_id,
+                dtype=dtype,
+                low_cpu_mem_usage=True,
+            )
+
+    model = model.to(device)
+    model.eval()
+    return model, tokenizer, device
+
+
 def main() -> None:
     args = parse_args()
-    tokenizer = AutoTokenizer.from_pretrained(args.model)
-    model = AutoModelForCausalLM.from_pretrained(
-        args.model,
-        device_map="auto",
-        torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-    )
+    model, tokenizer, device = load_model_and_tokenizer(args.model)
     cases = [FRQCase.model_validate(row) for row in read_jsonl(args.eval_path)]
     results = []
     for case in cases:
@@ -34,7 +67,7 @@ def main() -> None:
             },
         ]
         prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-        inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+        inputs = tokenizer(prompt, return_tensors="pt").to(device)
         output = model.generate(
             **inputs,
             max_new_tokens=args.max_new_tokens,

@@ -25,13 +25,25 @@ See [`docs/behavior_spec.md`](../docs/behavior_spec.md).
 
 ## Evaluation
 
-| Model | JSON Valid | Rubric Acc. | Grounding | Total |
-|-------|------------|-------------|-----------|-------|
-| `inflated_prompted_base` | 1.00 | 0.82 | 0.17 | 0.69 |
-| `apush_grader_reference` | 1.00 | 1.00 | 1.00 | 1.00 |
-| `apush_frq_grader_v1` | TBD | TBD | TBD | TBD |
+### Litmus eval (198-case held-out set)
+
+| Model | Cases | JSON Valid | Rubric Acc. | Grounding | Robustness | Total |
+|-------|-------|------------|-------------|-----------|------------|-------|
+| `inflated_prompted_base` | 198 | 1.00 | 0.82 | 0.17 | 0.93 | 0.69 |
+| `apush_grader_reference` | 198 | 1.00 | 1.00 | 1.00 | 2.00 | 1.00 |
+| `apush_frq_grader_v1` | 198 | TBD | TBD | TBD | TBD | TBD |
 
 Eval set: `artifacts/data/eval_cases.jsonl` (198 cases).
+
+### Smoke tuned model — `apush_frq_grader_smoke` (Day 2, 20-case set)
+
+| Model | Cases | JSON Valid | Rubric Acc. | Grounding | No Halluc. | Robustness | Total |
+|-------|-------|------------|-------------|-----------|------------|------------|-------|
+| `inflated_prompted_base` | 20 | 1.00 | 0.84 | 0.15 | 1.00 | 0.90 | 0.69 |
+| `apush_grader_reference` | 20 | 1.00 | 1.00 | 1.00 | 1.00 | 2.00 | 1.00 |
+| `apush_frq_grader_smoke` | 20 | 0.55 | 0.95 | 0.95 | 0.55 | 1.65 | 0.77 |
+
+`apush_frq_grader_smoke` is the Day 2 proof-of-loop adapter, not the production v1 model. LoRA fine-tuned for 25 steps on 30 synthetic rows (`scripts/train_smoke.py`), output at `artifacts/models/apush-frq-grader-v1-smoke/`, evaluated on `artifacts/smoke/eval_cases.jsonl`. It confirms the pipeline works and beats the inflated baseline on grounding (0.95 vs 0.15) before the full ~997-row v1 GPU train.
 
 ## Limitations
 
