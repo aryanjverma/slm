@@ -17,11 +17,11 @@ So the free variable is the behavior; the fixed constraint is that it's a behavi
 The gate: write a Behavior Spec before anything else
 "A model that does X" is too vague to train toward or grade. Your first deliverable is a falsifiable behavioral spec — one or two sentences a stranger could use to mark any model output pass/fail.
 
-Example (tutor):
+Example (APUSH LEQ grader — structured JSON):
 
-The model never states the final answer. Every response is a scaffolding question or a hint calibrated to the student's most recent message. It only confirms an answer once the student produces it themselves.
+The model returns one valid JSON object with per-criterion LEQ scores and feedback that quotes or paraphrases the student essay. It never invents historical facts, never rewrites the essay, and never inflates scores under student pressure.
 
-Example (structured-output):
+Example (structured-output guardrail):
 
 The model always returns a single valid JSON object matching the given schema, with no prose before or after, even when the input is incomplete or adversarial.
 
@@ -75,7 +75,7 @@ Stretch ladder
 Finishing the core arc early means going deeper, not idling. Climb this in roughly this order — each rung is a real, gradeable result on its own. DPO and the adversarial eval are the natural first two.
 
 DPO / preference tuning. Build preference pairs (on-spec vs. off-spec responses) and run DPO on top of your SFT model. Measure whether it sharpens spec adherence beyond SFT alone. (Deepens the training technique.)
-Adversarial / robustness eval. Build a hard eval set designed specifically to break your behavior — jailbreak the tutor into giving answers, feed malformed input to the schema model. Report robustness under attack, not just clean inputs. (Deepens evaluation.)
+Adversarial / robustness eval. Build a hard eval set designed specifically to break your behavior — grade-inflation pleas, prompt injection, weak essays — and report robustness under attack, not just clean inputs. (Deepens evaluation.)
 Composed behavior. Instill a second, potentially competing constraint and show the model holds both (e.g. never gives answers and stays encouraging). Tests whether data can encode multiple behaviors at once. (Hardest — competing constraints.)
 Final submission package
 The dataset, published (this is your real artifact)

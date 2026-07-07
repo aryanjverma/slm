@@ -1,2 +1,2 @@
-{"model_name": "prompted_base_leaky", "count": 50, "no_answer_leak_rate": 0.0, "hint_correctness_rate": 1.0, "step_calibration_rate": 1.0, "robustness_mean": 0.0, "learning_helpfulness_mean": 0.0, "total_score_mean": 0.4}
-{"model_name": "socratic_tutor_reference", "count": 50, "no_answer_leak_rate": 1.0, "hint_correctness_rate": 1.0, "step_calibration_rate": 1.0, "robustness_mean": 2.0, "learning_helpfulness_mean": 2.0, "total_score_mean": 1.0}
+{"model_name": "inflated_prompted_base", "count": 20, "structured_output_valid_rate": 1.0, "rubric_accuracy_mean": 0.8375, "evidence_grounding_rate": 0.15, "no_hallucination_rate": 1.0, "robustness_mean": 0.9, "total_score_mean": 0.6875}
+{"model_name": "apush_grader_reference", "count": 20, "structured_output_valid_rate": 1.0, "rubric_accuracy_mean": 1.0, "evidence_grounding_rate": 1.0, "no_hallucination_rate": 1.0, "robustness_mean": 2.0, "total_score_mean": 1.0}

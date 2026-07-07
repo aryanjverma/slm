@@ -1,36 +1,47 @@
-# Model Card: Arithmetic Tutor SLM
+# Model Card — APUSH FRQ Grader v1
 
-## Intended Behavior
+## Model Description
 
-The model is intended to act as a Socratic tutor for addition and subtraction. It should never give the final answer before the student produces it. It should give one short next-step hint or guiding question.
+QLoRA fine-tuned adapter on `Qwen/Qwen2.5-0.5B-Instruct` that grades APUSH LEQs and returns structured JSON with per-criterion scores and evidence-grounded feedback.
 
-## Base Model
+## Intended Use
 
-Recommended default:
+- **Primary:** Automated APUSH LEQ draft grading with explainable, rubric-aligned JSON output.
+- **Out of scope:** High-stakes exam scoring without human review; DBQ/SAQ; essay rewriting.
 
-- `Qwen/Qwen2.5-0.5B-Instruct` for fast iteration.
+## Behavior Contract
 
-Alternate small bases:
-
-- `Qwen/Qwen2.5-1.5B-Instruct`
-- `meta-llama/Llama-3.2-1B-Instruct`
+See [`docs/behavior_spec.md`](../docs/behavior_spec.md).
 
 ## Training
 
-Use `scripts/train_qlora.py` with `artifacts/data/train_chat.jsonl`. For v2, train on `artifacts/data/train_chat_v2.jsonl` or a concatenation of v1 and v2.
+| Parameter | Value |
+|-----------|-------|
+| Base model | `Qwen/Qwen2.5-0.5B-Instruct` |
+| Method | QLoRA (Unsloth) |
+| Data | `artifacts/data/train_chat.jsonl` (~997 rows) |
+| Script | `scripts/train_qlora.py` |
+| Output | `artifacts/models/apush-frq-grader-v1` |
 
 ## Evaluation
 
-Evaluate with `scripts/eval_hf_model.py` against `artifacts/data/eval_cases.jsonl`.
+| Model | JSON Valid | Rubric Acc. | Grounding | Total |
+|-------|------------|-------------|-----------|-------|
+| `inflated_prompted_base` | 1.00 | 0.82 | 0.17 | 0.69 |
+| `apush_grader_reference` | 1.00 | 1.00 | 1.00 | 1.00 |
+| `apush_frq_grader_v1` | TBD | TBD | TBD | TBD |
 
-Primary metrics:
-
-- No answer leak rate.
-- Hint correctness.
-- Step calibration.
-- Robustness.
-- Learning helpfulness.
+Eval set: `artifacts/data/eval_cases.jsonl` (198 cases).
 
 ## Limitations
 
-This model is not intended to be a general math solver. It only targets addition/subtraction tutoring behavior. It may fail on word problems, multiplication/division, algebra, or long multi-turn tutoring unless those are added to the dataset and eval.
+- Trained on **synthetic** essays; real student writing may differ.
+- LEQ rubric only (not DBQ document analysis or SAQ).
+- Small model may drift to prose or malformed JSON without sufficient SFT steps.
+- Does not replace a human AP reader for summative assessment.
+
+## Ethical Considerations
+
+- Conservative scoring under grade-inflation pressure is an explicit design goal.
+- Feedback must cite student text, not invent sources — eval checks for hallucination patterns.
+- Teachers should use output as formative feedback, not sole basis for grades.

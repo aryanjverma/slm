@@ -1,7 +1,7 @@
 [project]
-name = "arithmetic-tutor-slm"
+name = "apush-frq-grader-slm"
 version = "0.1.0"
-description = "Data, evaluation, and training pipeline for a Socratic addition/subtraction tutor SLM."
+description = "Data, evaluation, and training pipeline for an APUSH LEQ grader SLM with structured JSON output."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -27,9 +27,9 @@ judge = [
 ]
 
 [project.scripts]
-arithmetic-tutor-generate = "arithmetic_tutor_slm.cli.generate_dataset:app"
-arithmetic-tutor-eval = "arithmetic_tutor_slm.cli.run_eval:app"
-arithmetic-tutor-demo = "arithmetic_tutor_slm.cli.demo:app"
+apush-grader-generate = "apush_frq_grader_slm.cli.generate_dataset:app"
+apush-grader-eval = "apush_frq_grader_slm.cli.run_eval:app"
+apush-grader-demo = "apush_frq_grader_slm.cli.demo:app"
 
 [tool.setuptools.packages.find]
 where = ["src"]

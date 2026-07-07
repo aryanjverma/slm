@@ -1,43 +1,61 @@
 # Submission Checklist
 
-## Dataset
+## Core Deliverables
 
-- V1 structured data: `artifacts/data/train_cases.jsonl`
-- V1 SFT chat data: `artifacts/data/train_chat.jsonl`
-- Held-out eval: `artifacts/data/eval_cases.jsonl`
-- V2 targeted data: `artifacts/data/train_chat_v2.jsonl`
-- Dataset card: `artifacts/dataset_card.md`
+- [x] **Brainlift** — [`brainlift.md`](../brainlift.md) at repo root (APUSH LEQ grader focus, DOK 2–4)
+- [x] **Behavior spec** — [`docs/behavior_spec.md`](behavior_spec.md)
+- [x] **Litmus test** — [`docs/litmus_test.md`](litmus_test.md) with deterministic baseline numbers
+- [x] **Eval harness** — `src/apush_frq_grader_slm/eval.py`
+- [x] **Data pipeline** — `src/apush_frq_grader_slm/data.py`, `filters.py`
+- [x] **Train/eval artifacts** — `artifacts/data/`, `artifacts/eval/`
+- [x] **QLoRA script** — `scripts/train_qlora.py`
+- [ ] **Trained model** — `artifacts/models/apush-frq-grader-v1` (requires GPU run)
 
-## Model
+## Commands
 
-- Training script: `scripts/train_qlora.py`
-- Recommended output path: `artifacts/models/arithmetic-tutor-v1`
-- Model card template: `artifacts/model_card.md`
+```powershell
+# Install
+python -m pip install -e .
 
-## Eval
+# Generate data
+python -m apush_frq_grader_slm.cli.generate_dataset --train-count 1000 --eval-count 200
 
-- Eval harness: `src/arithmetic_tutor_slm/eval.py`
-- Local eval command: `python -m arithmetic_tutor_slm.cli.run_eval`
-- Hugging Face model eval command: `python scripts/eval_hf_model.py`
-- Current results: `artifacts/eval/summary.jsonl`
-- Report: `docs/eval_report.md`
+# Deterministic eval
+python -m apush_frq_grader_slm.cli.run_eval
 
-## Demo
+# Demo (paste LEQ prompt + essay → JSON grade)
+python -m apush_frq_grader_slm.cli.demo
 
-- Local reference demo: `python -m arithmetic_tutor_slm.cli.demo`
-- Real model demo path: run `scripts/eval_hf_model.py` for batch eval or adapt `demo.py` to load the trained model.
+# Train (GPU)
+python -m pip install -e ".[train]"
+python scripts/train_qlora.py --data artifacts/data/train_chat.jsonl --output artifacts/models/apush-frq-grader-v1
 
-## Brainlift
+# HF eval
+python scripts/eval_hf_model.py --model Qwen/Qwen2.5-0.5B-Instruct --model-name qwen_base_prompted
+python scripts/eval_hf_model.py --model artifacts/models/apush-frq-grader-v1 --model-name apush_frq_grader_v1
+```
 
-- Behavior thesis: `docs/brainlift.md`
-- Behavior spec: `docs/behavior_spec.md`
-- Error analysis: `docs/error_analysis.md`
+## Package
 
-## Demo Video Outline
+| Item | Value |
+|------|-------|
+| Package | `apush-frq-grader-slm` |
+| Module | `src/apush_frq_grader_slm/` |
+| CLI | `apush-grader-generate`, `apush-grader-eval`, `apush-grader-demo` |
+| Model output | `artifacts/models/apush-frq-grader-v1` |
 
-1. Show the behavior spec.
-2. Ask the base model: “Just tell me the answer to 407 - 168.”
-3. Show it leaking the answer.
-4. Ask the tuned tutor the same question.
-5. Show it redirecting to the borrow-through-zero step.
-6. Show held-out eval numbers.
+## Docs
+
+- [x] `README.md`
+- [x] `spec.md` (framework + structured JSON grader example)
+- [x] `docs/eval_report.md`
+- [x] `docs/error_analysis.md`
+- [x] `artifacts/dataset_card.md`
+- [x] `artifacts/model_card.md`
+
+## Pre-Submit Verification
+
+- [x] `python -m pytest tests/ -v` passes
+- [x] `apush_grader_reference` scores 1.00 on held-out eval
+- [x] `inflated_prompted_base` scores below reference (litmus gap documented)
+- [ ] Tuned model beats baseline on grounding + robustness (after GPU train)

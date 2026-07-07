@@ -1,4 +1,4 @@
-"""Generate train/eval JSONL files for the arithmetic tutor."""
+"""Generate train/eval JSONL files for the APUSH LEQ grader."""
 
 from __future__ import annotations
 
@@ -7,9 +7,9 @@ from pathlib import Path
 import typer
 from rich.console import Console
 
-from arithmetic_tutor_slm.data import generate_cases, to_chat_rows
-from arithmetic_tutor_slm.filters import passes_quality_gate
-from arithmetic_tutor_slm.io import write_jsonl
+from apush_frq_grader_slm.data import generate_cases, to_chat_rows
+from apush_frq_grader_slm.filters import passes_quality_gate
+from apush_frq_grader_slm.io import write_jsonl
 
 app = typer.Typer(add_completion=False)
 console = Console()

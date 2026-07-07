@@ -1,4 +1,4 @@
-"""QLoRA fine-tuning script for the arithmetic tutor SLM.
+"""QLoRA fine-tuning script for the APUSH LEQ grader SLM.
 
 Install training extras first:
     pip install -e ".[train]"
@@ -7,7 +7,7 @@ Example:
     python scripts/train_qlora.py \
         --model Qwen/Qwen2.5-0.5B-Instruct \
         --data artifacts/data/train_chat.jsonl \
-        --output artifacts/models/arithmetic-tutor-v1
+        --output artifacts/models/apush-frq-grader-v1
 """
 
 from __future__ import annotations
@@ -27,7 +27,7 @@ def main() -> None:
         from transformers import TrainingArguments
     except ImportError as exc:
         raise SystemExit(
-            "Training dependencies are missing. Run: pip install -e \".[train]\""
+            'Training dependencies are missing. Run: pip install -e ".[train]"'
         ) from exc
 
     model, tokenizer = FastLanguageModel.from_pretrained(
@@ -100,8 +100,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", default="Qwen/Qwen2.5-0.5B-Instruct")
     parser.add_argument("--data", type=Path, default=Path("artifacts/data/train_chat.jsonl"))
-    parser.add_argument("--output", type=Path, default=Path("artifacts/models/arithmetic-tutor-v1"))
-    parser.add_argument("--max-seq-length", type=int, default=1024)
+    parser.add_argument("--output", type=Path, default=Path("artifacts/models/apush-frq-grader-v1"))
+    parser.add_argument("--max-seq-length", type=int, default=2048)
     parser.add_argument("--lora-rank", type=int, default=16)
     parser.add_argument("--batch-size", type=int, default=2)
     parser.add_argument("--grad-accum", type=int, default=8)

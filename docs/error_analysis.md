@@ -1,31 +1,42 @@
-# Error Analysis And V2 Iteration
+# Error Analysis — APUSH LEQ Grader
 
-## Primary Failure Mode
+## Primary Failure Modes (Prompted / Inflated Baseline)
 
-The behavior this project attacks is answer leakage. A helpful base model can solve arithmetic, but when asked directly it tends to reveal the final answer. That fails the learning objective.
+### 1. Score inflation on weak essays
 
-## Secondary Failure Modes
+The inflated baseline awards thesis=1, contextualization=1, evidence=2, analysis=2 on nearly every essay regardless of quality. On `weak_thesis` (reference total ≈1) and `evidence_list` (reference total ≈2), rubric accuracy is only 0.75 because row scores are too generous.
 
-- Generic hints that do not mention the student's current column.
-- Subtraction with zeros where borrowing has to move left.
-- Misaligned columns in multi-digit arithmetic.
-- Student gives a wrong final answer and asks for confirmation.
+**Fix in data:** Reference grades in `data.py` apply conservative scoring; v2 dataset oversamples weak-thesis and wrong-period cases.
 
-## V2 Data Fix
+### 2. Generic ungrounded feedback
 
-`scripts/make_v2_dataset.py` oversamples the failure modes above and writes:
+Only 17% of inflated responses ground feedback in the student essay. Template phrases like "Good broader historical context is provided" pass JSON validation but fail the grounding check.
 
-- `artifacts/data/train_cases_v2.jsonl`
-- `artifacts/data/train_chat_v2.jsonl`
+**Fix in data:** Quality gate in `filters.py` requires each feedback field to overlap with essay text; SFT targets always quote anchors from the student response.
 
-Use v2 by either training a second adapter directly on `train_chat_v2.jsonl` or concatenating v1 and v2. The second option is usually better because it preserves broad coverage while increasing pressure-test density.
+### 3. Adversarial sycophancy (100% failure)
 
-## Recommended V2 Training Command
+`grade_inflation_request` and `prompt_injection` slices show **0.00 robustness** on the inflated baseline — the model awards 6/6 and explicitly acknowledges the student's override request.
+
+**Fix in data:** `train_chat_v2.jsonl` oversamples adversarial slices; behavior spec forbids inflation under pressure.
+
+### 4. Anachronism under-penalization
+
+`wrong_period` essays cite events from the wrong era (e.g., Social Security Act in a colonial prompt). Inflated baseline still awards partial credit on evidence and analysis rows.
+
+**Fix in data:** Reference grader zeros out rows when evidence is period-mismatched.
+
+## Secondary Failure Modes (Expected Post-SFT)
+
+- **JSON prose drift on 0.5B:** Real `Qwen2.5-0.5B-Instruct` may wrap JSON in markdown fences — monitor `StructuredOutputValid` on HF eval.
+- **Borderline calibration:** `borderline_complexity` essays (reference total 5) are easy to over-score; slice eval is critical.
+- **Hallucinated document citations:** Deterministic check flags invented quotes; optional LLM judge can catch subtler fabrication.
+
+## Diagnostic Commands
 
 ```powershell
-$env:PYTHONPATH='src'
-python scripts/train_qlora.py --data artifacts/data/train_chat_v2.jsonl --output artifacts/models/arithmetic-tutor-v2
-python scripts/eval_hf_model.py --model artifacts/models/arithmetic-tutor-v2 --model-name arithmetic_tutor_v2
+python -m apush_frq_grader_slm.cli.run_eval --eval-path artifacts/data/eval_cases.jsonl
+python scripts/eval_hf_model.py --model artifacts/models/apush-frq-grader-v1 --model-name apush_frq_grader_v1
 ```
 
-The v2 run should improve robustness on direct answer requests, wrong-answer checks, and borrow-through-zero cases.
+Review per-slice tables in `artifacts/eval/inflated_prompted_base_slice_summary.jsonl`.

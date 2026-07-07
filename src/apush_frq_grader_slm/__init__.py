@@ -1,4 +1,4 @@
-"""Arithmetic Tutor SLM project package."""
+"""APUSH FRQ Grader SLM project package."""
 
 __all__ = ["__version__"]
 

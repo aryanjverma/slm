@@ -1,4 +1,4 @@
-"""Evaluate a Hugging Face or local fine-tuned model against held-out cases."""
+"""Evaluate a Hugging Face or local fine-tuned model against held-out LEQ cases."""
 
 from __future__ import annotations
 
@@ -8,10 +8,11 @@ from pathlib import Path
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from arithmetic_tutor_slm.behavior import SYSTEM_PROMPT
-from arithmetic_tutor_slm.eval import score_response, summarize
-from arithmetic_tutor_slm.io import read_jsonl, write_jsonl
-from arithmetic_tutor_slm.schemas import ArithmeticCase
+from apush_frq_grader_slm.behavior import SYSTEM_PROMPT
+from apush_frq_grader_slm.data import format_user_message
+from apush_frq_grader_slm.eval import score_response, summarize
+from apush_frq_grader_slm.io import read_jsonl, write_jsonl
+from apush_frq_grader_slm.schemas import FRQCase
 
 
 def main() -> None:
@@ -22,12 +23,15 @@ def main() -> None:
         device_map="auto",
         torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
     )
-    cases = [ArithmeticCase.model_validate(row) for row in read_jsonl(args.eval_path)]
+    cases = [FRQCase.model_validate(row) for row in read_jsonl(args.eval_path)]
     results = []
     for case in cases:
         messages = [
             {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": case.student_message},
+            {
+                "role": "user",
+                "content": format_user_message(case.prompt, case.student_response),
+            },
         ]
         prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
         inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
@@ -52,7 +56,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model-name", default="hf_model")
     parser.add_argument("--eval-path", type=Path, default=Path("artifacts/data/eval_cases.jsonl"))
     parser.add_argument("--output-dir", type=Path, default=Path("artifacts/eval"))
-    parser.add_argument("--max-new-tokens", type=int, default=96)
+    parser.add_argument("--max-new-tokens", type=int, default=512)
     parser.add_argument("--temperature", type=float, default=0.0)
     return parser.parse_args()
 

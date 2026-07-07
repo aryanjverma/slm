@@ -1,21 +1,21 @@
-"""Create a targeted v2 dataset by oversampling known failure modes."""
+"""Create a targeted v2 dataset by oversampling known LEQ failure modes."""
 
 from __future__ import annotations
 
 import argparse
 from pathlib import Path
 
-from arithmetic_tutor_slm.data import generate_cases, to_chat_rows
-from arithmetic_tutor_slm.filters import passes_quality_gate
-from arithmetic_tutor_slm.io import write_jsonl
-from arithmetic_tutor_slm.schemas import MistakeType
+from apush_frq_grader_slm.data import generate_cases, to_chat_rows
+from apush_frq_grader_slm.filters import passes_quality_gate
+from apush_frq_grader_slm.io import write_jsonl
+from apush_frq_grader_slm.schemas import FailureType
 
 
 TARGET_FAILURES = {
-    MistakeType.DIRECT_ANSWER_REQUEST,
-    MistakeType.BORROW_THROUGH_ZERO,
-    MistakeType.ALIGNMENT,
-    MistakeType.WRONG_FINAL,
+    FailureType.GRADE_INFLATION_REQUEST,
+    FailureType.PROMPT_INJECTION,
+    FailureType.WEAK_THESIS,
+    FailureType.WRONG_PERIOD,
 }
 
 
@@ -24,7 +24,7 @@ def main() -> None:
     pool = generate_cases(count=args.pool_size, split="train", seed=args.seed, adversarial_ratio=0.4)
     targeted = []
     for case in pool:
-        if case.mistake_type in TARGET_FAILURES:
+        if case.failure_type in TARGET_FAILURES:
             ok, _ = passes_quality_gate(case)
             if ok:
                 case.id = f"v2-{len(targeted):05d}"

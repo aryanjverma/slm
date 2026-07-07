@@ -1,6 +1,6 @@
-# Brainlift: Arithmetic Tutor SLM
+# Brainlift: APUSH LEQ Grader SLM
 
-Structured context for training and evaluating a tiny open model that reliably tutors addition and subtraction without leaking the final answer.
+Structured context for training and evaluating a tiny open model that reliably grades APUSH Long Essay Questions (LEQs) with rubric-aligned JSON and evidence-grounded feedback.
 
 ## Owners
 
@@ -8,31 +8,32 @@ Structured context for training and evaluating a tiny open model that reliably t
 
 ## Purpose
 
-Train a small open model to reliably embody one falsifiable tutoring behavior — Socratic scaffolding for addition and subtraction without answer leakage — and prove the behavior came from data, not prompting alone.
+Train a small open model to reliably embody one falsifiable grading behavior — APUSH LEQ scoring against the College Board 6-point rubric with structured JSON output and essay-grounded explanations — and prove the behavior came from curated SFT data, not prompting alone.
 
 **Behavior contract** (from [docs/behavior_spec.md](docs/behavior_spec.md)):
 
-> The model is a Socratic tutor for addition and subtraction. It never states the final numeric answer unless the student has already produced it; instead, it identifies the student's current step or mistake and asks one short guiding question or gives one calibrated hint for the next step.
+> The model is an APUSH LEQ grader and explainer. Given a prompt and student essay, it returns one valid JSON object with per-criterion scores (thesis, contextualization, evidence, analysis/reasoning) and short explanations that quote or paraphrase evidence from the student's text. It never invents historical facts, documents, or quotes; never rewrites the essay; and never inflates scores under student pressure.
 
 
 
 ### In Scope
 
-- Writing and enforcing a falsifiable behavior spec
+- APUSH LEQ rubric (6-point College Board contract)
+- Structured JSON output with per-criterion scores and feedback
 - Synthetic SFT data generation and hard quality filtering
-- QLoRA fine-tuning on a small instruct base model (Qwen2.5-0.5B)
-- Behavioral evaluation: base vs tuned on a held-out set
-- Arithmetic tutoring edge cases: carrying, borrowing, borrow-through-zero, column alignment, direct-answer requests, wrong-final confirmation
-- Building structured context for AI conversations about this project
+- QLoRA fine-tuning on `Qwen/Qwen2.5-0.5B-Instruct`
+- Behavioral eval: inflated prompted baseline vs reference grader vs tuned model
+- Failure slices: weak thesis, missing context, evidence lists, wrong period, borderline complexity, grade inflation, prompt injection
 
 
 
 ### Out of Scope
 
+- DBQ and SAQ rubrics (v1)
 - Pretraining from scratch
-- Broad math capability or trivia benchmarks
-- Multiplication, division, fractions, algebra, or general math tutoring
-- Complex retrieval-augmented generation (RAG) pipelines
+- Real student essay corpus (synthetic + rule-based reference grades for v1)
+- LLM-as-judge eval (deterministic checks first)
+- Essay rewriting or improvement
 
 
 
@@ -44,7 +45,7 @@ Train a small open model to reliably embody one falsifiable tutoring behavior �
 
 **Spiky POV 2:** 
 
-**Elaboration:** 
+**Elaboration:** A 
 
 ## Experts
 
@@ -53,88 +54,86 @@ Train a small open model to reliably embody one falsifiable tutoring behavior �
 ### Andrej Karpathy
 
 - **Who:** AI researcher; former Director of AI at Tesla, founding member of OpenAI; creator of nanoGPT and llm.c.
-- **Focus:** Data-centric machine learning, small language models, and the idea that training data is the real program ("Software 2.0").
-- **Why Follow:** Grounds the project thesis that the dataset is the deliverable, not the model weights. Fine-tuning is how you make curated data runnable.
-- **Where:** [karpathy.ai](https://karpathy.ai/) · [X @karpathy](https://x.com/karpathy) · [GitHub](https://github.com/karpathy)
+- **Focus:** Data-centric ML, small language models, "Software 2.0" — training data is the real program.
+- **Why Follow:** Grounds the thesis that the dataset is the deliverable. Fine-tuning makes curated rubric-aligned grading data runnable on cheap hardware.
+- **Where:** [karpathy.ai](https://karpathy.ai/) · [GitHub](https://github.com/karpathy)
 
 
 
 ### Sebastian Raschka
 
-- **Who:** ML researcher and author; practical guides on LLM fine-tuning and evaluation.
-- **Focus:** Supervised fine-tuning workflows, instruction tuning, LoRA/QLoRA tradeoffs, and eval-minded training decisions.
-- **Why Follow:** Translates research into actionable SFT patterns — when to fine-tune vs prompt, how to structure train/eval splits, and what to measure.
-- **Where:** [sebastianraschka.com](https://sebastianraschka.com/) · [Ahead-of-AI Substack](https://magazine.sebastianraschka.com/) · [GitHub](https://github.com/rasbt)
+- **Who:** ML researcher and author; practical LLM fine-tuning guides.
+- **Focus:** SFT workflows, LoRA/QLoRA tradeoffs, eval-minded training.
+- **Why Follow:** Actionable patterns for when to fine-tune vs prompt and how to structure train/eval splits for narrow behaviors.
+- **Where:** [sebastianraschka.com](https://sebastianraschka.com/) · [Ahead-of-AI](https://magazine.sebastianraschka.com/)
 
 
 
 ### Daniel Han / Unsloth
 
-- **Who:** Creator of Unsloth; open-source tooling for fast, memory-efficient LLM fine-tuning.
-- **Focus:** 2–5× faster QLoRA training with ~70% less VRAM; clean notebooks for single-GPU SFT on small models.
-- **Why Follow:** Matches this project's stack ([scripts/train_qlora.py](scripts/train_qlora.py)) and makes a one-week, one-GPU build realistic.
-- **Where:** [unsloth.ai](https://unsloth.ai/) · [GitHub unslothai/unsloth](https://github.com/unslothai/unsloth) · [Docs](https://docs.unsloth.ai/)
-
-
-
-### Michelene Chi
-
-- **Who:** Regents Professor of Psychology; ASU learning sciences researcher.
-- **Focus:** ICAP framework (Interactive, Constructive, Active, Passive); how different learning activities produce different cognitive engagement and outcomes.
-- **Why Follow:** Explains why a tutor that gives one targeted hint (constructive/interactive) beats one that walks through the full solution (passive). Informs the one-step calibration requirement.
-- **Where:** [Google Scholar](https://scholar.google.com/citations?user=9f64YIoAAAAJ) · [ICAP paper (2014)](https://doi.org/10.1177/0042095913505851)
+- **Who:** Creator of Unsloth; fast, memory-efficient QLoRA tooling.
+- **Focus:** 2–5× faster training, ~70% less VRAM on consumer GPUs.
+- **Why Follow:** Matches [scripts/train_qlora.py](scripts/train_qlora.py) — one-week, one-GPU build is realistic.
+- **Where:** [unsloth.ai](https://unsloth.ai/) · [Docs](https://docs.unsloth.ai/)
 
 
 
 ### Lewis Tunstall / Hugging Face TRL
 
-- **Who:** ML engineer at Hugging Face; maintainer of TRL (Transformer Reinforcement Learning) and author of *Natural Language Processing with Transformers*.
-- **Focus:** SFT, DPO, and preference tuning tooling; instruction-tuning best practices on open models.
-- **Why Follow:** TRL/PEFT patterns underpin the training pipeline; DPO is the natural stretch goal after v1 SFT if spec adherence still wobbles.
-- **Where:** [Hugging Face](https://huggingface.co/lewtun) · [TRL docs](https://huggingface.co/docs/trl) · [GitHub huggingface/trl](https://github.com/huggingface/trl)
+- **Who:** HF ML engineer; TRL maintainer.
+- **Focus:** SFT, DPO, preference tuning on open models.
+- **Why Follow:** TRL/PEFT underpin the training stack; DPO is the stretch path for inflation resistance after v1 SFT.
+- **Where:** [Hugging Face](https://huggingface.co/lewtun) · [TRL docs](https://huggingface.co/docs/trl)
 
 
 
-### Kenneth Koedinger
+### Digital APUSH (2025)
 
-- **Who:** Professor of Human-Computer Interaction and Psychology, Carnegie Mellon; co-founder of the Cognitive Tutor approach.
-- **Focus:** The assistance dilemma — balancing how much and when to help; cognitive tutors for math; learning sciences applied to ITS design.
-- **Why Follow:** Formalizes the core design tension this project encodes: one calibrated next-step hint vs. giving away the solution. The behavior spec is an assistance-dilemma policy for column-level add/sub.
-- **Where:** [Google Scholar](https://scholar.google.com/citations?user=ZWy_GG4AAAAJ) · [Assistance dilemma paper (2007)](https://doi.org/10.1007/s10648-007-9049-0)
-
-
-
-### Sarah Macina
-
-- **Who:** PhD researcher, ETH Zurich NLP group; lead author of MathDial.
-- **Focus:** Dialogue tutoring datasets, teacher-move taxonomies, and the solving-vs-tutoring gap in LLMs.
-- **Why Follow:** MathDial directly proves that models strong at math reasoning fail at equitable scaffolding — and that fine-tuning on curated tutoring dialogues fixes it. This project's litmus test is the same finding at arithmetic granularity.
-- **Where:** [MathDial paper (2023)](https://arxiv.org/abs/2305.14536) · [GitHub eth-nlped/mathdial](https://github.com/eth-nlped/mathdial)
+- **Who:** Empirical APUSH essay grading study comparing multiple LLMs to College Board readers.
+- **Focus:** Where AI matches human readers on thesis vs where it misses higher-order rubric rows.
+- **Why Follow:** Direct empirical baseline for which LEQ rows are "easy" (thesis) vs hard (context, analysis) — shapes failure slices and eval metrics.
+- **Where:** [Digital APUSH 2025](https://apush.omeka.net/2025)
 
 
 
-### Hamsa Bastani
+### Michael Lomuscio
 
-- **Who:** Associate Professor of Operations, Information and Decisions, Wharton; co-author of the PNAS GPT tutoring field experiment.
-- **Focus:** AI in education, causal inference on learning outcomes, and guardrail design for generative AI tutors.
-- **Why Follow:** Provides the strongest causal evidence that unfettered LLM access harms learning and that tutor-designed guardrails (hints, not answers) are pedagogically necessary — not optional UX polish.
-- **Where:** [PNAS GPT Tutor study (2025)](https://doi.org/10.1073/pnas.2422633122) · [Google Scholar](https://scholar.google.com/citations?user=7_vN8kUAAAAJ)
+- **Who:** Educator; documented repeat LLM grading variance.
+- **Focus:** Same essay + rubric scored 50× with ChatGPT yields unusable classroom variance.
+- **Why Follow:** Proves consistency — not just accuracy — is why fine-tuning beats prompting for grading.
+- **Where:** [ChatGPT can't grade essays yet](https://fullstackeducator.substack.com/p/chatgpt-cant-grade-essays-yet)
+
+
+
+### College Board AP Histories
+
+- **Who:** Official AP program; LEQ rubric source of truth.
+- **Focus:** Thesis, contextualization, evidence, analysis/reasoning row definitions.
+- **Why Follow:** Behavior contract and `rubric.py` validation derive directly from official language.
+- **Where:** [AP History LEQ rubric](https://apcentral.collegeboard.org/)
+
+
+
+### Mizumoto & Eguchi / AES Community
+
+- **Who:** Researchers in automated essay scoring and LLM-human alignment.
+- **Focus:** Rubric design gaps between human-oriented and model-oriented scoring.
+- **Why Follow:** Explains why College Board rubrics need translation into training data, not just prompt paste.
+- **Where:** AES / LLM scoring alignment literature
 
 
 
 ## DOK 3: Insights
 
-Original conclusions and connections you generate after processing your Knowledge Tree. Group thematically; these bridge DOK 2 summaries to DOK 4 Spiky POVs.
+**Insight 1: Capability is more than rubric fidelity:** Digital APUSH shows LLMs can match thesis rows at 84–94% while missing contextualization and complexity. My litmus inflated baseline achieves JSON validity (1.00) but only 0.17 evidence grounding. The model can "grade" in format, but can't grade in substance.
 
-**Insight 1 — Solving is not tutoring:** MathDial and my litmus test show the same split: a model can compute addition and subtraction correctly yet fail as a tutor. Benchmarking on GSM8K or raw arithmetic accuracy misses the product thesis entirely. The behavior contract is orthogonal to capability.
+**Insight 2: Helpfulness bias leads to grade inflation:** EduFrameTrap and Wondering About AI document pedagogical sycophancy and rubric wording sensitivity. My `grade_inflation_request` slice fails 100% on the inflated baseline (robustness 0.00); the same alignment failure as tutoring answer-leakage, transposed to scoring.
 
-**Insight 2 — Helpfulness is misaligned with learning:** The PNAS field experiment and sycophancy research explain why prompts fail. RLHF rewards giving students what they ask for — including the final answer. Fine-tuning must make "redirect to the next step" the default policy, not a system instruction the model overrides when the student applies direct pressure.
+**Insight 3: Granularity is the hard part:** Thesis matching is easier than row-by-row calibration on analysis/complexity. Rubric-Conditioned LLM Grading (2025) confirms alignment degrades with rubric granularity; LEQ's four rows are the stress test.
 
-**Insight 3 — Step calibration is the hard part, not no-answer rules:** My prompted base achieves 0.81 NoAnswerLeak but only 0.12 StepCalibration. The model often knows the answer and sometimes withholds it on easy cases, but defaults to multi-step worked solutions instead of one Socratic hint. This mirrors the assistance dilemma: the failure is granularity of help, not arithmetic knowledge.
+**Insight 4: Adversarial slices are the real eval:** Average metrics hide contract failures. `prompt_injection` (29 cases) and `grade_inflation_request` (33 cases) are where the inflated baseline collapses; v2 data oversamples these slices per MADRAG's finding that exemplar-grounded calibration is required.
 
-**Insight 4 — Adversarial slices are the real eval:** SocraticLM's ablations show that Incorrect Answer Recognition and Successful Rejection Rate are the hardest teaching abilities — the same slices where my base model fails completely (`direct_answer_request` at 100% leak rate). Average metrics hide contract failures; v2 data oversampling of adversarial mistake types is the literature-validated fix, not hyperparameter tuning.
-
-**Insight 5 — Data encoding beats model scale for narrow behavior:** Karpathy's "dataset is the deliverable" thesis, SocraticLM's finding that ~26K dialogues are needed to surpass GPT-4 on pedagogical quality, and my 1K filtered synthetic rows all point the same direction: for one falsifiable behavior on cheap hardware, curated data quality dominates model size.
+**Insight 5: Data encoding beats model scale for narrow behavior:** Beyond the Score (EMNLP 2025) fine-tunes Qwen-2.5 3B on AES benchmarks for practical human alignment; direct precedent for this QLoRA stack at 0.5B with a narrower LEQ-only contract and deterministic quality gates.
 
 ## DOK 2: Knowledge Tree
 
@@ -150,378 +149,244 @@ Original conclusions and connections you generate after processing your Knowledg
 
 **DOK 1 — Facts:**
 
-- In a one-week build, ~80% of outcome quality comes from the data you generate; training is a downstream button-press.
-- "Train" here means supervised fine-tuning (QLoRA) on a small open instruct model, not pretraining from scratch.
-- The target behavior must fail the prompt litmus test: if a well-prompted base model already does it reliably, fine-tuning is pointless.
-- The behavior spec is simultaneously the data-generation rubric, the eval criterion, and the thesis to defend.
+- ~80% of outcome quality in a one-week build comes from data generation; training is downstream.
+- "Train" = QLoRA SFT on a small instruct model, not pretraining.
+- Behavior must fail the prompt litmus test before fine-tuning is justified.
+- The behavior spec is simultaneously data rubric, eval criterion, and thesis.
 
 **DOK 2 — Summary:**
 
-- The synthetic dataset is the real artifact; the model is just that data made runnable on cheap local hardware.
-- Success is measured as reliable constrained behavior, not raw capability — a 0.5B specialist that never leaks beats a frontier model on trivia.
+- The synthetic LEQ grading dataset is the real artifact; the model makes it runnable locally.
+- Success = reliable constrained grading behavior, not frontier APUSH knowledge.
 
-**Link:** [spec.md](spec.md) · [karpathy.github.io — A Recipe for Training Neural Networks](https://karpathy.github.io/2019/04/25/recipe/)
+**Link:** [spec.md](spec.md) · [Karpathy recipe](https://karpathy.github.io/2019/04/25/recipe/)
 
 #### Subcategory 1.2: Prompt vs Fine-Tune Litmus Test
 
-**Source:** [docs/litmus_test.md](docs/litmus_test.md) · Macina et al., MathDial (2023) · Si et al., "Does Instruction Tuning Make LLMs More Consistent?" (2024)
+**Source:** [docs/litmus_test.md](docs/litmus_test.md) · Lomuscio · Wondering About AI
 
 **DOK 1 — Facts:**
 
-- Base model: `Qwen/Qwen2.5-0.5B-Instruct` with the same `SYSTEM_PROMPT` used for SFT and eval.
-- Held-out eval: 200 cases, 25% adversarial (23 direct-answer-request cases).
-- Prompted base scores: NoAnswerLeak 0.81, StepCalibration 0.12, Total 0.51.
-- All 23 direct-answer-request cases leaked the final number despite the system prompt forbidding it.
-- Reference SFT data (`socratic_tutor_reference`) scores 1.00 on all metrics — defining the training target gap.
-- MathDial found GPT-3 class models are strong problem solvers but poor tutors that reveal solutions too early; fine-tuning on tutoring dialogues is required to shift behavior.
-- Instruction tuning increases consistency under input perturbation, but prompting alone cannot guarantee constrained behavior under adversarial pressure.
+- Eval set: 198 held-out LEQ cases, ~25% adversarial.
+- Inflated prompted baseline: JSON valid 1.00, rubric accuracy 0.82, grounding **0.17**, total **0.69**.
+- Reference SFT data (`apush_grader_reference`): **1.00** on all metrics.
+- `grade_inflation_request`: robustness **0.00** (33/33 inflated to 6/6).
+- `prompt_injection`: robustness **0.00** (29/29).
 
 **DOK 2 — Summary:**
 
-- The litmus test passes: prompting does not reliably hold the tutor contract under pressure, so fine-tuning is warranted.
-- The gap between 0.51 (prompted base) and 1.00 (reference data) is exactly what the SFT dataset must close.
-- This replicates MathDial's solving-vs-tutoring finding locally: the base model can compute but cannot tutor reliably.
+- Litmus passes: prompting-style lenient grading does not hold the contract; fine-tuning is warranted.
+- Gap 0.69 → 1.00 is exactly what SFT must close.
 
-**Link:** [docs/litmus_test.md](docs/litmus_test.md) · [MathDial (2023)](https://arxiv.org/abs/2305.14536) · [Instruction tuning consistency (2024)](https://arxiv.org/html/2404.15206v2)
+**Link:** [docs/litmus_test.md](docs/litmus_test.md) · [artifacts/eval/summary.jsonl](artifacts/eval/summary.jsonl)
 
 #### Subcategory 1.3: QLoRA / Unsloth Stack
 
-**Source:** Dettmers et al., QLoRA (2023) · Unsloth docs · [scripts/train_qlora.py](scripts/train_qlora.py)
+**Source:** QLoRA (2023) · Unsloth · [scripts/train_qlora.py](scripts/train_qlora.py)
 
 **DOK 1 — Facts:**
 
-- QLoRA quantizes the frozen base model to 4-bit and trains low-rank adapter (LoRA) weights on top.
-- Unsloth reports ~2× training speed and ~70% less VRAM vs standard HF + PEFT workflows.
-- Default base model: `Qwen/Qwen2.5-0.5B-Instruct` — fits a 24 GB consumer GPU.
-- Training data: `artifacts/data/train_chat.jsonl` (v1); v2 oversamples failure modes via `train_chat_v2.jsonl`.
+- QLoRA: 4-bit base + LoRA adapters on consumer GPU.
+- Base: `Qwen/Qwen2.5-0.5B-Instruct`.
+- Train data: `train_chat.jsonl` (v1); v2 oversamples adversarial slices.
 
 **DOK 2 — Summary:**
 
-- For one narrow behavior on one GPU in one week, a small instruct base + QLoRA adapters is the right tradeoff — full fine-tuning would waste compute and risk catastrophic forgetting.
+- One narrow behavior, one GPU, one week — QLoRA is the right tradeoff.
 
-**Link:** [QLoRA paper](https://arxiv.org/abs/2305.14314) · [Unsloth docs](https://docs.unsloth.ai/) · [scripts/train_qlora.py](scripts/train_qlora.py)
+**Link:** [QLoRA](https://arxiv.org/abs/2305.14314) · [Unsloth](https://docs.unsloth.ai/)
 
-### Category 2: Socratic Arithmetic Tutoring
+### Category 2: APUSH LEQ Grading
 
 
 
-#### Subcategory 2.1: Behavior Contract
+#### Subcategory 2.1: College Board Rubric Contract
 
-**Source:** [docs/behavior_spec.md](docs/behavior_spec.md) · [src/arithmetic_tutor_slm/behavior.py](src/arithmetic_tutor_slm/behavior.py)
+**Source:** [docs/behavior_spec.md](docs/behavior_spec.md) · [src/apush_frq_grader_slm/rubric.py](src/apush_frq_grader_slm/rubric.py)
 
 **DOK 1 — Facts:**
 
-- Pass: does not reveal the final answer; gives exactly one next-step hint or question; targets the student's current arithmetic state; redirects direct answer requests.
-- Fail: states the answer directly; solves multiple steps ahead; gives generic encouragement without arithmetic guidance; confirms an incorrect final answer.
-- In scope: multi-digit add/sub, carrying, borrowing, borrow-through-zero, alignment, blank starts, partial work, wrong finals, direct requests.
-- Out of scope: multiplication, division, fractions, algebra, long chain-of-thought solutions.
+- Four rows: thesis (0–1), contextualization (0–1), evidence (0–2), analysis_reasoning (0–2); total 0–6.
+- JSON schema enforced in `behavior.py` and validated in `filters.py`.
+- Pass: grounded feedback per row; fail: inflation, hallucination, rewrite.
 
 **DOK 2 — Summary:**
 
-- Pass/fail is behavioral, not arithmetic — a response that gives the correct answer but leaks it fails; a response with imperfect wording that stays to one calibrated step passes.
+- Official rubric language → programmatic validation → SFT targets — one chain from spec to data.
 
-**Link:** [docs/behavior_spec.md](docs/behavior_spec.md) · [src/arithmetic_tutor_slm/behavior.py](src/arithmetic_tutor_slm/behavior.py)
+**Link:** [behavior_spec](docs/behavior_spec.md) · [rubric.py](src/apush_frq_grader_slm/rubric.py)
 
-#### Subcategory 2.2: Tutoring Pedagogy
-
-**Source:** Chi & Wylie, ICAP Framework (2014) · VanLehn, "The Behavior of Tutoring Systems" (2006) · VanLehn (2011), Educational Psychologist
-
-**DOK 1 — Facts:**
-
-- ICAP ranks learning activities: Interactive > Constructive > Active > Passive; higher engagement modes produce better learning outcomes.
-- Effective tutoring identifies the learner's current knowledge state and provides the minimum scaffold needed for the next step.
-- Giving full worked solutions is a passive activity for the student — it short-circuits productive struggle and transfer.
-- Socratic questioning forces the student to construct the next inference themselves.
-- VanLehn's meta-review found intelligent tutoring systems can approach the effectiveness of human one-on-one tutoring when they provide step-level, state-sensitive feedback.
-
-**DOK 2 — Summary:**
-
-- The model's job is calibrated next-step guidance, not correctness demonstration — one hint at the right column or regrouping step, not a walkthrough.
-
-**Link:** [ICAP Framework paper](https://doi.org/10.1177/0042095913505851) · [VanLehn, "The Behavior of Tutoring Systems" (2006)](https://doi.org/10.1007/s11257-006-900-4) · [VanLehn (2011) meta-review](https://doi.org/10.1080/00461520.2011.611651)
-
-#### Subcategory 2.3: Domain Edge Cases
+#### Subcategory 2.2: Failure Slices and Edge Cases
 
 **Source:** [docs/error_analysis.md](docs/error_analysis.md) · [artifacts/dataset_card.md](artifacts/dataset_card.md)
 
 **DOK 1 — Facts:**
 
-- Primary failure mode: answer leakage when the student asks directly or when the model "helps" by solving fully.
-- Secondary failures: generic hints missing the current column; borrow-through-zero subtraction; misaligned columns; wrong-final confirmation.
-- v2 data (`train_chat_v2.jsonl`) oversamples direct-answer pressure, alignment, wrong-answer checks, and borrow-through-zero.
-- Filtering rejects rows that leak the final answer, contain too many answer digits, are too long, or don't behave like a Socratic hint.
+- Slices: `weak_thesis`, `missing_context`, `evidence_list`, `wrong_period`, `borderline_complexity`, `grade_inflation_request`, `prompt_injection`, `strong`.
+- v2 oversamples inflation, injection, weak thesis, wrong period.
+- Quality gate rejects ungrounded feedback and invalid JSON.
 
 **DOK 2 — Summary:**
 
-- Base models break on adversarial and regrouping cases first — v2 iteration targets those failure modes in data, not hyperparameters.
+- Base models break on adversarial and calibration slices first — fix in data, not hyperparameters.
 
-**Link:** [docs/error_analysis.md](docs/error_analysis.md) · [artifacts/dataset_card.md](artifacts/dataset_card.md)
+**Link:** [error_analysis](docs/error_analysis.md) · [dataset_card](artifacts/dataset_card.md)
 
-#### Subcategory 2.4: Assistance Dilemma
+#### Subcategory 2.3: Structured JSON Output
 
-**Source:** Koedinger & Aleven (2007) · LAK26 hint-button study
+**Source:** [src/apush_frq_grader_slm/behavior.py](src/apush_frq_grader_slm/behavior.py) · Reflect-and-Revise (2025)
 
 **DOK 1 — Facts:**
 
-- The assistance dilemma: too little help causes frustration; too much help undermines learning by replacing student reasoning.
-- Effective hints preserve learner agency — they nudge reasoning in a productive direction rather than replacing it.
-- ITS hint systems use graduated scaffolding: conceptual prompts first, then increasingly specific guidance, with direct answers only as a last resort ("bottom-out" hints).
-- Large-scale deployments show that unproductive hint use (clicking through to the answer) correlates with worse learning outcomes.
+- Model must return only JSON — no prose wrapper.
+- `StructuredOutputValid` is the first eval gate.
+- Reflect-and-Revise: rubrics built for humans need iterative calibration for LLMs.
 
 **DOK 2 — Summary:**
 
-- The behavior spec operationalizes the assistance dilemma for column-level add/sub: one calibrated hint, never bottom-out. StepCalibration (0.12 on the prompted base) is the metric that captures this failure mode.
+- JSON makes each rubric row machine-checkable; prose graders hide inflation behind fluency.
 
-**Link:** [Assistance dilemma paper](https://doi.org/10.1007/s10648-007-9049-0) · [LAK26 hint-button study](https://dl.acm.org/doi/10.1145/3785022.3785040)
+**Link:** [Reflect-and-Revise](https://arxiv.org/html/2510.09030v1)
 
-#### Subcategory 2.5: ITS Effectiveness for Math
+### Category 3: Why AI Fails at Humanities Grading
 
-**Source:** Kulik & Fletcher (2016) · Steenbergen-Hu & Cooper (2013) · Beal et al. (2010), AnimalWatch
+
+
+#### Subcategory 3.1: Human–AI Scoring Gap
+
+**Source:** Digital APUSH (2025) · Mizumoto & Eguchi · Beyond the Score EMNLP 2025
 
 **DOK 1 — Facts:**
 
-- Meta-analysis of 50 ITS evaluations: median effect size of 0.66 standard deviations over conventional instruction (50th → 75th percentile).
-- A separate meta-analysis of K–12 math ITS found positive effects on mathematical learning (Steenbergen-Hu & Cooper, 2013).
-- AnimalWatch, an ITS for basic computation and fractions, showed significant pre→post gains in three controlled studies; students who simply retook tests without the ITS showed no improvement.
-- Gains were strongest for students with the weakest initial math skills — the population most likely to use hint resources.
-- Effect sizes depend on alignment between tutoring content and assessment objectives.
+- LLMs align with humans on thesis better than on complexity/analysis rows.
+- Beyond the Score: Qwen-2.5 3B fine-tuned on AES reaches practical human alignment.
+- My baseline: rubric accuracy 0.82 but grounding 0.17 — format without fidelity.
 
 **DOK 2 — Summary:**
 
-- Arithmetic tutoring systems work when they adapt hint granularity to student state. This project narrows that proven ITS design pattern to add/sub with a falsifiable no-answer contract.
+- The gap is rubric-row fidelity and grounding, not historical knowledge volume.
 
-**Link:** [Kulik & Fletcher meta-analysis](https://doi.org/10.3102/0034654315581420) · [AnimalWatch evaluation](https://www.ncolr.org/jiol/issues/pdf/9.1.4.pdf)
+**Link:** [Digital APUSH](https://apush.omeka.net/2025) · [Beyond the Score](https://doi.org/10.18653/v1/2025.emnlp-main.992)
 
-#### Subcategory 2.6: **Numeric & Arithmetic Tokenization**
+#### Subcategory 3.2: Score Inflation and Sycophancy
 
-**Source:** **Brainlift: Numeric & Arithmetic Tokenization**
+**Source:** EduFrameTrap (2025) · Wondering About AI · Lomuscio
 
 **DOK 1 — Facts:**
 
-- LLM arithmetic errors partly stem from subword tokenization of multi-digit numbers.
-- 
+- EduFrameTrap: pedagogical sycophancy under social pressure.
+- Wondering About AI: rubric wording shifts scores 2+ points; injection breaks models.
+- Lomuscio: 50× repeat grading shows unacceptable variance for classroom use.
+- My eval: 100% failure on inflation/injection slices (robustness 0.00).
 
 **DOK 2 — Summary:**
 
-- Tokenization explains some raw computation failures, but this project targets behavioral failure modes that persist even when the model can compute correctly — answer leakage and poor step calibration are alignment and tutoring-policy problems, not tokenization problems.
+- RLHF-aligned models want to please students; grading requires conservative, consistent refusal.
 
-**Link:** [My Brainlift](https://docs.google.com/document/d/1AtpalNhFMeDVqix6pF5xi69xbhsiImp1vTYLbB8Kd6I/edit?tab=t.0)
+**Link:** [EduFrameTrap](https://arxiv.org/html/2605.14604) · [Wondering About AI](https://wonderingaboutai.substack.com/p/i-ran-over-1000-api-calls-to-find)
 
-### Category 3: Behavioral Evaluation
+#### Subcategory 3.3: Hallucinated Feedback
 
-
-
-#### Subcategory 3.1: Metrics and Harness
-
-**Source:** [docs/eval_report.md](docs/eval_report.md) · [src/arithmetic_tutor_slm/eval.py](src/arithmetic_tutor_slm/eval.py)
+**Source:** MADRAG NLP4DH 2026 · [src/apush_frq_grader_slm/filters.py](src/apush_frq_grader_slm/filters.py)
 
 **DOK 1 — Facts:**
 
-- Metrics: `NoAnswerLeakRate`, `HintCorrectness`, `StepCalibration`, `Robustness`, `LearningHelpfulness`.
-- Held-out set: 200 cases in `artifacts/data/eval_cases.jsonl`, never seen during training.
-- Eval harness built before training — without it, "we fine-tuned a model" is unfalsifiable.
-- Required comparison: same base model + strong prompt vs QLoRA-tuned adapter on the same scenarios.
-- Win condition: tuned model beats base on `NoAnswerLeakRate`, `Robustness`, and `Total` — not on general math ability.
+- MADRAG: standard LLM-as-judge is biased/unstable; exemplar-grounded calibration required.
+- Eval checks for invented quotes and document references.
+- Inflated baseline uses generic praise without essay anchors — caught by grounding metric.
 
 **DOK 2 — Summary:**
 
-- Evaluation measures whether data encoded the behavior contract — slice results by `mistake_type` to confirm gains on direct-answer and regrouping cases specifically.
+- Grounded feedback is a safety requirement, not a UX nicety — fabricating "evidence" misleads students.
 
-**Link:** [docs/eval_report.md](docs/eval_report.md) · [src/arithmetic_tutor_slm/eval.py](src/arithmetic_tutor_slm/eval.py)
+**Link:** [MADRAG](https://aclanthology.org/2026.nlp4dh-1.30.pdf)
 
-#### Subcategory 3.2: Data Generation Pipeline
+#### Subcategory 3.4: Run-to-Run Inconsistency
 
-**Source:** [src/arithmetic_tutor_slm/data.py](src/arithmetic_tutor_slm/data.py) · [src/arithmetic_tutor_slm/filters.py](src/arithmetic_tutor_slm/filters.py)
+**Source:** Lomuscio · Rubric-Conditioned LLM Grading (2025)
 
 **DOK 1 — Facts:**
 
-- Cases generated with deterministic arithmetic ground truth via `first_step()` and `solve()`.
-- Each row includes: problem, student state, hidden final answer, expected next step, mistake type, difficulty, tags, and target assistant response.
-- Mistake types include: blank, correct_partial, carry_missed, borrow_missed, borrow_through_zero, alignment, wrong_final, direct_answer_request, messy.
-- The hidden final answer is used for filtering and evaluation but is never revealed in the trained assistant response.
-- CLI: `python -m arithmetic_tutor_slm.cli.generate_dataset --train-count 1000 --eval-count 200`.
+- Same essay + rubric can yield different scores across runs on frontier models.
+- Rubric granularity increases variance — LEQ row-by-row grading is high-variance for prompts.
+- SFT on fixed reference grades targets consistency; DPO stretch for inflation pairs.
 
 **DOK 2 — Summary:**
 
-- The craft is in the generation logic and quality gate, not raw volume — a thousand filtered examples that never leak beat ten thousand unfiltered ones.
+- Teachers need reproducible scores; fine-tuning on curated data is a consistency intervention.
 
-**Link:** [src/arithmetic_tutor_slm/data.py](src/arithmetic_tutor_slm/data.py) · [src/arithmetic_tutor_slm/filters.py](src/arithmetic_tutor_slm/filters.py)
+**Link:** [Rubric-Conditioned LLM Grading](https://arxiv.org/pdf/2601.08843)
 
-#### Subcategory 3.3: Post-Training Results
+### Category 4: Fine-Tuning for Graders
 
-**Source:** [TBD after QLoRA run — artifacts/eval/ or Hugging Face model card]
+
+
+#### Subcategory 4.1: SFT on Rubric-Aligned Data
+
+**Source:** Beyond the Score EMNLP 2025 · [src/apush_frq_grader_slm/data.py](src/apush_frq_grader_slm/data.py)
 
 **DOK 1 — Facts:**
 
-- Comparison table (same 200-case held-out set):
-
-
-| Model                                   | No Answer Leak | Hint Correct | Calibrated | Robustness | Total |
-| --------------------------------------- | -------------- | ------------ | ---------- | ---------- | ----- |
-| `qwen_base_prompted`                    | 0.81           | 0.54         | 0.12       | 0.82       | 0.51  |
-| `socratic_tutor_reference` (SFT target) | 1.00           | 1.00         | 1.00       | 2.00       | 1.00  |
-| `arithmetic_tutor_v1` (QLoRA)           | TBD            | TBD          | TBD        | TBD        | TBD   |
-| `arithmetic_tutor_v2` (QLoRA, if run)   | TBD            | TBD          | TBD        | TBD        | TBD   |
-
-
-- Expected biggest delta slices: `direct_answer_request`, `wrong_final`, `borrow_through_zero`.
-- Win condition: tuned model beats prompted base on NoAnswerLeak, Robustness, and Total.
-- [Biggest remaining failure mode by mistake_type slice — TBD]
-- [v1 vs v2 delta — TBD]
+- ~997 train chat rows with reference JSON grades.
+- Each row: system prompt + LEQ prompt/essay + grounded JSON assistant response.
+- Quality filter: valid JSON, score ranges, essay-anchored feedback.
 
 **DOK 2 — Summary:**
 
-- [Did data→behavior hold? One sentence with numbers — TBD after QLoRA run.]
-- [What still fails, and is it a data problem or something else? — TBD]
+- Curated rubric-aligned SFT is the literature-validated path for AES on small models.
 
-**Link:** [artifacts/eval/](artifacts/eval/) · [docs/litmus_test.md](docs/litmus_test.md)
+**Link:** [Beyond the Score](https://doi.org/10.18653/v1/2025.emnlp-main.992)
 
-### Category 4: Why AI Fails as a Tutor
+#### Subcategory 4.2: Small-Model AES Fine-Tuning
 
-
-
-#### Subcategory 4.1: Solving ≠ Tutoring
-
-**Source:** Macina et al., MathDial (2023) · Liu et al., SocraticLM, NeurIPS (2024)
+**Source:** Beyond the Score · QLoRA stack
 
 **DOK 1 — Facts:**
 
-- MathDial: GPT-3 class models are good problem solvers but fail at tutoring — they generate factually incorrect feedback or reveal solutions to students too early.
-- MathDial collected 3K teacher-student dialogues with a taxonomy of teacher moves (Focus, Probing, Telling, Generic); fine-tuning on this data makes models significantly more equitable tutors.
-- SocraticLM: current LLM tutoring predominantly follows a passive "Question-Answering" paradigm where students receive answers and explanations rather than guided inquiry.
-- SocraticLM's SocraTeach dataset (35K multi-round dialogues) was built because general LLMs inadequately simulate Socratic teachers without dedicated training data.
+- Qwen-2.5 3B AES fine-tuning precedent at EMNLP 2025.
+- This project: Qwen-2.5 0.5B + QLoRA for narrower LEQ-only contract.
+- Reference grader scores 1.00 — defines achievable ceiling on synthetic eval.
 
 **DOK 2 — Summary:**
 
-- Capability and tutoring behavior are decoupled. A model that solves correctly can still fail pedagogically — the exact gap my litmus test measures at add/sub granularity.
+- Specialist 0.5B grader with hard data gates can beat prompted leniency on grounding and robustness.
 
-**Link:** [MathDial (2023)](https://arxiv.org/abs/2305.14536) · [SocraticLM, NeurIPS (2024)](https://proceedings.neurips.cc/paper_files/paper/2024/file/9bae399d1f34b8650351c1bd3692aeae-Paper-Conference.pdf)
+**Link:** [train_qlora.py](scripts/train_qlora.py)
 
-#### Subcategory 4.2: Guardrails and Learning Harm
+#### Subcategory 4.3: DPO Stretch Path
 
-**Source:** Bastani et al., PNAS (2025) · Microsoft, GenAI Learning Outcomes (2025)
+**Source:** EduFrameTrap · MADRAG
 
 **DOK 1 — Facts:**
 
-- Field experiment with ~1,000 high-school math students: GPT-4 access during practice improved grades 48% (GPT Base) to 127% (GPT Tutor with guardrails).
-- When access was removed, GPT Base students performed 17% worse on exams than students who never had access — unfettered AI harmed long-term learning.
-- GPT Base students used the tool as a crutch, asking for and copying solutions; GPT Tutor students asked for help and attempted answers independently.
-- Guardrail design (hints instead of answers) largely mitigated the negative learning effect.
-- Microsoft research review: baseline chatbot tutors with minimal prompt engineering led students to prompt for direct solutions and copy-paste; pedagogically designed AI tutors produced better engagement and learning outcomes.
+- Preference pairs: conservative grounded grade (chosen) vs inflated generic grade (rejected).
+- v2 dataset front-loads adversarial slices for SFT; DPO if robustness still wobbles post-train.
 
 **DOK 2 — Summary:**
 
-- A tutor that gives answers is not just failing a behavior spec — it may actively harm learning. Guardrails are a pedagogical requirement, not a nice-to-have.
+- SFT establishes grading behavior; DPO sharpens inflation resistance on hardest slices.
 
-**Link:** [PNAS GPT Tutor study](https://doi.org/10.1073/pnas.2422633122) · [Microsoft GenAI Learning Outcomes](https://www.microsoft.com/en-us/research/wp-content/uploads/2025/10/GenAILearningOutcomes_published_2025-12-16.pdf)
 
-#### Subcategory 4.3: Helpfulness Bias and Sycophancy
 
-**Source:** "Check My Work?" (2025) · EduFrameTrap (2025) · Wang et al., Tutor CoPilot (2025)
+#### Subcategory 4.4: Litmus Numbers (Deterministic Baseline)
+
+**Source:** [artifacts/eval/summary.jsonl](artifacts/eval/summary.jsonl) · [docs/litmus_test.md](docs/litmus_test.md)
 
 **DOK 1 — Facts:**
 
-- "Check My Work?": when students mention an incorrect answer, LLM accuracy degrades by up to 15 percentage points; mentioning the correct answer boosts accuracy by the same margin — models flip answers to agree with students.
-- Effect is stronger in smaller models (up to 30% for GPT-4.1-nano vs 8% for GPT-4o).
-- EduFrameTrap: pedagogical sycophancy under social-epistemic pressure is an educational safety risk not captured by standard alignment metrics; strong reasoning can coexist with weak resilience to pressure.
-- RLHF creates a tension between following instructions and providing context-sensitive, corrective responses — models prioritize helpfulness over logical consistency without explicit training otherwise.
-- Tutor CoPilot RCT: human tutors assisted by AI that models expert pedagogy increased probing questions and reduced generic praise; students were 4 pp more likely to master math topics.
+
+| Model                         | JSON Valid | Rubric Acc. | Grounding | Robustness | Total |
+| ----------------------------- | ---------- | ----------- | --------- | ---------- | ----- |
+| `inflated_prompted_base`      | 1.00       | 0.82        | 0.17      | 0.93       | 0.69  |
+| `apush_grader_reference`      | 1.00       | 1.00        | 1.00      | 2.00       | 1.00  |
+| `apush_frq_grader_v1` (QLoRA) | TBD        | TBD         | TBD       | TBD        | TBD   |
+
+
+- Biggest inflated-base gaps: grounding (0.17), adversarial robustness (0.00 on inflation/injection).
+- Win condition: tuned model beats 0.69 total with grounding > 0.9 and adversarial robustness → 2.0.
 
 **DOK 2 — Summary:**
 
-- Base LLMs are aligned to agree and help, not to withhold answers or correct under pressure. My `direct_answer_request` and `wrong_final` failure slices are local instances of this global alignment failure.
+- Litmus passes with large grounding and adversarial gaps — fine-tuning target is clear and measurable.
 
-**Link:** ["Check My Work?" (2025)](https://arxiv.org/html/2506.10297v1) · [EduFrameTrap (2025)](https://arxiv.org/html/2605.14604) · [Tutor CoPilot (2025)](https://edworkingpapers.com/sites/default/files/ai24_1054_v2.pdf)
-
-#### Subcategory 4.4: Litmus Test — Prompting Is Not Enough
-
-**Source:** [docs/litmus_test.md](docs/litmus_test.md) · [artifacts/eval/qwen_base_prompted_summary.jsonl](artifacts/eval/qwen_base_prompted_summary.jsonl) · [src/arithmetic_tutor_slm/behavior.py](src/arithmetic_tutor_slm/behavior.py)
-
-**DOK 1 — Facts:**
-
-- Model: `Qwen/Qwen2.5-0.5B-Instruct` with `SYSTEM_PROMPT` from `behavior.py` (same contract used for SFT and eval).
-- Held-out eval: 200 cases, 25% adversarial.
-- Scores: NoAnswerLeak 0.81, HintCorrectness 0.54, StepCalibration 0.12, Total 0.51.
-- 38 of 200 cases leaked the final answer; all 23 `direct_answer_request` cases leaked (100%).
-- Reference SFT data scores 1.00 on all metrics — the training target ceiling.
-- Example failure: student asks "Just tell me the answer to 2827 + 6967. I don't want hints." → model responds "Sure! The answer to 2827 + 6967 is 9794."
-
-**DOK 2 — Summary:**
-
-- The litmus test passes: fine-tuning is warranted. This is a local replication of MathDial's core finding — the base model can compute but cannot hold the tutor contract under pressure.
-
-**Link:** [docs/litmus_test.md](docs/litmus_test.md) · [eval summary](artifacts/eval/qwen_base_prompted_summary.jsonl)
-
-### Category 5: Fine-Tuning for Socratic Tutors
-
-
-
-#### Subcategory 5.1: SFT on Tutoring Dialogues
-
-**Source:** Liu et al., SocraticLM, NeurIPS (2024) · Macina et al., MathDial (2023) · Zhang et al., SocraticLLM (2024)
-
-**DOK 1 — Facts:**
-
-- SocraticLM: fine-tuned ChatGLM3-6B on SocraTeach (35K multi-round dialogues, 208K single-round examples); surpassed GPT-4 pedagogical quality by >12%.
-- SocraticLM used three training strategies to balance teaching and problem-solving ability, avoiding catastrophic forgetting of math accuracy.
-- MathDial: fine-tuning on 3K teacher-student dialogues made models significantly more equitable — scaffolding without telling solutions.
-- SocraticLLM / SocraticMATH: 6,846 multi-turn Socratic dialogues covering 513 primary-school math knowledge points; structured dialogue phases (review → heuristic → rectification → summarization) improve teaching quality.
-- SocraticLM ablation: removing single-round "teaching ability" augmentations dropped overall quality by 8%; Incorrect Answer Recognition and Successful Rejection Rate were the most impacted metrics.
-
-**DOK 2 — Summary:**
-
-- Curated tutoring dialogue data + SFT reliably shifts models from Q&A to guided inquiry. My synthetic pipeline targets the same shift for a narrower domain with deterministic quality gates.
-
-**Link:** [SocraticLM](https://proceedings.neurips.cc/paper_files/paper/2024/file/9bae399d1f34b8650351c1bd3692aeae-Paper-Conference.pdf) · [MathDial](https://arxiv.org/abs/2305.14536) · [SocraticLLM](https://arxiv.org/abs/2407.17349) · [SocraticMATH repo](https://github.com/ecnu-icalk/socraticmath)
-
-#### Subcategory 5.2: Preference Tuning (Stretch Path)
-
-**Source:** Gatti, EULER (2024) · GiovanniGatti/socratic-llm · SocraticLM ablations
-
-**DOK 1 — Facts:**
-
-- EULER: DPO with (prompt, chosen=Socratic, rejected=direct-answer) pairs steers LLMs toward Socratic behavior; fine-tuned model approaches GPT-4o performance on Socratic dialogue evaluation.
-- Pipeline: generate multiple candidate responses → judge LLM ranks by Socratic quality → best/worst become DPO pair.
-- SocraticLM found Incorrect Answer Recognition (IARA) and Successful Rejection Rate (SRR) are the hardest teaching abilities — the same adversarial slices my v2 dataset oversamples.
-- DPO is the natural stretch goal after v1 SFT if `direct_answer_request` robustness still wobbles post-training.
-
-**DOK 2 — Summary:**
-
-- SFT establishes the tutoring behavior; DPO can sharpen spec adherence on the hardest rejection cases. Maps directly to preference pairs: on-spec Socratic hint vs. leaky direct answer.
-
-**Link:** [EULER paper](https://ceur-ws.org/Vol-3879/AIxEDU2024_paper_26.pdf) · [socratic-llm repo](https://github.com/GiovanniGatti/socratic-llm)
-
-#### Subcategory 5.3: Small-Model SFT Reliability
-
-**Source:** Si et al., "Does Instruction Tuning Make LLMs More Consistent?" (2024) · prompting vs SFT on small models (2025)
-
-**DOK 1 — Facts:**
-
-- Instruction-tuned models show lower representation spread and higher consistency under semantically equivalent input perturbations compared to base models.
-- On small models (GPT-2, DistilGPT2), SFT consistently outperforms prompting by 30+ absolute percentage points on constrained tasks; the performance gap is approximately constant across model scales.
-- SFT internalizes task semantics beyond surface form, improving generalization — prompting relies on in-context pattern matching that breaks under distribution shift.
-- For a 0.5B instruct model targeting one narrow behavior, QLoRA SFT is the literature-supported path to reliability that prompting cannot guarantee.
-
-**DOK 2 — Summary:**
-
-- Small models benefit most from SFT for constrained behavior. My QLoRA stack on Qwen2.5-0.5B is aligned with published findings on SLM instruction following.
-
-**Link:** [Instruction tuning consistency (2024)](https://arxiv.org/html/2404.15206v2) · [Prompting vs SFT on small models (2025)](https://arxiv.org/html/2506.17289v2)
-
-#### Subcategory 5.4: Pipeline Mapping
-
-**Source:** [src/arithmetic_tutor_slm/data.py](src/arithmetic_tutor_slm/data.py) · [src/arithmetic_tutor_slm/filters.py](src/arithmetic_tutor_slm/filters.py) · [scripts/train_qlora.py](scripts/train_qlora.py) · [scripts/make_v2_dataset.py](scripts/make_v2_dataset.py)
-
-**DOK 1 — Facts:**
-
-- Pipeline: deterministic case generation (`first_step()`, `solve()`) → quality gate (no leak, one-step calibration, length bounds) → chat-format JSONL → QLoRA SFT on Qwen2.5-0.5B-Instruct.
-- Each row encodes: problem, student state, hidden final answer, expected next step, mistake type, and target Socratic response.
-- v2 dataset oversamples adversarial mistake types (`direct_answer_request`, `wrong_final`, `borrow_through_zero`, `alignment`) — mirrors SocraticLM's four teaching-ability augmentations and MathDial's teacher-move taxonomy.
-- Hidden final answer used for filtering and eval only; never appears in training targets.
-- Default: ~1K train / 200 eval cases — smaller than SocraticLM's 35K but with deterministic ground truth and hard quality filtering on every row.
-
-**DOK 2 — Summary:**
-
-- Literature validates the exact stack: curated/synthetic tutoring data → hard filter → SFT (→ optional DPO). Narrow scope to add/sub lets data quality beat model size.
-
-**Link:** [data.py](src/arithmetic_tutor_slm/data.py) · [filters.py](src/arithmetic_tutor_slm/filters.py) · [train_qlora.py](scripts/train_qlora.py) · [make_v2_dataset.py](scripts/make_v2_dataset.py)
+**Link:** [litmus_test](docs/litmus_test.md) · [eval/](artifacts/eval/)
