@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
+from pydantic import BaseModel, Field
+
 from apush_frq_grader_slm.baselines import ResponseAdapter
 from apush_frq_grader_slm.filters import (
     contains_hallucination_pattern,
@@ -13,6 +15,20 @@ from apush_frq_grader_slm.filters import (
 )
 from apush_frq_grader_slm.rubric import CRITERIA, validate_grade_payload
 from apush_frq_grader_slm.schemas import EvalResult, EvalSummary, FailureType, FRQCase
+
+
+class RealEvalSummary(BaseModel):
+    model_name: str
+    count: int
+    structured_output_valid_rate: float
+    exact_match_rate: float = Field(description="Fraction of rows with exact score match vs CB")
+    within_one_rate: float = Field(description="Fraction of rows within ±1 of CB score")
+    total_exact_match_rate: float = Field(description="Fraction of cases with exact total match")
+    total_within_one_rate: float = Field(description="Fraction of cases with total within ±1")
+    qwk: float | None = Field(default=None, description="Quadratic weighted kappa on totals")
+    rubric_accuracy_mean: float
+    evidence_grounding_rate: float
+    total_score_mean: float
 
 
 def score_response(case: FRQCase, response: str, model_name: str) -> EvalResult:
@@ -105,6 +121,102 @@ def summarize_by_slice(results: list[EvalResult], cases: list[FRQCase]) -> dict[
     return summary
 
 
+def score_agreement(case: FRQCase, response: str) -> dict[str, float | int | bool]:
+    """Compare predicted row scores against College Board reference scores."""
+    payload, _ = parse_grade_json(response)
+    if payload is None:
+        return {
+            "exact_rows": 0,
+            "within_one_rows": 0,
+            "row_count": len(CRITERIA),
+            "total_exact": False,
+            "total_within_one": False,
+        }
+
+    ref = case.reference_scores.model_dump()
+    pred = payload.get("scores", {})
+    exact_rows = 0
+    within_one_rows = 0
+    for criterion in CRITERIA:
+        if criterion not in pred:
+            continue
+        delta = abs(int(pred[criterion]) - int(ref[criterion]))
+        if delta == 0:
+            exact_rows += 1
+        if delta <= 1:
+            within_one_rows += 1
+
+    ref_total = case.reference_scores.total
+    pred_total = int(payload.get("total", ref_total))
+    return {
+        "exact_rows": exact_rows,
+        "within_one_rows": within_one_rows,
+        "row_count": len(CRITERIA),
+        "total_exact": pred_total == ref_total,
+        "total_within_one": abs(pred_total - ref_total) <= 1,
+    }
+
+
+def summarize_real_eval(results: list[EvalResult], cases: list[FRQCase]) -> RealEvalSummary:
+    """Summarize real-eval metrics including CB score agreement."""
+    model_name = results[0].model_name if results else "model"
+    base = summarize(results, model_name)
+    if not results:
+        return RealEvalSummary(
+            model_name=model_name,
+            count=0,
+            structured_output_valid_rate=0,
+            exact_match_rate=0,
+            within_one_rate=0,
+            total_exact_match_rate=0,
+            total_within_one_rate=0,
+            qwk=None,
+            rubric_accuracy_mean=0,
+            evidence_grounding_rate=0,
+            total_score_mean=0,
+        )
+
+    case_map = {case.id: case for case in cases}
+    exact_rows = 0
+    within_one_rows = 0
+    row_count = 0
+    total_exact = 0
+    total_within_one = 0
+    ref_totals: list[int] = []
+    pred_totals: list[int] = []
+
+    for result in results:
+        case = case_map[result.case_id]
+        agreement = score_agreement(case, result.response)
+        exact_rows += int(agreement["exact_rows"])
+        within_one_rows += int(agreement["within_one_rows"])
+        row_count += int(agreement["row_count"])
+        total_exact += int(agreement["total_exact"])
+        total_within_one += int(agreement["total_within_one"])
+        ref_totals.append(case.reference_scores.total)
+        payload, _ = parse_grade_json(result.response)
+        if payload is not None:
+            pred_totals.append(int(payload.get("total", case.reference_scores.total)))
+        else:
+            pred_totals.append(-1)
+
+    qwk = _quadratic_weighted_kappa(ref_totals, pred_totals) if len(ref_totals) >= 5 else None
+
+    return RealEvalSummary(
+        model_name=base.model_name,
+        count=base.count,
+        structured_output_valid_rate=base.structured_output_valid_rate,
+        exact_match_rate=round(exact_rows / row_count, 4) if row_count else 0,
+        within_one_rate=round(within_one_rows / row_count, 4) if row_count else 0,
+        total_exact_match_rate=round(total_exact / len(results), 4),
+        total_within_one_rate=round(total_within_one / len(results), 4),
+        qwk=round(qwk, 4) if qwk is not None else None,
+        rubric_accuracy_mean=base.rubric_accuracy_mean,
+        evidence_grounding_rate=base.evidence_grounding_rate,
+        total_score_mean=base.total_score_mean,
+    )
+
+
 def _rubric_accuracy(case: FRQCase, payload: dict) -> float:
     ref = case.reference_scores.model_dump()
     pred = payload["scores"]
@@ -195,6 +307,44 @@ def _notes(
     if not evidence_grounding:
         return "generic_ungrounded_feedback"
     return "ok"
+
+
+def _quadratic_weighted_kappa(ref: list[int], pred: list[int]) -> float | None:
+    """Compute QWK for total scores on the 0–6 scale."""
+    valid_pairs = [(r, p) for r, p in zip(ref, pred, strict=True) if p >= 0]
+    if len(valid_pairs) < 2:
+        return None
+
+    categories = list(range(0, 7))
+    n = len(valid_pairs)
+    conf = [[0.0 for _ in categories] for _ in categories]
+    for r, p in valid_pairs:
+        conf[r][p] += 1.0
+
+    weights = [
+        [((i - j) ** 2) / ((len(categories) - 1) ** 2) for j in categories] for i in categories
+    ]
+    row_marginals = [sum(row) / n for row in conf]
+    col_marginals = [
+        sum(conf[i][j] for i in range(len(categories))) / n for j in categories
+    ]
+
+    observed = sum(
+        weights[i][j] * conf[i][j]
+        for i in range(len(categories))
+        for j in range(len(categories))
+    )
+    observed /= n
+
+    expected = sum(
+        weights[i][j] * row_marginals[i] * col_marginals[j]
+        for i in range(len(categories))
+        for j in range(len(categories))
+    )
+
+    if expected == 1.0:
+        return 1.0 if observed == 1.0 else 0.0
+    return 1.0 - observed / expected
 
 
 def _mean(values: Iterable[bool | int | float]) -> float:

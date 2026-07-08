@@ -25,6 +25,10 @@ train = [
 judge = [
     "openai>=1.40.0",
 ]
+ingest = [
+    "pdfplumber>=0.11.0",
+    "openai>=1.40.0",
+]
 
 [project.scripts]
 apush-grader-generate = "apush_frq_grader_slm.cli.generate_dataset:app"

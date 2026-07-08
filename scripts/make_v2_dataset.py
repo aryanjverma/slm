@@ -7,8 +7,8 @@ from pathlib import Path
 
 from apush_frq_grader_slm.data import generate_cases, to_chat_rows
 from apush_frq_grader_slm.filters import passes_quality_gate
-from apush_frq_grader_slm.io import write_jsonl
-from apush_frq_grader_slm.schemas import FailureType
+from apush_frq_grader_slm.io import read_jsonl, write_jsonl
+from apush_frq_grader_slm.schemas import FRQCase, FailureType
 
 
 TARGET_FAILURES = {
@@ -21,7 +21,10 @@ TARGET_FAILURES = {
 
 def main() -> None:
     args = parse_args()
-    pool = generate_cases(count=args.pool_size, split="train", seed=args.seed, adversarial_ratio=0.4)
+    if args.base_cases:
+        pool = [FRQCase.model_validate(row) for row in read_jsonl(args.base_cases)]
+    else:
+        pool = generate_cases(count=args.pool_size, split="train", seed=args.seed, adversarial_ratio=0.4)
     targeted = []
     for case in pool:
         if case.failure_type in TARGET_FAILURES:
@@ -43,6 +46,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--count", type=int, default=800)
     parser.add_argument("--pool-size", type=int, default=4000)
     parser.add_argument("--seed", type=int, default=29)
+    parser.add_argument(
+        "--base-cases",
+        type=Path,
+        default=None,
+        help="Optional synthetic train_cases.jsonl pool for adversarial oversampling",
+    )
     return parser.parse_args()
 
 
