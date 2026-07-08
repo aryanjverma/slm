@@ -11,7 +11,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from apush_frq_grader_slm.behavior import SYSTEM_PROMPT
 from apush_frq_grader_slm.data import format_user_message
-from apush_frq_grader_slm.eval import score_response, summarize
+from apush_frq_grader_slm.eval import score_response, summarize, summarize_real_eval
 from apush_frq_grader_slm.io import read_jsonl, write_jsonl
 from apush_frq_grader_slm.schemas import FRQCase
 
@@ -80,7 +80,11 @@ def main() -> None:
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
     write_jsonl(args.output_dir / f"{args.model_name}_results.jsonl", results)
-    write_jsonl(args.output_dir / f"{args.model_name}_summary.jsonl", [summarize(results, args.model_name)])
+    if args.real_eval:
+        summary = summarize_real_eval(results, cases)
+        write_jsonl(args.output_dir / f"{args.model_name}_real_summary.jsonl", [summary])
+    else:
+        write_jsonl(args.output_dir / f"{args.model_name}_summary.jsonl", [summarize(results, args.model_name)])
 
 
 def parse_args() -> argparse.Namespace:
@@ -88,6 +92,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model", required=True, help="HF model id or local model path.")
     parser.add_argument("--model-name", default="hf_model")
     parser.add_argument("--eval-path", type=Path, default=Path("artifacts/data/eval_cases.jsonl"))
+    parser.add_argument(
+        "--real-eval",
+        action="store_true",
+        help="Use real CB eval metrics (row agreement, QWK) on eval_real_cases.jsonl",
+    )
     parser.add_argument("--output-dir", type=Path, default=Path("artifacts/eval"))
     parser.add_argument("--max-new-tokens", type=int, default=512)
     parser.add_argument("--temperature", type=float, default=0.0)
