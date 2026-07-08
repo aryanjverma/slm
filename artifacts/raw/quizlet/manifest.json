@@ -1,0 +1,72 @@
+[
+  {
+    "set_id": "485501886",
+    "title": "APUSH LEQ Spanish-American War turning point",
+    "prompt": "Evaluate the extent to which the Spanish-American War marked a turning point in American foreign policy.",
+    "source": "quizlet",
+    "url": "https://quizlet.com/485501886",
+    "local_path": "artifacts/raw/quizlet/485501886.json",
+    "status": "cached"
+  },
+  {
+    "set_id": "756614068",
+    "title": "APUSH LEQ's thesis and CC practice",
+    "source": "quizlet",
+    "url": "https://quizlet.com/756614068",
+    "local_path": "artifacts/raw/quizlet/756614068.json",
+    "status": "cached"
+  },
+  {
+    "set_id": "898358597",
+    "title": "APUSH Periods 8/9 LEQ and DBQ Prompts",
+    "source": "quizlet",
+    "url": "https://quizlet.com/898358597",
+    "local_path": "artifacts/raw/quizlet/898358597.json",
+    "status": "manifest_only",
+    "note": "Set QUIZLET_CLIENT_ID to fetch; or copy JSON to local_path"
+  },
+  {
+    "set_id": "544429363",
+    "title": "APUSH DBQ and LEQ",
+    "source": "quizlet",
+    "url": "https://quizlet.com/544429363",
+    "local_path": "artifacts/raw/quizlet/544429363.json",
+    "status": "manifest_only",
+    "note": "Set QUIZLET_CLIENT_ID to fetch; or copy JSON to local_path"
+  },
+  {
+    "set_id": "278103637",
+    "title": "APUSH Period 7 LEQ",
+    "source": "quizlet",
+    "url": "https://quizlet.com/278103637",
+    "local_path": "artifacts/raw/quizlet/278103637.json",
+    "status": "cached"
+  },
+  {
+    "set_id": "910875787",
+    "title": "APUSH Final LEQ Prompts",
+    "source": "quizlet",
+    "url": "https://quizlet.com/910875787",
+    "local_path": "artifacts/raw/quizlet/910875787.json",
+    "status": "manifest_only",
+    "note": "Set QUIZLET_CLIENT_ID to fetch; or copy JSON to local_path"
+  },
+  {
+    "set_id": "196239678",
+    "title": "APUSH possible LEQ's",
+    "source": "quizlet",
+    "url": "https://quizlet.com/196239678",
+    "local_path": "artifacts/raw/quizlet/196239678.json",
+    "status": "manifest_only",
+    "note": "Set QUIZLET_CLIENT_ID to fetch; or copy JSON to local_path"
+  },
+  {
+    "set_id": "452783417",
+    "title": "APUSH Unit 3 LEQ Prompts",
+    "source": "quizlet",
+    "url": "https://quizlet.com/452783417",
+    "local_path": "artifacts/raw/quizlet/452783417.json",
+    "status": "manifest_only",
+    "note": "Set QUIZLET_CLIENT_ID to fetch; or copy JSON to local_path"
+  }
+]

@@ -11,7 +11,7 @@ from apush_frq_grader_slm.io import read_jsonl, write_jsonl
 from apush_frq_grader_slm.schemas import FRQCase
 
 
-REAL_SOURCE_PREFIXES = ("ap_central_", "real_eval")
+REAL_EVAL_TAGS = ("ap_central", "real_eval", "tom_richey", "quizlet")
 
 
 def build_train_cases(
@@ -45,9 +45,9 @@ def assert_no_real_essays(cases: list[FRQCase]) -> None:
     for case in cases:
         if case.split != "train":
             raise ValueError(f"Training case {case.id} has split={case.split}")
-        if "ap_central" in case.tags or "real_eval" in case.tags:
+        if any(tag in case.tags for tag in REAL_EVAL_TAGS):
             raise ValueError(f"Real essay leaked into train set: {case.id}")
-        if any(case.id.startswith(prefix) for prefix in REAL_SOURCE_PREFIXES):
+        if case.id.startswith(("ap_central_", "tom_richey_", "quizlet_", "real_eval")):
             raise ValueError(f"Real essay id in train set: {case.id}")
 
 

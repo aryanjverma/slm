@@ -1,0 +1,67 @@
+[
+  {
+    "url": "https://www.tomrichey.net/uploads/3/2/1/0/32100773/2024_apush_leq_2_%5Bset_1%5D_-_causes_of_conflict_between_native_americans_and_europeans__1_.pdf",
+    "filename": "tomrichey_2024_leq2_set1.pdf",
+    "year": 2024,
+    "leq_num": 2,
+    "set": 1,
+    "prompt": "Evaluate the relative importance of causes of conflict between Europeans and Native Americans in the period from 1500 to 1763.",
+    "source": "tom_richey",
+    "local_path": "artifacts/raw/tomrichey/tomrichey_2024_leq2_set1.pdf",
+    "status": "downloaded",
+    "bytes": 65829,
+    "sha256": "9b1df3f23e169be7290243700c5f14488d423c1c94eee82f927b4de80da519ff"
+  },
+  {
+    "url": "https://www.tomrichey.net/uploads/3/2/1/0/32100773/2024_apush_leq_3_%5Bset_1%5D_-_causes_of_changes_in_national_culture__1800-1848_.pdf",
+    "filename": "tomrichey_2024_leq3_set1.pdf",
+    "year": 2024,
+    "leq_num": 3,
+    "set": 1,
+    "prompt": "Evaluate the extent to which economic development contributed to the growth of a distinct national culture in the United States in the period 1800-1848.",
+    "source": "tom_richey",
+    "local_path": "artifacts/raw/tomrichey/tomrichey_2024_leq3_set1.pdf",
+    "status": "downloaded",
+    "bytes": 74205,
+    "sha256": "53f9822791c85008a22bfeb436700d9bc89e7e1226eb75c5ce4e20ec457dd943"
+  },
+  {
+    "url": "https://www.tomrichey.net/uploads/3/2/1/0/32100773/2024_apush_leq_4_%5Bset_1%5D_-_effects_of_movements_for_social_change_%5B1945-1980%5D.pdf",
+    "filename": "tomrichey_2024_leq4_set1.pdf",
+    "year": 2024,
+    "leq_num": 4,
+    "set": 1,
+    "prompt": "Evaluate the extent to which movements for social change in the period from 1945 to 1980 contributed to greater equality in the United States.",
+    "source": "tom_richey",
+    "local_path": "artifacts/raw/tomrichey/tomrichey_2024_leq4_set1.pdf",
+    "status": "downloaded",
+    "bytes": 69185,
+    "sha256": "f081c62944c3ccc2d13bbb5f79b295088926074fb01e554af096c31fde3f6d76"
+  },
+  {
+    "url": "https://www.tomrichey.net/uploads/3/2/1/0/32100773/2022_apush_leq_2_sample_responses.pdf",
+    "filename": "tomrichey_2022_leq2_responses.pdf",
+    "year": 2022,
+    "leq_num": 2,
+    "set": 1,
+    "prompt": "Evaluate the extent to which the settlement of British North America was primarily driven by economic motivations in the period 1607-1754.",
+    "source": "tom_richey",
+    "local_path": "artifacts/raw/tomrichey/tomrichey_2022_leq2_responses.pdf",
+    "status": "downloaded",
+    "bytes": 139143,
+    "sha256": "fcc424f07337bc91172e4da442ce648563679e3abd6b1ccb7e62abaf00aa0efc"
+  },
+  {
+    "url": "https://www.tomrichey.net/uploads/3/2/1/0/32100773/sample_leq_responses_-_road_to_american_revolution_-_apush.pdf",
+    "filename": "tomrichey_revolution_road_leq.pdf",
+    "year": 2020,
+    "leq_num": 2,
+    "set": 1,
+    "prompt": "Evaluate the extent to which the American Revolution was caused by disputes over economic policy in the period from 1754 to 1776.",
+    "source": "tom_richey",
+    "local_path": "artifacts/raw/tomrichey/tomrichey_revolution_road_leq.pdf",
+    "status": "downloaded",
+    "bytes": 358339,
+    "sha256": "830091f2f930cfddae357b6610f7e3dfd3208507a9af498a706cf8a1bcc640e8"
+  }
+]

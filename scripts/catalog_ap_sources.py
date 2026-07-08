@@ -1,4 +1,4 @@
-"""Download and manifest College Board APUSH LEQ APC PDFs (2023–2025)."""
+"""Download and manifest College Board APUSH LEQ APC PDFs (2021–2025)."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 BASE_URL = "https://apcentral.collegeboard.org/media/pdf"
-YEARS = (23, 24, 25)
+YEARS = (21, 22, 23, 24, 25)
 LEQ_NUMS = (2, 3, 4)
 SETS = (1, 2)
 

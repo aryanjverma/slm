@@ -2,7 +2,7 @@
 
 ## Summary
 
-Synthetic APUSH Long Essay Question (LEQ) grading dataset for supervised fine-tuning a small instruct model to output structured JSON rubric scores with evidence-grounded feedback. Official College Board AP Central LEQ samples (2023–2025) are held out for external validity evaluation only.
+Synthetic APUSH Long Essay Question (LEQ) grading dataset for supervised fine-tuning a small instruct model to output structured JSON rubric scores with evidence-grounded feedback. Official College Board AP Central LEQ samples (2023–2025) are the gold eval anchor; Tom Richey and Quizlet add deduplicated third-party eval diversity.
 
 ## Files
 
@@ -10,19 +10,26 @@ Synthetic APUSH Long Essay Question (LEQ) grading dataset for supervised fine-tu
 |------|------|-------------|
 | `artifacts/data/train_cases.jsonl` | ~1000 | Synthetic training FRQ cases (quality-filtered) |
 | `artifacts/data/eval_cases.jsonl` | 198 | Synthetic litmus eval (contract + adversarial slices) |
-| `artifacts/data/eval_real_cases.jsonl` | ~53 | **Eval-only** real CB essays with official row scores |
-| `artifacts/data/eval_real_chat.jsonl` | ~53 | Chat format for real-eval HF runs |
+| `artifacts/data/eval_cb_cases.jsonl` | ~53 | **Eval-only** CB essays with official row scores |
+| `artifacts/data/eval_tomrichey_cases.jsonl` | ~16 | Tom Richey labeled samples (deduped vs CB) |
+| `artifacts/data/eval_quizlet_cases.jsonl` | ~3 | Quizlet study-set essays (deduped vs CB/TR) |
+| `artifacts/data/eval_external_cases.jsonl` | ~19 | Combined Tom Richey + Quizlet eval |
+| `artifacts/data/eval_real_cases.jsonl` | ~72 | **All real eval** (CB + external, deduped) |
+| `artifacts/data/eval_real_chat.jsonl` | ~72 | Chat format for real-eval HF runs |
 | `artifacts/data/train_chat.jsonl` | ~1000 | Chat-format SFT rows (synthetic only) |
 | `artifacts/data/train_cases_v2.jsonl` | 800 | v2 oversample of adversarial + weak slices |
 | `artifacts/data/train_chat_v2.jsonl` | 800 | v2 chat SFT rows |
-| `artifacts/raw/ap_central/manifest.json` | 18 PDFs | Archived AP Central LEQ source manifest |
+| `artifacts/raw/ap_central/manifest.json` | 30 PDFs | AP Central LEQ source manifest (2021–2025 URLs) |
+| `artifacts/raw/tomrichey/manifest.json` | 5 PDFs | Tom Richey labeled LEQ PDFs |
+| `artifacts/raw/quizlet/manifest.json` | 8 sets | Curated Quizlet set catalog (+ committed fixtures) |
 | `artifacts/smoke/*` | 30/20 | Day 2 smoke loop (`scripts/run_smoke_pipeline.py`) |
 
 ## Eval-only real essay policy
 
-**All real AP essays live in `eval_real_cases.jsonl` only — never in `train_chat.jsonl`.**
+**All real AP essays live in eval JSONL files only — never in `train_chat.jsonl`.**
 
-- Real essays are ingested via `scripts/ingest_ap_essays.py` from `artifacts/raw/ap_central/`
+- Unified ingest: `scripts/ingest_eval_sources.py` (CB + Tom Richey + Quizlet with dedup)
+- CB-only shortcut: `scripts/ingest_ap_essays.py` from `artifacts/raw/ap_central/`
 - Training data is 100% synthetic from `src/apush_frq_grader_slm/data.py`
 - `scripts/build_mixed_dataset.py` enforces zero real-essay rows in train output
 
@@ -34,21 +41,36 @@ Synthetic APUSH Long Essay Question (LEQ) grading dataset for supervised fine-tu
 |---------|----------|
 | `ap{YY}-apc-us-history-leq{N}-set-{S}.pdf` | LEQ prompt + 3 student essays + CB row scores + reader commentary |
 
-- **Years archived:** 2023, 2024, 2025 (18 PDFs via `scripts/catalog_ap_sources.py`)
-- **Estimated essays:** ~53 samples with extractable text or commentary-reconstructed essays
+- **Years cataloged:** 2021–2025 (30 URLs via `scripts/catalog_ap_sources.py`; 2023–2025 downloadable from AP Central)
+- **Ingested essays:** ~53 CB samples with extractable text or commentary-reconstructed essays
 - **Licensing:** Publicly released for educational use; source URLs stored in case metadata
 
-### Tier 2 — Educator reposts (optional parse validation)
+### Tier 2 — Tom Richey (labeled educator reposts, eval only)
 
-Tom Richey labeled PDFs mirror official content — useful for parser validation, not additional unique essays. Optional download via `catalog_ap_sources.py --include-tomrichey`.
+Tom Richey PDFs use clear labels (`EXEMPLAR (6/6)`, `ABOVE-AVERAGE (5/6)`, etc.) and often mirror CB content.
 
-### Tier 3 — Third-party prep (Barron's, AMSCO, Princeton Review)
+- **Catalog:** `scripts/catalog_tomrichey_sources.py` → 5 PDFs
+- **Parser:** `src/apush_frq_grader_slm/ingest/tomrichey_parser.py`
+- **Scores:** Total-only labels mapped via `total_to_row_scores()`; deduped against CB essays
+- **Ingested:** ~16 unique essays after dedup
+
+### Tier 3 — Quizlet (study-set essays, eval only)
+
+Curated public APUSH LEQ sets with multi-card essay bodies or thesis/CC shorthand.
+
+- **Catalog:** `scripts/catalog_quizlet_sources.py` (8 set IDs; API fetch via `QUIZLET_CLIENT_ID`)
+- **Fixtures:** Committed JSON for sets `485501886`, `756614068`, `278103637` (Cloudflare blocks scraping)
+- **Parser:** `src/apush_frq_grader_slm/ingest/quizlet_parser.py`
+- **Scores:** Rule-inferred totals (default 4/6) via `total_to_row_scores()`
+- **Ingested:** ~3 essays from fixtures; expand with API token or manual JSON export
+
+### Tier 4 — Third-party prep (Barron's, AMSCO, Princeton Review)
 
 No freely structured LEQ+row-feedback datasets. Do not scrape pirated copies. Licensed teacher editions may be added later via manual CSV import using the same `FRQCase` schema.
 
-### Tier 4 — Synthetic generation (training backbone)
+### Tier 5 — Synthetic generation (training backbone)
 
-`data.py` generates adversarial slices (`grade_inflation_request`, `prompt_injection`, `weak_thesis`, etc.) that released exams never cover. With ~53 real essays held out, **~1000 synthetic rows are the training backbone**.
+`data.py` generates adversarial slices (`grade_inflation_request`, `prompt_injection`, `weak_thesis`, etc.) that released exams never cover. With ~72 real essays held out, **~1000 synthetic rows are the training backbone**.
 
 ## Schema (`FRQCase`)
 
@@ -58,7 +80,7 @@ No freely structured LEQ+row-feedback datasets. Do not scrape pirated copies. Li
 - `reference_feedback` — per-criterion explanations grounded in essay text
 - `failure_type` — slice tag for eval breakdown
 - `assistant_response` — JSON string (SFT target)
-- Real cases tagged `ap_central`, `real_eval` in `tags`
+- Real cases tagged by provider (`ap_central`, `tom_richey`, `quizlet`) plus `real_eval` in `tags`
 
 ## Hybrid commentary translation
 
@@ -89,7 +111,9 @@ Real eval cases use CB-derived failure types (`strong`, `borderline_complexity`,
 
 ```powershell
 python scripts/catalog_ap_sources.py
-python scripts/ingest_ap_essays.py
+python scripts/catalog_tomrichey_sources.py
+python scripts/catalog_quizlet_sources.py
+python scripts/ingest_eval_sources.py
 python scripts/build_mixed_dataset.py --train-count 1000
 python -m apush_frq_grader_slm.cli.generate_dataset --train-count 1000 --eval-count 200
 python scripts/make_v2_dataset.py --count 800 --base-cases artifacts/data/train_cases.jsonl
@@ -100,7 +124,8 @@ python scripts/make_v2_dataset.py --count 800 --base-cases artifacts/data/train_
 | Track | File | Metrics |
 |-------|------|---------|
 | **Litmus** | `eval_cases.jsonl` | JSON validity, grounding, adversarial robustness |
-| **Real** | `eval_real_cases.jsonl` | CB row agreement (exact, ±1, QWK on totals) |
+| **Real (CB gold)** | `eval_cb_cases.jsonl` | CB row agreement (exact, ±1, QWK on totals) |
+| **Real (all)** | `eval_real_cases.jsonl` | Combined CB + Tom Richey + Quizlet (deduped) |
 
 ```powershell
 python scripts/eval_hf_model.py --cases artifacts/data/eval_cases.jsonl
@@ -109,7 +134,7 @@ python scripts/eval_hf_model.py --cases artifacts/data/eval_real_cases.jsonl --r
 
 ## Known limitations
 
-- Only ~53 real essays — sufficient for external validity signal, not for training
+- ~72 real eval essays (53 CB gold + 19 third-party deduped) — sufficient for external validity, not training
 - Some PDFs store student essays as images; those cases use commentary quote reconstruction
 - Pre-2023 rubric wording differs; corpus filtered to 2023+ for consistency with `rubric.py`
 - College Board limits AP Central to 3 most recent years — archive PDFs before they move behind AP Classroom

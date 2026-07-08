@@ -35,6 +35,16 @@ def raw_sample_to_frq_case(
     source = sample.metadata.get("source", sample.sample_id)
     resolved_id = case_id or source
 
+    provider = str(sample.metadata.get("provider", "ap_central"))
+    tags = [
+        provider,
+        "real_eval",
+        str(sample.metadata.get("year", "")),
+        f"leq{sample.metadata.get('leq_num', '')}",
+        failure_type.value,
+        difficulty,
+    ]
+
     case = FRQCase(
         id=resolved_id,
         split="eval",
@@ -45,14 +55,7 @@ def raw_sample_to_frq_case(
         failure_type=failure_type,
         difficulty=difficulty,
         assistant_response=assistant_response,
-        tags=[
-            "ap_central",
-            "real_eval",
-            str(sample.metadata.get("year", "")),
-            f"leq{sample.metadata.get('leq_num', '')}",
-            failure_type.value,
-            difficulty,
-        ],
+        tags=tags,
     )
     return case
 

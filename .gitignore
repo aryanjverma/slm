@@ -9,5 +9,6 @@ venv/
 # Keep data/eval artifacts, but avoid accidentally committing large checkpoints.
 artifacts/models/
 
-# College Board PDF binaries — use catalog_ap_sources.py to download locally.
+# College Board / Tom Richey PDF binaries — use catalog scripts to download locally.
 artifacts/raw/ap_central/*.pdf
+artifacts/raw/tomrichey/*.pdf
