@@ -87,7 +87,116 @@ class CatalogTests(unittest.TestCase):
         sys.modules["catalog_ap_sources"] = module
         spec.loader.exec_module(module)
         ap_central = [entry for entry in module.enumerate_sources() if entry["source"] == "ap_central"]
-        self.assertEqual(len(ap_central), 18)
+        self.assertEqual(len(ap_central), 30)
+
+
+class TomRicheyParserTests(unittest.TestCase):
+    FIXTURE_PATH = Path(__file__).parent / "fixtures" / "tomrichey" / "tomrichey_2024_leq3_set1.txt"
+
+    def test_parse_tomrichey_samples(self) -> None:
+        if not self.FIXTURE_PATH.exists():
+            self.skipTest("Missing Tom Richey text fixture")
+        from apush_frq_grader_slm.ingest.tomrichey_parser import parse_tomrichey_text
+
+        text = self.FIXTURE_PATH.read_text(encoding="utf-8")
+        meta = {
+            "year": 2024,
+            "leq_num": 3,
+            "set": 1,
+            "prompt": (
+                "Evaluate the extent to which economic development contributed to the growth "
+                "of a distinct national culture in the United States in the period 1800-1848."
+            ),
+        }
+        samples = parse_tomrichey_text(text, metadata=meta)
+        self.assertEqual(len(samples), 3)
+        by_id = {sample.sample_id: sample for sample in samples}
+        self.assertEqual(by_id["A"].total_score, 6)
+        self.assertEqual(by_id["C"].total_score, 2)
+        self.assertEqual(by_id["A"].metadata["provider"], "tom_richey")
+
+    def test_tomrichey_to_frq_case_tags(self) -> None:
+        if not self.FIXTURE_PATH.exists():
+            self.skipTest("Missing Tom Richey text fixture")
+        from apush_frq_grader_slm.ingest.tomrichey_parser import parse_tomrichey_text
+
+        text = self.FIXTURE_PATH.read_text(encoding="utf-8")
+        samples = parse_tomrichey_text(text, metadata={"year": 2024, "leq_num": 3, "set": 1})
+        case = raw_sample_to_frq_case(samples[0])
+        self.assertIn("tom_richey", case.tags)
+        self.assertIn("real_eval", case.tags)
+
+
+class QuizletParserTests(unittest.TestCase):
+    FIXTURE_PATH = Path(__file__).parent / "fixtures" / "quizlet" / "485501886.json"
+
+    def test_parse_multi_card_essay(self) -> None:
+        if not self.FIXTURE_PATH.exists():
+            self.skipTest("Missing Quizlet fixture")
+        from apush_frq_grader_slm.ingest.quizlet_parser import load_quizlet_json
+
+        samples = load_quizlet_json(self.FIXTURE_PATH)
+        self.assertEqual(len(samples), 1)
+        sample = samples[0]
+        self.assertIn("Spanish-American War", sample.prompt)
+        self.assertIn("isolationism", sample.essay.lower())
+        self.assertEqual(sample.metadata["provider"], "quizlet")
+
+    def test_quizlet_to_frq_case(self) -> None:
+        if not self.FIXTURE_PATH.exists():
+            self.skipTest("Missing Quizlet fixture")
+        from apush_frq_grader_slm.ingest.quizlet_parser import load_quizlet_json
+
+        samples = load_quizlet_json(self.FIXTURE_PATH)
+        case = raw_sample_to_frq_case(samples[0])
+        ok, reasons = passes_quality_gate(case)
+        self.assertTrue(ok, msg=str(reasons))
+        self.assertIn("quizlet", case.tags)
+
+
+class ScoringDedupTests(unittest.TestCase):
+    def test_total_to_row_scores(self) -> None:
+        from apush_frq_grader_slm.ingest.scoring import total_to_row_scores
+
+        scores = total_to_row_scores(6)
+        self.assertEqual(scores["thesis"], 1)
+        self.assertEqual(scores["analysis_reasoning"], 2)
+
+    def test_dedup_detects_overlap(self) -> None:
+        from apush_frq_grader_slm.ingest.dedup import is_duplicate_essay
+        from apush_frq_grader_slm.schemas import FRQCase, FailureType, RubricFeedback, RubricScores
+
+        essay = (
+            "The transatlantic trade network transformed colonial society through new goods "
+            "and labor systems across the Atlantic world during the seventeenth century."
+        )
+        case = FRQCase(
+            id="cb-1",
+            split="eval",
+            prompt="Evaluate the extent to which transatlantic trade changed colonial society.",
+            student_response=essay,
+            reference_scores=RubricScores(thesis=1, contextualization=1, evidence=2, analysis_reasoning=2),
+            reference_feedback=RubricFeedback(
+                thesis="x",
+                contextualization="x",
+                evidence="x",
+                analysis_reasoning="x",
+            ),
+            failure_type=FailureType.STRONG,
+            difficulty="strong",
+            assistant_response="{}",
+        )
+        near_duplicate = essay
+        self.assertTrue(is_duplicate_essay(near_duplicate, [case], prompt=case.prompt))
+        slightly_edited = essay.replace("seventeenth", "17th")
+        self.assertTrue(is_duplicate_essay(slightly_edited, [case], prompt=case.prompt))
+        self.assertFalse(
+            is_duplicate_essay(
+                "Railroad expansion and industrial factory growth reshaped urban labor in the Gilded Age.",
+                [case],
+                prompt="Evaluate the extent to which railroads transformed the American economy.",
+            )
+        )
 
 
 class RealEvalMetricsTests(unittest.TestCase):
