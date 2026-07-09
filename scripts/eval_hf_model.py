@@ -7,6 +7,8 @@ import json
 from pathlib import Path
 
 import torch
+from pydantic import BaseModel
+from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from apush_frq_grader_slm.behavior import SYSTEM_PROMPT
@@ -33,6 +35,7 @@ def load_model_and_tokenizer(model_id: str):
             low_cpu_mem_usage=True,
         )
         model = PeftModel.from_pretrained(base, path)
+        model = model.merge_and_unload()  # fold LoRA into base -> faster inference
     else:
         tokenizer = AutoTokenizer.from_pretrained(model_id)
         if device == "cuda":
@@ -57,29 +60,42 @@ def main() -> None:
     args = parse_args()
     model, tokenizer, device = load_model_and_tokenizer(args.model)
     cases = [FRQCase.model_validate(row) for row in read_jsonl(args.eval_path)]
-    results = []
-    for case in cases:
-        messages = [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {
-                "role": "user",
-                "content": format_user_message(case.prompt, case.student_response),
-            },
-        ]
-        prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-        inputs = tokenizer(prompt, return_tensors="pt").to(device)
-        output = model.generate(
-            **inputs,
-            max_new_tokens=args.max_new_tokens,
-            temperature=args.temperature,
-            do_sample=args.temperature > 0,
-            pad_token_id=tokenizer.eos_token_id,
-        )
-        response = tokenizer.decode(output[0][inputs["input_ids"].shape[-1] :], skip_special_tokens=True)
-        results.append(score_response(case, response.strip(), args.model_name))
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    write_jsonl(args.output_dir / f"{args.model_name}_results.jsonl", results)
+    results_path = args.output_dir / f"{args.model_name}_results.jsonl"
+
+    results = []
+    # Write each result as it is scored (and flush) so an interrupt or runtime
+    # disconnect leaves a partial results file instead of losing the whole run.
+    with results_path.open("w", encoding="utf-8") as results_file:
+        for case in tqdm(cases, desc=args.model_name, unit="case"):
+            messages = [
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {
+                    "role": "user",
+                    "content": format_user_message(case.prompt, case.student_response),
+                },
+            ]
+            prompt = tokenizer.apply_chat_template(
+                messages, tokenize=False, add_generation_prompt=True
+            )
+            inputs = tokenizer(prompt, return_tensors="pt").to(device)
+            output = model.generate(
+                **inputs,
+                max_new_tokens=args.max_new_tokens,
+                temperature=args.temperature,
+                do_sample=args.temperature > 0,
+                pad_token_id=tokenizer.eos_token_id,
+            )
+            response = tokenizer.decode(
+                output[0][inputs["input_ids"].shape[-1] :], skip_special_tokens=True
+            )
+            result = score_response(case, response.strip(), args.model_name)
+            results.append(result)
+            payload = result.model_dump(mode="json") if isinstance(result, BaseModel) else result
+            results_file.write(json.dumps(payload, ensure_ascii=True) + "\n")
+            results_file.flush()
+
     if args.real_eval:
         summary = summarize_real_eval(results, cases)
         write_jsonl(args.output_dir / f"{args.model_name}_real_summary.jsonl", [summary])
@@ -98,7 +114,7 @@ def parse_args() -> argparse.Namespace:
         help="Use real CB eval metrics (row agreement, QWK) on eval_real_cases.jsonl",
     )
     parser.add_argument("--output-dir", type=Path, default=Path("artifacts/eval"))
-    parser.add_argument("--max-new-tokens", type=int, default=512)
+    parser.add_argument("--max-new-tokens", type=int, default=320)
     parser.add_argument("--temperature", type=float, default=0.0)
     return parser.parse_args()
 
