@@ -85,14 +85,21 @@ def main() -> None:
             learning_rate=args.learning_rate,
             fp16=True,
             logging_steps=10,
-            save_steps=max(50, args.max_steps // 2),
+            # save_strategy="no": skip Trainer checkpointing entirely. Trainer._save
+            # (used by both mid-run checkpoints and save_model) does
+            # torch.save(self.args, "training_args.bin"), which fails on a TRL/Unsloth
+            # SFTConfig class-identity mismatch. We save the adapter directly below.
+            save_strategy="no",
             optim="adamw_8bit",
             seed=args.seed,
             report_to="none",
         ),
     )
     trainer.train()
-    trainer.save_model(str(args.output))
+    # Save the LoRA adapter + tokenizer directly via PEFT, NOT trainer.save_model().
+    # Trainer.save_model() routes through Trainer._save, which pickles self.args
+    # (the SFTConfig) and crashes; model.save_pretrained() only writes adapter files.
+    model.save_pretrained(str(args.output))
     tokenizer.save_pretrained(str(args.output))
 
 
