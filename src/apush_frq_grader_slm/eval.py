@@ -316,9 +316,15 @@ def _quadratic_weighted_kappa(ref: list[int], pred: list[int]) -> float | None:
         return None
 
     categories = list(range(0, 7))
+    lo, hi = categories[0], categories[-1]
     n = len(valid_pairs)
     conf = [[0.0 for _ in categories] for _ in categories]
     for r, p in valid_pairs:
+        # A model can emit a total outside the 0–6 rubric range; clamp into it so
+        # the (near-max) prediction still counts as a disagreement instead of
+        # indexing out of the confusion matrix.
+        r = min(max(r, lo), hi)
+        p = min(max(p, lo), hi)
         conf[r][p] += 1.0
 
     weights = [

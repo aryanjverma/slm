@@ -62,7 +62,10 @@ def main() -> None:
     cases = [FRQCase.model_validate(row) for row in read_jsonl(args.eval_path)]
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    results_path = args.output_dir / f"{args.model_name}_results.jsonl"
+    # Keep litmus and real per-case results in separate files so a real run does
+    # not overwrite the litmus results (both tracks share --model-name).
+    suffix = "_real_results" if args.real_eval else "_results"
+    results_path = args.output_dir / f"{args.model_name}{suffix}.jsonl"
 
     results = []
     # Write each result as it is scored (and flush) so an interrupt or runtime
@@ -96,11 +99,29 @@ def main() -> None:
             results_file.write(json.dumps(payload, ensure_ascii=True) + "\n")
             results_file.flush()
 
-    if args.real_eval:
-        summary = summarize_real_eval(results, cases)
-        write_jsonl(args.output_dir / f"{args.model_name}_real_summary.jsonl", [summary])
-    else:
-        write_jsonl(args.output_dir / f"{args.model_name}_summary.jsonl", [summarize(results, args.model_name)])
+    # Generation is the expensive part and is already saved to results_path. If
+    # summarizing fails, do not lose the run — report how to recompute the
+    # summary from the saved per-case results without re-generating.
+    try:
+        if args.real_eval:
+            summary = summarize_real_eval(results, cases)
+            write_jsonl(args.output_dir / f"{args.model_name}_real_summary.jsonl", [summary])
+        else:
+            write_jsonl(
+                args.output_dir / f"{args.model_name}_summary.jsonl",
+                [summarize(results, args.model_name)],
+            )
+    except Exception:
+        real_flag = " --real-eval" if args.real_eval else ""
+        print(
+            f"\nGeneration finished and results are saved to {results_path}, but "
+            f"summarizing failed (traceback below). Recompute the summary without "
+            f"re-generating:\n"
+            f"  python scripts/summarize_from_results.py "
+            f"--results {results_path} --eval-path {args.eval_path} "
+            f"--model-name {args.model_name} --output-dir {args.output_dir}{real_flag}\n"
+        )
+        raise
 
 
 def parse_args() -> argparse.Namespace:
