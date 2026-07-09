@@ -12,3 +12,7 @@ artifacts/models/
 # College Board / Tom Richey PDF binaries — use catalog scripts to download locally.
 artifacts/raw/ap_central/*.pdf
 artifacts/raw/tomrichey/*.pdf
+
+# Auto-generated eval table written by the notebook at runtime; the curated copy
+# lives at docs/v1_eval_results.md. Ignored so it never blocks `git pull`.
+artifacts/eval/v1_eval_results.md
