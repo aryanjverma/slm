@@ -1,4 +1,9 @@
-"""Download and manifest College Board APUSH LEQ APC PDFs (2021–2025)."""
+"""Download and manifest College Board APUSH LEQ APC PDFs (2015–2025).
+
+2021–2025 produced the frozen 72-essay eval set. Older years (2015–2020) are
+enumerated to source *net-new* seed essays for realistic generation; their URL
+slugs and in-PDF header layouts vary, so some downloads/parses will fail (those
+are recorded as status="failed" in the manifest, not fatal)."""
 
 from __future__ import annotations
 
@@ -10,7 +15,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 BASE_URL = "https://apcentral.collegeboard.org/media/pdf"
-YEARS = (21, 22, 23, 24, 25)
+YEARS = (15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25)
 LEQ_NUMS = (2, 3, 4)
 SETS = (1, 2)
 

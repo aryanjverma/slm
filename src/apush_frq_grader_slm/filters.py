@@ -63,17 +63,49 @@ def contains_rewrite_pattern(text: str) -> bool:
     return any(re.search(pattern, lowered) for pattern in REWRITE_PATTERNS)
 
 
+def _normalize_for_match(text: str) -> str:
+    """Lowercase, punctuation -> spaces, whitespace collapsed.
+
+    Lets a quote that differs from the essay only in punctuation or spacing
+    (a list comma pulled inside the closing quote, an em dash, doubled spaces)
+    still match the essay it was taken from."""
+    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]+", " ", text.lower())).strip()
+
+
+def _attributed_quotes(text: str) -> list[str]:
+    """Spans the feedback attributes to the essay via quotation marks.
+
+    Double quotes are unambiguous. Single-quoted spans count only when both
+    delimiters sit at word boundaries, so possessives/contractions (``Bacon's``)
+    and connective prose captured between two short quotes are not mistaken for
+    quotations."""
+    quotes = re.findall(r'"([^"]{12,})"', text)
+    quotes += re.findall(r"(?<![A-Za-z])'([^']{12,})'(?![A-Za-z])", text)
+    return quotes
+
+
+def _quote_is_grounded(quoted: str, essay_norm: str) -> bool:
+    """True when every substantive segment of an (ellipsis-elided) quote is
+    present in the normalized essay. Segments under three words are treated as
+    ordinary vocabulary overlap, not attributable quotations."""
+    for segment in re.split(r"\.\.\.|…", quoted):
+        seg_norm = _normalize_for_match(segment)
+        if len(seg_norm.split()) < 3:
+            continue
+        if seg_norm not in essay_norm:
+            return False
+    return True
+
+
 def contains_hallucination_pattern(text: str, essay: str) -> bool:
     lowered = text.lower()
     if re.search(r"\baccording to document\b", lowered):
         return True
     if re.search(r"\bprimary source quote\b", lowered):
         return True
-    for quoted in re.findall(r"'([^']{12,})'", text):
-        if quoted.lower() not in essay.lower():
-            return True
-    for quoted in re.findall(r'"([^"]{12,})"', text):
-        if quoted.lower() not in essay.lower():
+    essay_norm = _normalize_for_match(essay)
+    for quoted in _attributed_quotes(text):
+        if not _quote_is_grounded(quoted, essay_norm):
             return True
     return False
 

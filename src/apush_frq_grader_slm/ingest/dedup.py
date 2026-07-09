@@ -42,3 +42,39 @@ def is_duplicate_essay(
             if len(overlap) >= min(40, len(essay_fp) * 0.75):
                 return True
     return False
+
+
+def _word_spans(text: str, span_len: int) -> set[str]:
+    """All contiguous `span_len`-word spans of normalized `text`."""
+    words = normalize_essay(text).split()
+    if len(words) < span_len:
+        return set()
+    return {" ".join(words[i : i + span_len]) for i in range(len(words) - span_len + 1)}
+
+
+def contains_verbatim_span(
+    essay: str,
+    sources: list[FRQCase],
+    *,
+    min_span_words: int = 8,
+    ignore: str | None = None,
+) -> bool:
+    """Return True if any >= `min_span_words` contiguous word-span of `essay`
+    appears verbatim (post-normalization) in any source essay.
+
+    Complements `is_duplicate_essay`: the cross-prompt branch there needs ~40
+    shared tokens, so it can miss a single lifted sentence copied into an
+    otherwise-original long essay. This catches that leakage.
+
+    `ignore` (typically the shared LEQ prompt) removes spans that come from that
+    text before comparing -- restating the prompt is legitimate, not leakage.
+    """
+    essay_spans = _word_spans(essay, min_span_words)
+    if ignore:
+        essay_spans -= _word_spans(ignore, min_span_words)
+    if not essay_spans:
+        return False
+    for case in sources:
+        if essay_spans & _word_spans(case.student_response, min_span_words):
+            return True
+    return False

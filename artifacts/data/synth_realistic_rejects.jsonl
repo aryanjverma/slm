@@ -1,0 +1,2 @@
+{"task_id": "train-real-001-p00-v00", "reasons": ["hallucinated_quote"]}
+{"task_id": "train-real-000-p01-v01", "reasons": ["feedback_not_grounded_thesis", "feedback_not_grounded_contextualization", "feedback_not_grounded_evidence", "feedback_not_grounded_analysis_reasoning"]}

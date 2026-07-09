@@ -87,7 +87,8 @@ class CatalogTests(unittest.TestCase):
         sys.modules["catalog_ap_sources"] = module
         spec.loader.exec_module(module)
         ap_central = [entry for entry in module.enumerate_sources() if entry["source"] == "ap_central"]
-        self.assertEqual(len(ap_central), 30)
+        # 11 years (2015-2025) x LEQ {2,3,4} x sets {1,2}
+        self.assertEqual(len(ap_central), 66)
 
 
 class TomRicheyParserTests(unittest.TestCase):
