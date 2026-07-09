@@ -46,7 +46,30 @@ distribution), so the model never learned to emit a valid grade for out-of-distr
 inputs. v2 direction: make synthetic essays longer and messier, widen the score
 distribution, and validate against this same real track.
 
-**Open confound to rule out first:** the real run used `--max-new-tokens 320`. Some of the
-`json_valid` failures may be *truncated* JSON rather than genuinely malformed grades. Check
-the `notes`/response tails in `apush_frq_grader_v1_real_results.jsonl` (or re-run the real
-track with a higher cap) before attributing the entire drop to generalization.
+## CB failure diagnosis (cell 8c)
+
+Bucketing the 72 real-track results shows the `json_valid` drop is **mostly malformed
+grades, not truncation**:
+
+| bucket | count |
+|--------|-------|
+| valid grades | 21 |
+| unparseable JSON (of which truncated) | 11 (9) |
+| parsed but invalid | 40 |
+
+Every one of the 40 parsed-but-invalid cases has a `total_mismatch` (the `total` field
+disagrees with the sum of the component scores and/or falls outside 0–6 — the same defect
+that crashed QWK), and 15 also emit out-of-range `thesis`/`contextualization` scores (those
+criteria are capped at 0–1). Only ~9 cases are genuine truncation.
+
+**Confound resolved.** Raising `--max-new-tokens` would recover at most ~9 cases
+(valid ≈ 21 → 30 / 72), so the 320-token cap is a minor secondary factor, not the cause. The
+dominant failure is the model emitting internally inconsistent, out-of-range grades on real
+essays — a generalization failure. On the synthetic litmus the same model computes totals
+and honors ranges perfectly; it only breaks on out-of-distribution real essays.
+
+**v2 direction (data-first):** (1) make synthetic training essays resemble real CB essays —
+longer, messier prose, wider score distribution — so the model trains on the real input
+distribution; (2) reinforce the rubric constraints (`total` = sum of components; per-criterion
+caps) across that wider distribution. A higher token cap is a cheap, worthwhile secondary
+fix, not the main lever.
