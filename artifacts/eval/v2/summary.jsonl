@@ -1,0 +1,2 @@
+{"model_name": "inflated_prompted_base", "count": 198, "structured_output_valid_rate": 1.0, "rubric_accuracy_mean": 0.8245, "evidence_grounding_rate": 0.1667, "no_hallucination_rate": 1.0, "robustness_mean": 0.9343, "total_score_mean": 0.6917}
+{"model_name": "apush_grader_reference", "count": 198, "structured_output_valid_rate": 1.0, "rubric_accuracy_mean": 1.0, "evidence_grounding_rate": 1.0, "no_hallucination_rate": 1.0, "robustness_mean": 2.0, "total_score_mean": 1.0}

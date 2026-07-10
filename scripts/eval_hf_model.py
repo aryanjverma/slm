@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
 from pathlib import Path
 
 import torch
@@ -72,12 +73,19 @@ def main() -> None:
     # not overwrite the litmus results (both tracks share --model-name).
     suffix = "_real_results" if args.real_eval else "_results"
     results_path = args.output_dir / f"{args.model_name}{suffix}.jsonl"
+    started_at = time.monotonic()
+    print(
+        f"Starting {args.model_name}: cases={len(cases)}, device={device}, "
+        f"max_new_tokens={args.max_new_tokens}, output={results_path}",
+        flush=True,
+    )
 
     results = []
     # Write each result as it is scored (and flush) so an interrupt or runtime
     # disconnect leaves a partial results file instead of losing the whole run.
     with results_path.open("w", encoding="utf-8") as results_file:
-        for case in tqdm(cases, desc=args.model_name, unit="case"):
+        progress = tqdm(cases, desc=args.model_name, unit="case", dynamic_ncols=True)
+        for index, case in enumerate(progress, start=1):
             messages = [
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {
@@ -104,6 +112,19 @@ def main() -> None:
             payload = result.model_dump(mode="json") if isinstance(result, BaseModel) else result
             results_file.write(json.dumps(payload, ensure_ascii=True) + "\n")
             results_file.flush()
+            elapsed = time.monotonic() - started_at
+            seconds_per_case = elapsed / index
+            eta_seconds = seconds_per_case * (len(cases) - index)
+            progress.set_postfix(
+                elapsed=f"{elapsed / 60:.1f}m",
+                eta=f"{eta_seconds / 60:.1f}m",
+            )
+            if index % args.log_every == 0 or index == len(cases):
+                print(
+                    f"Progress {args.model_name}: {index}/{len(cases)} cases, "
+                    f"elapsed={elapsed / 60:.1f}m, eta={eta_seconds / 60:.1f}m",
+                    flush=True,
+                )
 
     # Generation is the expensive part and is already saved to results_path. If
     # summarizing fails, do not lose the run — report how to recompute the
@@ -155,6 +176,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-dir", type=Path, default=Path("artifacts/eval"))
     parser.add_argument("--max-new-tokens", type=int, default=320)
     parser.add_argument("--temperature", type=float, default=0.0)
+    parser.add_argument("--log-every", type=int, default=10)
     return parser.parse_args()
 
 

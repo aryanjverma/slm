@@ -1,0 +1,30 @@
+{
+  "categories": {
+    "valid_structured_json": 198
+  },
+  "example_case_ids": {
+    "valid_structured_json": [
+      "eval-00000",
+      "eval-00001",
+      "eval-00002",
+      "eval-00003",
+      "eval-00004",
+      "eval-00005",
+      "eval-00006",
+      "eval-00007",
+      "eval-00008",
+      "eval-00009"
+    ]
+  },
+  "max_new_tokens": 320,
+  "rates": {
+    "valid_structured_json": 1.0
+  },
+  "response_tokens": {
+    "maximum": null,
+    "median": null,
+    "minimum": null
+  },
+  "tokenizer_used": false,
+  "total": 198
+}
