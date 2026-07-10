@@ -16,17 +16,16 @@ from apush_frq_grader_slm.checkpoints import (
 def main() -> None:
     args = parse_args()
     rows = sum(1 for line in args.data.read_text(encoding="utf-8").splitlines() if line.strip())
-    eval_paths = [("litmus", args.litmus, False)]
-    if args.golden.exists():
-        eval_paths.append(("golden", args.golden, True))
-    if args.external.exists():
-        eval_paths.append(("external", args.external, True))
+    eval_paths = []
+    if args.cb_eval.exists():
+        eval_paths.append(("cb_eval", args.cb_eval, True))
     runs = build_checkpoint_plan(
         counts=args.counts,
         available_rows=rows,
         checkpoint_root=args.output_root,
         model=args.model,
         eval_paths=eval_paths,
+        eval_output_root=args.eval_output_root,
     )
     manifest = materialize_checkpoint_data(args.data, runs)
     plan_path = args.output_root / "checkpoint_plan.json"
@@ -48,15 +47,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--counts", type=int, nargs="+", default=[200, 500, 1200])
     parser.add_argument("--model", default="Qwen/Qwen2.5-0.5B-Instruct")
     parser.add_argument(
-        "--litmus", type=Path, default=Path("artifacts/data/eval_cases.jsonl")
-    )
-    parser.add_argument(
-        "--golden", type=Path, default=Path("artifacts/data/v2/eval_cb_golden_v2.jsonl")
-    )
-    parser.add_argument(
-        "--external", type=Path, default=Path("artifacts/data/v2/eval_external_v2.jsonl")
+        "--cb-eval", type=Path, default=Path("artifacts/data/eval_cb_cases.jsonl")
     )
     parser.add_argument("--output-root", type=Path, default=Path("artifacts/checkpoints/v2"))
+    parser.add_argument(
+        "--eval-output-root",
+        type=Path,
+        help="Persistent directory for resumable checkpoint evaluation results.",
+    )
     parser.add_argument("--execute", action="store_true")
     return parser.parse_args()
 

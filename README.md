@@ -77,7 +77,7 @@ Run on a GPU machine after installing training extras:
 ```powershell
 python -m pip install -e ".[train]"
 python scripts/train_qlora.py --model Qwen/Qwen2.5-0.5B-Instruct --data artifacts/data/train_chat.jsonl --output artifacts/models/apush-frq-grader-v1
-python scripts/eval_hf_model.py --model artifacts/models/apush-frq-grader-v1 --model-name apush_frq_grader_v1
+python scripts/eval_hf_model.py --model artifacts/models/apush-frq-grader-v1 --model-name apush_frq_grader_v1 --eval-path artifacts/data/eval_cb_cases.jsonl --real-eval
 ```
 
 ## Current Deterministic Eval (198-case held-out set)

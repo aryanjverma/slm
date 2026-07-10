@@ -84,7 +84,7 @@ def parse_args() -> argparse.Namespace:
         "--adversarial", type=Path, default=Path("artifacts/data/train_cases.jsonl")
     )
     parser.add_argument(
-        "--golden", type=Path, default=Path("artifacts/data/eval_cb_golden_v2.jsonl")
+        "--golden", type=Path, default=Path("artifacts/data/v2/eval_cb_golden_v2.jsonl")
     )
     parser.add_argument(
         "--external", type=Path, default=Path("artifacts/data/eval_external_v2.jsonl")

@@ -35,15 +35,21 @@ The files documented below describe the legacy v1 pipeline. The implemented v2 p
 - carries source, rubric-version, extraction, generator, grader, and review provenance;
 - rejects source/generation contamination, repeated prose/feedback, and eval leakage;
 - requires 10% human review before immutable SFT artifacts are emitted;
-- keeps official, external, synthetic-dev, and synthetic-challenge evaluation tracks separate.
+- uses `eval_cb_cases.jsonl` as the explicitly selected 53-row v2 model evaluation set.
 
 Current generated planning artifacts are `prompt_catalog_v1.jsonl`,
 `synth_tasks_train_v2.jsonl`, `synth_tasks_dev_v2.jsonl`, and
 `synth_tasks_challenge_v2.jsonl`. See `artifacts/dataset_card.md` for the v2 build sequence.
 
-`eval_cb_cases.jsonl` remains a legacy artifact, not a verified golden set. The current audit
-rejects all 53 rows for missing v2 provenance/manual review and independently detects 28 rows with
-source-text contamination. Commentary reconstruction has been removed from the parser.
+`eval_cb_cases.jsonl` is the selected evaluation input. It remains a legacy artifact rather than a
+verified golden set: the current audit rejects all 53 rows for missing v2 provenance/manual review
+and detects 28 rows with source-text contamination. Those findings are retained as data-quality
+warnings, but they do not block the explicitly selected evaluation run.
+
+After written evaluation permission, clean PDF extraction, and all 53 named manual reviews pass,
+`scripts/build_golden_v2.py` writes a combined official file plus a 27-row `set1` dev split and a
+26-row `set2` final holdout under `artifacts/data/v2/`. That stricter future artifact workflow is
+separate from the currently selected direct evaluation on `eval_cb_cases.jsonl`.
 
 ## Two eval tracks (deliberately separate)
 

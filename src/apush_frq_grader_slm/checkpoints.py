@@ -25,6 +25,7 @@ def build_checkpoint_plan(
     checkpoint_root: Path,
     model: str,
     eval_paths: list[tuple[str, Path, bool]],
+    eval_output_root: Path | None = None,
 ) -> list[CheckpointRun]:
     runs: list[CheckpointRun] = []
     for count in counts:
@@ -55,7 +56,7 @@ def build_checkpoint_plan(
                 "--eval-path",
                 str(eval_path),
                 "--output-dir",
-                str(checkpoint_root / "eval" / str(count)),
+                str((eval_output_root or checkpoint_root / "eval") / str(count)),
             ]
             if real_eval:
                 command.append("--real-eval")

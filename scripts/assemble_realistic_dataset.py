@@ -119,7 +119,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--seeds", type=Path, default=Path("artifacts/data/seed_real_cases.jsonl"))
     parser.add_argument(
-        "--golden-eval", type=Path, default=Path("artifacts/data/eval_cb_golden_v2.jsonl")
+        "--golden-eval", type=Path, default=Path("artifacts/data/v2/eval_cb_golden_v2.jsonl")
     )
     parser.add_argument(
         "--external-eval", type=Path, default=Path("artifacts/data/eval_external_v2.jsonl")

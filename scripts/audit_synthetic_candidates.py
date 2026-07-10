@@ -62,7 +62,7 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         action="append",
         default=[
-            Path("artifacts/data/eval_cb_golden_v2.jsonl"),
+            Path("artifacts/data/v2/eval_cb_golden_v2.jsonl"),
             Path("artifacts/data/eval_external_v2.jsonl"),
         ],
     )

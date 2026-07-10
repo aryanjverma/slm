@@ -4,13 +4,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import time
 from pathlib import Path
 
-import torch
 from pydantic import BaseModel
-from tqdm import tqdm
-from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from apush_frq_grader_slm.behavior import SYSTEM_PROMPT
 from apush_frq_grader_slm.data import format_user_message
@@ -21,11 +19,21 @@ from apush_frq_grader_slm.eval import (
     summarize_real_eval,
     summarize_real_eval_by_rubric,
 )
+from apush_frq_grader_slm.eval_diagnostics import diagnose_rows
 from apush_frq_grader_slm.io import read_jsonl, write_jsonl
-from apush_frq_grader_slm.schemas import FRQCase
+from apush_frq_grader_slm.rubric import rubric_version_for_year
+from apush_frq_grader_slm.schemas import EvalResult, FRQCase
+
+
+CB_CASE_ID = re.compile(
+    r"^ap_central_(?P<year>\d{4})_leq(?P<leq>\d+)_set(?P<set>\d+)_(?P<sample>\d+[A-C])$"
+)
 
 
 def load_model_and_tokenizer(model_id: str):
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+
     path = Path(model_id)
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dtype = torch.float16 if device == "cuda" else torch.float32
@@ -64,27 +72,44 @@ def load_model_and_tokenizer(model_id: str):
 
 
 def main() -> None:
+    from tqdm import tqdm
+
     args = parse_args()
-    model, tokenizer, device = load_model_and_tokenizer(args.model)
-    cases = [FRQCase.model_validate(row) for row in read_jsonl(args.eval_path)]
+    if args.real_eval is None:
+        args.real_eval = args.eval_path.name == "eval_cb_cases.jsonl"
+    cases = [
+        hydrate_cb_provenance(FRQCase.model_validate(row))
+        for row in read_jsonl(args.eval_path)
+    ]
+    if len({case.id for case in cases}) != len(cases):
+        raise RuntimeError(f"Evaluation file contains duplicate case IDs: {args.eval_path}")
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    # Keep litmus and real per-case results in separate files so a real run does
-    # not overwrite the litmus results (both tracks share --model-name).
     suffix = "_real_results" if args.real_eval else "_results"
     results_path = args.output_dir / f"{args.model_name}{suffix}.jsonl"
+    existing = load_existing_results(results_path, cases, args.model_name) if args.resume else []
+    if not args.resume and results_path.exists():
+        results_path.unlink()
+    pending_cases = select_pending_cases(cases, existing)
+    model = tokenizer = device = None
+    if pending_cases:
+        model, tokenizer, device = load_model_and_tokenizer(args.model)
+    else:
+        from transformers import AutoTokenizer
+
+        tokenizer = AutoTokenizer.from_pretrained(args.model)
+        device = "not_loaded"
     started_at = time.monotonic()
     print(
-        f"Starting {args.model_name}: cases={len(cases)}, device={device}, "
+        f"Starting {args.model_name}: total={len(cases)}, completed={len(existing)}, "
+        f"pending={len(pending_cases)}, device={device}, "
         f"max_new_tokens={args.max_new_tokens}, output={results_path}",
         flush=True,
     )
 
-    results = []
-    # Write each result as it is scored (and flush) so an interrupt or runtime
-    # disconnect leaves a partial results file instead of losing the whole run.
-    with results_path.open("w", encoding="utf-8") as results_file:
-        progress = tqdm(cases, desc=args.model_name, unit="case", dynamic_ncols=True)
+    results_by_id = {result.case_id: result for result in existing}
+    with results_path.open("a", encoding="utf-8", newline="\n") as results_file:
+        progress = tqdm(pending_cases, desc=args.model_name, unit="case", dynamic_ncols=True)
         for index, case in enumerate(progress, start=1):
             messages = [
                 {"role": "system", "content": SYSTEM_PROMPT},
@@ -108,23 +133,36 @@ def main() -> None:
                 output[0][inputs["input_ids"].shape[-1] :], skip_special_tokens=True
             )
             result = score_response(case, response.strip(), args.model_name)
-            results.append(result)
+            results_by_id[case.id] = result
             payload = result.model_dump(mode="json") if isinstance(result, BaseModel) else result
             results_file.write(json.dumps(payload, ensure_ascii=True) + "\n")
             results_file.flush()
             elapsed = time.monotonic() - started_at
             seconds_per_case = elapsed / index
-            eta_seconds = seconds_per_case * (len(cases) - index)
+            eta_seconds = seconds_per_case * (len(pending_cases) - index)
             progress.set_postfix(
                 elapsed=f"{elapsed / 60:.1f}m",
                 eta=f"{eta_seconds / 60:.1f}m",
             )
-            if index % args.log_every == 0 or index == len(cases):
+            if index % args.log_every == 0 or index == len(pending_cases):
                 print(
-                    f"Progress {args.model_name}: {index}/{len(cases)} cases, "
+                    f"Progress {args.model_name}: {len(existing) + index}/{len(cases)} cases, "
                     f"elapsed={elapsed / 60:.1f}m, eta={eta_seconds / 60:.1f}m",
                     flush=True,
                 )
+
+    results = [results_by_id[case.id] for case in cases if case.id in results_by_id]
+    diagnostic_path = args.output_dir / f"{args.model_name}{suffix}_diagnostics.json"
+    diagnostics = diagnose_rows(
+        [result.model_dump(mode="json") for result in results],
+        tokenizer=tokenizer,
+        max_new_tokens=args.max_new_tokens,
+        token_margin=2,
+    )
+    diagnostic_path.write_text(
+        json.dumps(diagnostics, indent=2, sort_keys=True), encoding="utf-8"
+    )
+    print(f"Diagnostics: {diagnostic_path}", flush=True)
 
     # Generation is the expensive part and is already saved to results_path. If
     # summarizing fails, do not lose the run — report how to recompute the
@@ -167,17 +205,79 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", required=True, help="HF model id or local model path.")
     parser.add_argument("--model-name", default="hf_model")
-    parser.add_argument("--eval-path", type=Path, default=Path("artifacts/data/eval_cases.jsonl"))
+    parser.add_argument(
+        "--eval-path",
+        type=Path,
+        default=Path("artifacts/data/eval_cb_cases.jsonl"),
+    )
     parser.add_argument(
         "--real-eval",
-        action="store_true",
-        help="Use real CB eval metrics (row agreement, QWK) on eval_real_cases.jsonl",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Use real CB eval metrics (row agreement, MAE, QWK, and rubric slices).",
     )
     parser.add_argument("--output-dir", type=Path, default=Path("artifacts/eval"))
-    parser.add_argument("--max-new-tokens", type=int, default=320)
+    parser.add_argument("--max-new-tokens", type=int, default=512)
     parser.add_argument("--temperature", type=float, default=0.0)
     parser.add_argument("--log-every", type=int, default=10)
+    parser.add_argument("--resume", action=argparse.BooleanOptionalAction, default=True)
     return parser.parse_args()
+
+
+def load_existing_results(
+    results_path: Path,
+    cases: list[FRQCase],
+    model_name: str,
+) -> list[EvalResult]:
+    """Validate and order saved results so resume never duplicates or mixes runs."""
+    if not results_path.exists():
+        return []
+    results = [EvalResult.model_validate(row) for row in read_jsonl(results_path)]
+    allowed_ids = {case.id for case in cases}
+    seen: set[str] = set()
+    by_id: dict[str, EvalResult] = {}
+    for result in results:
+        if result.case_id not in allowed_ids:
+            raise RuntimeError(f"Saved result has unknown case ID: {result.case_id}")
+        if result.case_id in seen:
+            raise RuntimeError(f"Saved results contain duplicate case ID: {result.case_id}")
+        if result.model_name != model_name:
+            raise RuntimeError(
+                f"Saved result model mismatch for {result.case_id}: "
+                f"{result.model_name!r} != {model_name!r}"
+            )
+        seen.add(result.case_id)
+        by_id[result.case_id] = result
+    return [by_id[case.id] for case in cases if case.id in by_id]
+
+
+def select_pending_cases(cases: list[FRQCase], results: list[EvalResult]) -> list[FRQCase]:
+    completed_ids = {result.case_id for result in results}
+    return [case for case in cases if case.id not in completed_ids]
+
+
+def hydrate_cb_provenance(case: FRQCase) -> FRQCase:
+    """Recover evaluation-only year/set/rubric metadata encoded in legacy CB case IDs."""
+    match = CB_CASE_ID.fullmatch(case.id)
+    if match is None:
+        return case
+    hydrated = case.model_copy(deep=True)
+    year = int(match.group("year"))
+    leq_number = int(match.group("leq"))
+    set_number = int(match.group("set"))
+    filename = f"ap{str(year)[-2:]}-apc-us-history-leq{leq_number}-set-{set_number}.pdf"
+    hydrated.provenance.source_type = "college_board"
+    hydrated.provenance.source_id = case.id
+    hydrated.provenance.source_url = f"https://apcentral.collegeboard.org/media/pdf/{filename}"
+    hydrated.provenance.year = year
+    hydrated.provenance.leq_number = leq_number
+    hydrated.provenance.set_number = set_number
+    hydrated.provenance.sample_id = match.group("sample")
+    hydrated.provenance.rubric_version = rubric_version_for_year(year)
+    hydrated.provenance.prompt_family_id = (
+        f"ap_central_{year}_leq{leq_number}_set{set_number}"
+    )
+    return hydrated
 
 
 if __name__ == "__main__":
