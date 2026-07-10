@@ -14,6 +14,8 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+from apush_frq_grader_slm.golden import load_permission_record, require_permission
+
 BASE_URL = "https://apcentral.collegeboard.org/media/pdf"
 YEARS = (15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25)
 LEQ_NUMS = (2, 3, 4)
@@ -87,6 +89,7 @@ def build_manifest(output_dir: Path, *, include_tomrichey: bool = False) -> list
 
 def main() -> None:
     args = parse_args()
+    require_permission(load_permission_record(args.permission_record), "storage")
     manifest = build_manifest(args.output_dir, include_tomrichey=args.include_tomrichey)
     manifest_path = args.output_dir / "manifest.json"
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
@@ -105,6 +108,11 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=Path("artifacts/raw/ap_central"),
         help="Directory for PDFs and manifest.json",
+    )
+    parser.add_argument(
+        "--permission-record",
+        type=Path,
+        default=Path("config/college_board_permission.json"),
     )
     parser.add_argument(
         "--include-tomrichey",

@@ -1,0 +1,29 @@
+{
+  "knowledge_profiles": {
+    "competent": 54,
+    "strong": 54,
+    "uneven": 54,
+    "weak": 54
+  },
+  "prompt_family_count": 9,
+  "prompt_split": "synthetic_challenge",
+  "seed_essay_excerpt_count": 0,
+  "sha256": "0823b37cde41add1859a14b374632dc194aebc6ac98cf0e42ca42c5cc877b782",
+  "target_totals": {
+    "0": 27,
+    "1": 18,
+    "2": 54,
+    "3": 45,
+    "4": 36,
+    "5": 18,
+    "6": 18
+  },
+  "task_count": 216,
+  "time_budgets": {
+    "20": 43,
+    "25": 43,
+    "30": 43,
+    "35": 44,
+    "40": 43
+  }
+}

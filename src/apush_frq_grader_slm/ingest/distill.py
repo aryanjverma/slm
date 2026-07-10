@@ -10,8 +10,15 @@ from typing import Any
 from apush_frq_grader_slm.data import _essay_anchor, _format_grade_json
 from apush_frq_grader_slm.filters import passes_quality_gate
 from apush_frq_grader_slm.ingest.apc_parser import RawAPCSample
-from apush_frq_grader_slm.rubric import compute_total
-from apush_frq_grader_slm.schemas import FRQCase, FailureType, RubricFeedback, RubricScores
+from apush_frq_grader_slm.rubric import compute_total, rubric_version_for_year
+from apush_frq_grader_slm.schemas import (
+    CaseProvenance,
+    FRQCase,
+    FailureType,
+    LabelingMetadata,
+    RubricFeedback,
+    RubricScores,
+)
 
 
 def raw_sample_to_frq_case(
@@ -36,6 +43,8 @@ def raw_sample_to_frq_case(
     resolved_id = case_id or source
 
     provider = str(sample.metadata.get("provider", "ap_central"))
+    year_value = sample.metadata.get("year")
+    year = int(year_value) if str(year_value).isdigit() else None
     tags = [
         provider,
         "real_eval",
@@ -56,6 +65,27 @@ def raw_sample_to_frq_case(
         difficulty=difficulty,
         assistant_response=assistant_response,
         tags=tags,
+        provenance=CaseProvenance(
+            source_type="college_board" if provider == "ap_central" else "external",
+            source_id=str(source),
+            source_url=str(sample.metadata.get("url", "")),
+            file_sha256=str(sample.metadata.get("sha256", "")),
+            year=year,
+            set_number=_optional_int(sample.metadata.get("set")),
+            leq_number=_optional_int(sample.metadata.get("leq_num")),
+            sample_id=sample.sample_id,
+            rubric_version=rubric_version_for_year(year),
+            extraction_method=str(sample.metadata.get("essay_source", "")),
+            extraction_confidence=_optional_float(
+                sample.metadata.get("parser_confidence", sample.parser_confidence)
+            ),
+            review_status="machine_checked",
+        ),
+        labeling=LabelingMetadata(
+            method="source_scores",
+            confidence=1.0,
+            grader_ids=["college_board_reader"] if provider == "ap_central" else [provider],
+        ),
     )
     return case
 
@@ -243,3 +273,17 @@ def _difficulty(total: int) -> str:
     if total <= 4:
         return "borderline"
     return "strong"
+
+
+def _optional_int(value: Any) -> int | None:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _optional_float(value: Any) -> float | None:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None

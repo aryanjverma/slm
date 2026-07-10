@@ -20,6 +20,27 @@ HALLUCINATION_PATTERNS = [
     r"\bprimary source quote\b",
 ]
 
+SOURCE_CONTAMINATION_PATTERNS = [
+    r"\bscoring commentary\b",
+    r"\blong essay question\s+\d+\s*\(continued\)",
+    r"\bthesis(?:/claim)? score:\s*\d",
+    r"\bcontextualization score:\s*\d",
+    r"\bevidence score:\s*\d",
+    r"\banalysis and reasoning score:\s*\d",
+    r"\btotal score:\s*\d",
+    r"©\s*\d{4}\s+college board",
+    r"\bpage\s+\d+\s+of\s+\d+\b",
+]
+
+GENERATION_LEAKAGE_PATTERNS = [
+    r"\btarget (?:total|score|rubric profile)\b",
+    r"\btraining data(?:set)?\b",
+    r"\bstudent persona\b",
+    r"\bknowledge profile\b",
+    r"\bthese generation instructions\b",
+    r"\bi was asked to write\b",
+]
+
 
 def parse_grade_json(text: str) -> tuple[dict | None, list[str]]:
     text = text.strip()
@@ -61,6 +82,14 @@ def feedback_references_essay(feedback: str, essay: str) -> bool:
 def contains_rewrite_pattern(text: str) -> bool:
     lowered = text.lower()
     return any(re.search(pattern, lowered) for pattern in REWRITE_PATTERNS)
+
+
+def contains_source_contamination(text: str) -> bool:
+    return any(re.search(pattern, text, flags=re.IGNORECASE) for pattern in SOURCE_CONTAMINATION_PATTERNS)
+
+
+def contains_generation_leakage(text: str) -> bool:
+    return any(re.search(pattern, text, flags=re.IGNORECASE) for pattern in GENERATION_LEAKAGE_PATTERNS)
 
 
 def _normalize_for_match(text: str) -> str:
@@ -110,7 +139,7 @@ def contains_hallucination_pattern(text: str, essay: str) -> bool:
     return False
 
 
-def passes_quality_gate(case: FRQCase) -> tuple[bool, list[str]]:
+def passes_quality_gate(case: FRQCase, *, strict: bool = False) -> tuple[bool, list[str]]:
     reasons: list[str] = []
     payload, parse_reasons = parse_grade_json(case.assistant_response)
     reasons.extend(parse_reasons)
@@ -130,11 +159,35 @@ def passes_quality_gate(case: FRQCase) -> tuple[bool, list[str]]:
     if contains_rewrite_pattern(case.assistant_response):
         reasons.append("rewrites_essay")
 
+    if contains_source_contamination(case.student_response):
+        reasons.append("source_text_contamination")
+
+    if contains_generation_leakage(case.student_response):
+        reasons.append("generation_prompt_leakage")
+
     feedback_text = " ".join(str(value) for value in feedback.values())
     if contains_hallucination_pattern(feedback_text, case.student_response):
         reasons.append("hallucinated_quote")
 
+    if case.labeling.feedback_spans:
+        reasons.extend(_validate_feedback_spans(case))
+    elif strict and case.labeling.method in {"independent_consensus", "adjudicated"}:
+        reasons.append("missing_feedback_spans")
+
     return not reasons, reasons
+
+
+def _validate_feedback_spans(case: FRQCase) -> list[str]:
+    reasons: list[str] = []
+    essay_norm = _normalize_for_match(case.student_response)
+    for criterion in ("thesis", "contextualization", "evidence", "analysis_reasoning"):
+        spans = case.labeling.feedback_spans.get(criterion, [])
+        if not spans:
+            reasons.append(f"missing_feedback_span_{criterion}")
+            continue
+        if not all(_normalize_for_match(span) in essay_norm for span in spans if span.strip()):
+            reasons.append(f"ungrounded_feedback_span_{criterion}")
+    return reasons
 
 
 def _content_words(text: str) -> set[str]:

@@ -11,7 +11,19 @@ from __future__ import annotations
 
 import unittest
 
-from apush_frq_grader_slm.filters import contains_hallucination_pattern
+from apush_frq_grader_slm.filters import (
+    contains_generation_leakage,
+    contains_hallucination_pattern,
+    contains_source_contamination,
+    passes_quality_gate,
+)
+from apush_frq_grader_slm.schemas import (
+    FRQCase,
+    FailureType,
+    LabelingMetadata,
+    RubricFeedback,
+    RubricScores,
+)
 
 
 class HallucinationCheckTests(unittest.TestCase):
@@ -75,6 +87,50 @@ class HallucinationCheckTests(unittest.TestCase):
         essay = "The essay talks generally about colonial society."
         feedback = "According to document A, the colonists rebelled against taxes."
         self.assertTrue(contains_hallucination_pattern(feedback, essay))
+
+
+class V2GateTests(unittest.TestCase):
+    def test_source_commentary_is_contamination(self) -> None:
+        self.assertTrue(
+            contains_source_contamination(
+                "History 2024 Scoring Commentary Long Essay Question 2 (continued)"
+            )
+        )
+
+    def test_generation_target_is_leakage(self) -> None:
+        self.assertTrue(contains_generation_leakage("My target score is exactly four points."))
+
+    def test_independent_labels_require_grounded_spans_in_strict_mode(self) -> None:
+        essay = "The Navigation Acts restricted colonial trade and increased resentment."
+        scores = RubricScores(thesis=0, contextualization=0, evidence=1, analysis_reasoning=0)
+        feedback = RubricFeedback(
+            thesis="The response offers no defensible claim about the Navigation Acts.",
+            contextualization="It does not place colonial trade in broader context.",
+            evidence="It names the Navigation Acts as relevant evidence.",
+            analysis_reasoning="It asserts increased resentment without developing reasoning.",
+        )
+        case = FRQCase(
+            id="strict",
+            split="train",
+            prompt="Evaluate change in colonial trade.",
+            student_response=essay,
+            reference_scores=scores,
+            reference_feedback=feedback,
+            failure_type=FailureType.EVIDENCE_LIST,
+            difficulty="weak",
+            assistant_response=(
+                '{"scores":{"thesis":0,"contextualization":0,"evidence":1,'
+                '"analysis_reasoning":0},"total":1,"feedback":'
+                '{"thesis":"The response offers no defensible claim about the Navigation Acts.",'
+                '"contextualization":"It does not place colonial trade in broader context.",'
+                '"evidence":"It names the Navigation Acts as relevant evidence.",'
+                '"analysis_reasoning":"It asserts increased resentment without developing reasoning."}}'
+            ),
+            labeling=LabelingMetadata(method="independent_consensus", agreement=1.0),
+        )
+        ok, reasons = passes_quality_gate(case, strict=True)
+        self.assertFalse(ok)
+        self.assertIn("missing_feedback_spans", reasons)
 
 
 if __name__ == "__main__":

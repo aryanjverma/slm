@@ -25,6 +25,32 @@ python -m apush_frq_grader_slm.cli.run_eval --eval-path artifacts/data/eval_case
 python -m apush_frq_grader_slm.cli.demo
 ```
 
+## Data v2 Pipeline
+
+The v2 path replaces duplicate short templates with persona-driven essays and independent
+labels. It uses 60 original prompt families, keeps whole families out of train, and blocks final
+artifacts until strict leakage, provenance, consensus, and human-review gates pass.
+
+```powershell
+python scripts/build_prompt_catalog.py --protected-prompts artifacts/data/eval_cb_cases.jsonl
+python scripts/gen_realistic_tasks.py --limit 100
+python scripts/generate_synthetic_candidates.py --limit 100
+python scripts/audit_synthetic_candidates.py
+python scripts/grade_synthetic_candidates.py --limit 100
+python scripts/assemble_realistic_dataset.py
+python scripts/review_synthetic_v2.py --create-template
+# Complete artifacts/reviews/synthetic_v2.jsonl, then:
+python scripts/review_synthetic_v2.py
+python scripts/build_v2_artifacts.py --target-count 100
+python scripts/run_v2_checkpoints.py                 # prepare 200/500/1200 subsets
+# Add --execute on a GPU machine to train and evaluate every available checkpoint.
+```
+
+`generate_synthetic_candidates.py` and `grade_synthetic_candidates.py` require the `judge` extra
+and `OPENAI_API_KEY`. Offline reader outputs can be resolved with
+`scripts/resolve_synthetic_grades.py`. Official College Board artifacts have a separate written-
+permission and manual-review gate; see `docs/data_permission_checkpoint.md`.
+
 ## Day 2 Smoke Test (50 cases, full loop)
 
 Proves generate → train → eval on a tiny dataset before the real v1 run:

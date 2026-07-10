@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 from enum import StrEnum
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field, field_validator
 
 from apush_frq_grader_slm.rubric import compute_total
+from apush_frq_grader_slm.rubric import DEFAULT_RUBRIC_VERSION, RubricVersion
 
 
 class FailureType(StrEnum):
@@ -39,6 +40,43 @@ class RubricFeedback(BaseModel):
     analysis_reasoning: str
 
 
+class CaseProvenance(BaseModel):
+    source_type: Literal["synthetic", "college_board", "external", "unknown"] = "unknown"
+    source_id: str = ""
+    source_url: str = ""
+    file_sha256: str = ""
+    year: int | None = None
+    set_number: int | None = None
+    leq_number: int | None = None
+    sample_id: str = ""
+    rubric_version: RubricVersion = DEFAULT_RUBRIC_VERSION
+    extraction_method: str = ""
+    extraction_confidence: float | None = Field(default=None, ge=0.0, le=1.0)
+    prompt_family_id: str = ""
+    generator_name: str = ""
+    generator_config: dict[str, Any] = Field(default_factory=dict)
+    review_status: Literal["unreviewed", "machine_checked", "human_verified", "rejected"] = (
+        "unreviewed"
+    )
+
+
+class LabelingMetadata(BaseModel):
+    method: Literal[
+        "rule_based", "source_scores", "independent_consensus", "adjudicated", "unknown"
+    ] = "unknown"
+    grader_ids: list[str] = Field(default_factory=list)
+    agreement: float | None = Field(default=None, ge=0.0, le=1.0)
+    confidence: float | None = Field(default=None, ge=0.0, le=1.0)
+    adjudicated: bool = False
+    human_reviewed: bool = False
+    feedback_spans: dict[str, list[str]] = Field(default_factory=dict)
+    protocol_version: str = ""
+    resolution: str = ""
+    criterion_agreement: dict[str, bool] = Field(default_factory=dict)
+    generation_target_total: int | None = Field(default=None, ge=0, le=6)
+    target_distance: int | None = Field(default=None, ge=0, le=6)
+
+
 class FRQCase(BaseModel):
     id: str
     split: Literal["train", "eval", "adversarial"]
@@ -50,6 +88,8 @@ class FRQCase(BaseModel):
     difficulty: Literal["weak", "borderline", "strong"]
     assistant_response: str
     tags: list[str] = Field(default_factory=list)
+    provenance: CaseProvenance = Field(default_factory=CaseProvenance)
+    labeling: LabelingMetadata = Field(default_factory=LabelingMetadata)
 
     @field_validator("reference_scores", mode="before")
     @classmethod

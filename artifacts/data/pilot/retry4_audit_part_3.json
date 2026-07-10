@@ -1,0 +1,22 @@
+{
+  "accepted_rows": 4,
+  "distributions": {
+    "prompt_family": {
+      "p4_market_revolution_causes": 1,
+      "p4_mass_democracy": 1,
+      "p5_black_freedom_reconstruction": 1,
+      "p6_agrarian_protest": 1
+    },
+    "target_total": {
+      "3": 2,
+      "4": 2
+    },
+    "time_budget": {
+      "30": 1,
+      "35": 1,
+      "40": 2
+    }
+  },
+  "rejected": [],
+  "total_rows": 4
+}

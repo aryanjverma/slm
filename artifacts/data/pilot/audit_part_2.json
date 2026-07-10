@@ -1,0 +1,50 @@
+{
+  "accepted_rows": 25,
+  "distributions": {
+    "prompt_family": {
+      "p2_atlantic_consumer_revolution": 1,
+      "p2_colonial_participation": 1,
+      "p2_indigenous_diplomacy": 1,
+      "p2_middle_southern_diversity": 1,
+      "p2_new_england_chesapeake": 1,
+      "p2_plantation_slavery_growth": 1,
+      "p3_confederation_constitution": 1,
+      "p3_early_republic_diplomacy": 1,
+      "p6_industrial_consolidation": 1,
+      "p6_knights_afl": 1,
+      "p6_overseas_expansion": 1,
+      "p6_south_west_racial_order": 1,
+      "p7_great_dust_migrations": 1,
+      "p7_progressive_reform": 1,
+      "p7_wartime_civil_liberties": 1,
+      "p7_world_war_two_homefront": 1,
+      "p8_conservative_resurgence": 1,
+      "p8_containment_origins": 1,
+      "p8_environmental_movement": 1,
+      "p8_korea_vietnam_homefront": 1,
+      "p9_cold_war_end": 1,
+      "p9_identity_movements": 1,
+      "p9_political_polarization": 1,
+      "p9_post_cold_war_conflict": 1,
+      "p9_reagan_bush_economics": 1
+    },
+    "target_total": {
+      "0": 3,
+      "1": 4,
+      "2": 3,
+      "3": 3,
+      "4": 4,
+      "5": 4,
+      "6": 4
+    },
+    "time_budget": {
+      "20": 5,
+      "25": 5,
+      "30": 4,
+      "35": 6,
+      "40": 5
+    }
+  },
+  "rejected": [],
+  "total_rows": 25
+}

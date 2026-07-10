@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import hashlib
 import re
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -14,13 +16,78 @@ PROMPT_PATTERN = re.compile(
 )
 
 PAGE_MARKER_PATTERN = re.compile(
-    r"Page\s+\d+\s+of\s+\d+\s+(\d+)\s*\n?\s*([A-C])\b",
-    re.IGNORECASE,
+    r"^[ \t]*Page[ \t]+(?P<page>\d+)[ \t]+of[ \t]+(?P<page_count>\d+)"
+    r"[ \t]+(?P<question>\d+)[ \t]*(?:\r?\n[ \t]*)?(?P<label>[A-C])[ \t]*$",
+    re.IGNORECASE | re.MULTILINE,
 )
 
 SAMPLE_ESSAY_PATTERN = re.compile(
-    r"Sample\s+(\d+[A-C])\s+(\d+)\s+of\s+(\d+)\s*\n",
-    re.IGNORECASE,
+    r"^[ \t]*Sample[ \t]+(?P<sample_id>\d+[ \t]*[A-C])[ \t]+"
+    r"(?P<page>\d+)[ \t]+of[ \t]+(?P<page_count>\d+)[ \t]*$",
+    re.IGNORECASE | re.MULTILINE,
+)
+
+ESSAY_CONTAMINATION_PATTERNS = (
+    ("scoring_commentary", re.compile(r"\bScoring\s+Commentary\b", re.IGNORECASE)),
+    (
+        "commentary_page_header",
+        re.compile(
+            r"(?:^|\n)[ \t]*Long\s+Essay\s+Question\s+\d+"
+            r"(?:\s*\(continued\))?[ \t]*(?:\n|$)",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "ap_page_header",
+        re.compile(
+            r"\bAP(?:®|\s+)?\s*United\s+States\s+History\s+20\d{2}\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "sample_score_header",
+        re.compile(
+            r"(?:^|\n)[ \t]*Sample:\s*\d+[A-C]\b|"
+            r"(?:^|\n)[ \t]*(?:Thesis(?:/Claim)?|Contextualization|Evidence|"
+            r"Analysis\s+and\s+Reasoning|Total)(?:\s+Score)?:\s*\d+\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "commentary_row_label",
+        re.compile(
+            r"(?:^|\n)[ \t]*[A-D]\.[ \t]+(?:Thesis/Claim|Contextualization|Evidence|"
+            r"Analysis\s+and\s+Reasoning)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "document_page_marker",
+        re.compile(
+            r"(?:^|\n)[ \t]*(?:Page[ \t]+\d+[ \t]+of[ \t]+\d+[ \t]+\d+"
+            r"[ \t]*(?:\r?\n[ \t]*)?[A-C]|Sample[ \t]+\d+[ \t]*[A-C]"
+            r"[ \t]+\d+[ \t]+of[ \t]+\d+)[ \t]*(?:\n|$)",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "copyright_footer",
+        re.compile(
+            r"©\s*20\d{2}\s+College\s+Board|"
+            r"Visit\s+College\s+Board\s+on\s+the\s+web|"
+            r"\bapcentral\.collegeboard\.org\b|\bcollegeboard\.org\b",
+            re.IGNORECASE,
+        ),
+    ),
+    (
+        "commentary_boilerplate",
+        re.compile(
+            r"Student\s+samples\s+are\s+quoted\s+verbatim|"
+            r"\bThe\s+response\s+(?:earned|did\s+not\s+earn)\b|"
+            r"\bearned\s+(?:0|1|2|one|two)\s+points?\b",
+            re.IGNORECASE,
+        ),
+    ),
 )
 
 SAMPLE_HEADER_CLASSIC = re.compile(
@@ -88,6 +155,35 @@ class RawAPCSample:
     total_score: int
     commentary_by_row: dict[str, str]
     metadata: dict[str, Any] = field(default_factory=dict)
+    essay_source: str = ""
+    parser_confidence: float = 0.0
+
+    def __post_init__(self) -> None:
+        metadata = dict(self.metadata)
+        essay_source = self.essay_source or str(metadata.get("essay_source", "unknown"))
+        confidence_value = metadata.get("parser_confidence", self.parser_confidence)
+        parser_confidence = float(confidence_value)
+        if not 0.0 <= parser_confidence <= 1.0:
+            raise ValueError("parser_confidence must be between 0.0 and 1.0")
+        metadata["essay_source"] = essay_source
+        metadata["parser_confidence"] = parser_confidence
+        self.metadata = metadata
+        self.essay_source = essay_source
+        self.parser_confidence = parser_confidence
+
+
+class EssayExtractionError(ValueError):
+    """Raised when a complete student essay cannot be extracted safely."""
+
+
+class EssayContaminationError(ValueError):
+    """Raised when non-student document text appears in an extracted essay."""
+
+    def __init__(self, sample_id: str, markers: tuple[str, ...]) -> None:
+        marker_text = ", ".join(markers)
+        super().__init__(f"Rejected contaminated essay {sample_id}: {marker_text}")
+        self.sample_id = sample_id
+        self.markers = markers
 
 
 @dataclass
@@ -97,6 +193,13 @@ class _SampleHeaderMatch:
     total_score: int
     start: int
     end: int
+
+
+@dataclass(frozen=True)
+class _EssayExtraction:
+    text: str
+    layout: str
+    confidence: float
 
 
 def parse_apc_pdf(path: Path) -> list[RawAPCSample]:
@@ -111,6 +214,7 @@ def parse_apc_pdf(path: Path) -> list[RawAPCSample]:
     with pdfplumber.open(path) as pdf:
         text = "\n".join(page.extract_text() or "" for page in pdf.pages)
     metadata = _metadata_from_filename(path)
+    metadata["sha256"] = hashlib.sha256(path.read_bytes()).hexdigest()
     return parse_apc_text(text, metadata=metadata)
 
 
@@ -121,32 +225,42 @@ def parse_apc_text(text: str, *, metadata: dict[str, Any] | None = None) -> list
     commentary_text = _extract_commentary_section(text)
     essay_map = _extract_essays(text, meta.get("leq_num"))
     headers = _find_sample_headers(commentary_text)
+    if not headers:
+        raise EssayExtractionError("Could not locate sample score headers in scoring commentary")
     samples: list[RawAPCSample] = []
 
     for idx, header in enumerate(headers):
         block_end = headers[idx + 1].start if idx + 1 < len(headers) else len(commentary_text)
         block = commentary_text[header.start : block_end]
         commentary_by_row = _extract_row_commentary(block)
-        essay = essay_map.get(header.sample_id, "")
-        essay_source = "pdf_text"
-        if not essay or len(essay) < 80:
-            essay = _reconstruct_essay_from_commentary(block)
-            essay_source = "commentary_quotes"
+        extraction = essay_map.get(header.sample_id)
+        if extraction is None or not extraction.text.strip():
+            raise EssayExtractionError(
+                f"Could not extract complete PDF essay for sample {header.sample_id}; "
+                "commentary reconstruction is prohibited"
+            )
+        reject_contaminated_essay(extraction.text, sample_id=header.sample_id)
+        essay = _clean_essay(extraction.text)
+        reject_contaminated_essay(essay, sample_id=header.sample_id)
         sample_meta = {
             **meta,
             "sample_id": header.sample_id,
             "source": _source_tag(meta, header.sample_id),
-            "essay_source": essay_source,
+            "essay_source": "pdf_text",
+            "parser_confidence": extraction.confidence,
+            "extraction_layout": extraction.layout,
         }
         samples.append(
             RawAPCSample(
                 sample_id=header.sample_id,
                 prompt=prompt,
-                essay=_clean_essay(essay),
+                essay=essay,
                 scores=header.scores,
                 total_score=header.total_score,
                 commentary_by_row=commentary_by_row,
                 metadata=sample_meta,
+                essay_source="pdf_text",
+                parser_confidence=extraction.confidence,
             )
         )
     return samples
@@ -204,12 +318,13 @@ def _extract_commentary_section(text: str) -> str:
         score = sample_count
         if "Note: Student samples" in window[:800]:
             score += 10
-        if score > best_score:
+        if score >= best_score:
             best_score = score
             best_start = marker.start()
 
     if best_start is not None and best_score > 0:
-        return text[best_start:]
+        line_start = text.rfind("\n", 0, best_start) + 1
+        return text[line_start:]
 
     sample_match = re.search(r"Sample:\s*\d+[A-C]", text)
     if sample_match:
@@ -243,19 +358,29 @@ def _find_sample_headers(commentary_text: str) -> list[_SampleHeaderMatch]:
     return headers
 
 
-def _extract_essays(text: str, leq_num: int | None) -> dict[str, str]:
+def detect_essay_contamination(text: str) -> tuple[str, ...]:
+    """Return stable marker names for document or commentary text in an essay."""
+    return tuple(name for name, pattern in ESSAY_CONTAMINATION_PATTERNS if pattern.search(text))
+
+
+def reject_contaminated_essay(text: str, *, sample_id: str = "unknown") -> None:
+    """Reject essay text containing any known non-student contamination marker."""
+    markers = detect_essay_contamination(text)
+    if markers:
+        raise EssayContaminationError(sample_id, markers)
+
+
+def _extract_essays(text: str, leq_num: int | None) -> dict[str, _EssayExtraction]:
     commentary_start = _commentary_boundary(text)
     essay_section = text[:commentary_start]
-    essays: dict[str, str] = {}
-
-    by_sample_header = _extract_essays_by_sample_header(essay_section)
-    essays.update(by_sample_header)
-
-    if not essays:
-        by_page_marker = _extract_essays_by_page_marker(essay_section)
-        essays.update(by_page_marker)
-
-    return {sample_id: body for sample_id, body in essays.items() if body.strip()}
+    candidates = (
+        _extract_essays_by_sample_header(essay_section, leq_num),
+        _extract_essays_by_page_marker(essay_section, leq_num),
+    )
+    return max(
+        candidates,
+        key=lambda essays: (len(essays), sum(len(item.text) for item in essays.values())),
+    )
 
 
 def _commentary_boundary(text: str) -> int:
@@ -268,112 +393,86 @@ def _commentary_boundary(text: str) -> int:
         score = sample_count
         if "Note: Student samples" in window[:800]:
             score += 10
-        if score > best_score:
+        if score >= best_score:
             best_score = score
             best_start = marker.start()
     if best_start is not None and best_score > 0:
-        return best_start
+        return text.rfind("\n", 0, best_start) + 1
     sample_match = re.search(r"Sample:\s*\d+[A-C]", text)
     if sample_match:
         return sample_match.start()
     return len(text)
 
 
-def _extract_essays_by_sample_header(essay_section: str) -> dict[str, str]:
+def _extract_essays_by_sample_header(
+    essay_section: str,
+    leq_num: int | None,
+) -> dict[str, _EssayExtraction]:
     markers = list(SAMPLE_ESSAY_PATTERN.finditer(essay_section))
-    if not markers:
-        return {}
-
-    grouped: dict[str, list[tuple[int, int]]] = {}
-    for idx, marker in enumerate(markers):
-        sample_id = marker.group(1).upper()
-        start = marker.end()
-        end = markers[idx + 1].start() if idx + 1 < len(markers) else len(essay_section)
-        grouped.setdefault(sample_id, []).append((start, end))
-
-    essays: dict[str, str] = {}
-    for sample_id, spans in grouped.items():
-        parts = [essay_section[start:end].strip() for start, end in spans]
-        essays[sample_id] = "\n\n".join(part for part in parts if part)
-    return essays
-
-
-def _extract_essays_by_page_marker(essay_section: str) -> dict[str, str]:
-    rubric_end = essay_section.rfind("Additional Notes:")
-    if rubric_end == -1:
-        rubric_end = 0
-    body = essay_section[rubric_end:]
-    markers = list(PAGE_MARKER_PATTERN.finditer(body))
-    if not markers:
-        return {}
-
-    first_gap = markers[0].start() - 0
-    if first_gap > 200:
-        return _extract_essays_marker_prefix(body, markers)
-    return _extract_essays_marker_suffix(body, markers)
-
-
-def _extract_essays_marker_prefix(body: str, markers: list[re.Match[str]]) -> dict[str, str]:
-    essays: dict[str, str] = {}
-    for idx, marker in enumerate(markers):
-        sample_id = f"{marker.group(1)}{marker.group(2).upper()}"
-        start = marker.end()
-        end = markers[idx + 1].start() if idx + 1 < len(markers) else len(body)
-        chunk = body[start:end].strip()
-        if len(chunk) > len(essays.get(sample_id, "")):
-            essays[sample_id] = chunk
-    return essays
-
-
-def _extract_essays_marker_suffix(body: str, markers: list[re.Match[str]]) -> dict[str, str]:
-    if not markers:
-        return {}
-    prefix = body[: markers[0].start()].strip()
-    if len(prefix) < 200:
-        return {}
-
-    sample_order = []
-    seen: set[str] = set()
-    for marker in markers:
-        sample_id = f"{marker.group(1)}{marker.group(2).upper()}"
-        if sample_id not in seen:
-            sample_order.append(sample_id)
-            seen.add(sample_id)
-
-    if len(sample_order) <= 1:
-        return {sample_order[0]: prefix} if sample_order else {}
-
-    chunks = re.split(r"\n{2,}", prefix)
-    chunks = [chunk.strip() for chunk in chunks if len(chunk.strip()) > 120]
-    essays: dict[str, str] = {}
-    if len(chunks) >= len(sample_order):
-        for sample_id, chunk in zip(sample_order, chunks[-len(sample_order) :], strict=False):
-            essays[sample_id] = chunk
-    else:
-        size = max(len(prefix) // len(sample_order), 1)
-        for idx, sample_id in enumerate(sample_order):
-            essays[sample_id] = prefix[idx * size : (idx + 1) * size].strip()
-    return essays
-
-
-def _reconstruct_essay_from_commentary(block: str) -> str:
-    quotes = re.findall(r'["\u201c]([^\u201d"]{12,})[\u201d"]', block)
-    sentences = re.findall(
-        r"(?:states|notes|claims|argues|identifies|describes|explains),?\s+([^\.]{20,200}\.)",
-        block,
-        flags=re.IGNORECASE,
+    return _collect_marked_essays(
+        essay_section,
+        markers,
+        sample_id=lambda marker: _normalize_sample_id(marker.group("sample_id")),
+        leq_num=leq_num,
+        layout="sample_page_header",
+        base_confidence=0.99,
     )
-    parts = quotes + sentences
-    if not parts:
-        return ""
-    unique: list[str] = []
-    seen: set[str] = set()
-    for part in parts:
-        normalized = part.strip().lower()
-        if normalized not in seen:
-            seen.add(normalized)
-            unique.append(part.strip())
-    return " ".join(unique)
+
+
+def _extract_essays_by_page_marker(
+    essay_section: str,
+    leq_num: int | None,
+) -> dict[str, _EssayExtraction]:
+    markers = list(PAGE_MARKER_PATTERN.finditer(essay_section))
+    return _collect_marked_essays(
+        essay_section,
+        markers,
+        sample_id=lambda marker: (
+            f"{marker.group('question')}{marker.group('label').upper()}"
+        ),
+        leq_num=leq_num,
+        layout="page_marker",
+        base_confidence=0.98,
+    )
+
+
+def _collect_marked_essays(
+    essay_section: str,
+    markers: list[re.Match[str]],
+    *,
+    sample_id: Callable[[re.Match[str]], str],
+    leq_num: int | None,
+    layout: str,
+    base_confidence: float,
+) -> dict[str, _EssayExtraction]:
+    grouped: dict[str, list[tuple[int, int, str]]] = {}
+    for idx, marker in enumerate(markers):
+        current_id = sample_id(marker)
+        if leq_num is not None and not current_id.startswith(str(leq_num)):
+            continue
+        end = markers[idx + 1].start() if idx + 1 < len(markers) else len(essay_section)
+        chunk = essay_section[marker.end() : end].strip()
+        if chunk:
+            grouped.setdefault(current_id, []).append(
+                (int(marker.group("page")), int(marker.group("page_count")), chunk)
+            )
+
+    essays: dict[str, _EssayExtraction] = {}
+    for current_id, pages in grouped.items():
+        expected_count = max(item[1] for item in pages)
+        page_text: dict[int, str] = {}
+        for page_number, _, chunk in pages:
+            if len(chunk) > len(page_text.get(page_number, "")):
+                page_text[page_number] = chunk
+        if set(page_text) != set(range(1, expected_count + 1)):
+            continue
+        ordered_text = (page_text[page_number] for page_number in range(1, expected_count + 1))
+        essays[current_id] = _EssayExtraction(
+            text="\n\n".join(ordered_text),
+            layout=layout,
+            confidence=base_confidence,
+        )
+    return essays
 
 
 def _extract_row_commentary(block: str) -> dict[str, str]:
@@ -386,20 +485,7 @@ def _extract_row_commentary(block: str) -> dict[str, str]:
 
 
 def _clean_essay(text: str) -> str:
-    cleaned = re.sub(
-        r"Sample\s+\d+[A-C]\s+\d+\s+of\s+\d+\s*",
-        "",
-        text,
-        flags=re.IGNORECASE,
-    )
-    cleaned = re.sub(
-        r"Page\s+\d+\s+of\s+\d+\s+\d+\s*\n?\s*[A-C]\b",
-        "",
-        cleaned,
-        flags=re.IGNORECASE,
-    )
-    cleaned = re.sub(r"\s+", " ", cleaned).strip()
-    return cleaned
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def _clean_commentary(text: str) -> str:

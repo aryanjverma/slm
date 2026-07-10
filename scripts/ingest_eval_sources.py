@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from apush_frq_grader_slm.filters import passes_quality_gate
+from apush_frq_grader_slm.golden import load_permission_record, require_permission
 from apush_frq_grader_slm.ingest.apc_parser import parse_apc_pdf
 from apush_frq_grader_slm.ingest.dedup import is_duplicate_essay
 from apush_frq_grader_slm.ingest.distill import raw_sample_to_frq_case
@@ -154,7 +155,11 @@ def main() -> None:
     args = parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
-    cb_cases, cb_rejected = ingest_cb(args.cb_dir, distill=args.distill, seed=args.seed)
+    if args.skip_cb:
+        cb_cases, cb_rejected = [], []
+    else:
+        require_permission(load_permission_record(args.permission_record), "evaluation")
+        cb_cases, cb_rejected = ingest_cb(args.cb_dir, distill=args.distill, seed=args.seed)
     tr_cases, tr_rejected = ingest_tomrichey(
         args.tomrichey_dir,
         existing=cb_cases,
@@ -224,6 +229,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--seed", type=int, default=13)
     parser.add_argument("--verbose", action="store_true")
+    parser.add_argument("--skip-cb", action="store_true")
+    parser.add_argument(
+        "--permission-record",
+        type=Path,
+        default=Path("config/college_board_permission.json"),
+    )
     return parser.parse_args()
 
 

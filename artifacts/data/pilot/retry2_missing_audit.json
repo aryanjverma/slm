@@ -1,0 +1,16 @@
+{
+  "accepted_rows": 1,
+  "distributions": {
+    "prompt_family": {
+      "p9_political_polarization": 1
+    },
+    "target_total": {
+      "4": 1
+    },
+    "time_budget": {
+      "25": 1
+    }
+  },
+  "rejected": [],
+  "total_rows": 1
+}

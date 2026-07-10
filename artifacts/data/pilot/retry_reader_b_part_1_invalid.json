@@ -1,0 +1,14 @@
+[
+  {
+    "task_id": "train-real-001-p02-v05",
+    "reason": "feedback_not_grounded_thesis"
+  },
+  {
+    "task_id": "train-real-001-p05-v11",
+    "reason": "feedback_not_grounded_analysis_reasoning"
+  },
+  {
+    "task_id": "train-real-008-p02-v05",
+    "reason": "feedback_not_grounded_analysis_reasoning"
+  }
+]

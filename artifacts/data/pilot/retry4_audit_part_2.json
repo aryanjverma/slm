@@ -1,0 +1,22 @@
+{
+  "accepted_rows": 4,
+  "distributions": {
+    "prompt_family": {
+      "p3_hamilton_jefferson": 2,
+      "p3_revolution_women_enslaved": 1,
+      "p4_factory_plantation_labor": 1
+    },
+    "target_total": {
+      "1": 1,
+      "2": 1,
+      "3": 2
+    },
+    "time_budget": {
+      "25": 1,
+      "35": 2,
+      "40": 1
+    }
+  },
+  "rejected": [],
+  "total_rows": 4
+}

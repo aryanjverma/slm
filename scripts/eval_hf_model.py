@@ -13,7 +13,13 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from apush_frq_grader_slm.behavior import SYSTEM_PROMPT
 from apush_frq_grader_slm.data import format_user_message
-from apush_frq_grader_slm.eval import score_response, summarize, summarize_real_eval
+from apush_frq_grader_slm.eval import (
+    score_response,
+    summarize,
+    summarize_by_dimensions,
+    summarize_real_eval,
+    summarize_real_eval_by_rubric,
+)
 from apush_frq_grader_slm.io import read_jsonl, write_jsonl
 from apush_frq_grader_slm.schemas import FRQCase
 
@@ -103,9 +109,21 @@ def main() -> None:
     # summarizing fails, do not lose the run — report how to recompute the
     # summary from the saved per-case results without re-generating.
     try:
+        dimensions = summarize_by_dimensions(results, cases)
+        (args.output_dir / f"{args.model_name}{suffix}_dimensions.json").write_text(
+            json.dumps(dimensions, indent=2, sort_keys=True), encoding="utf-8"
+        )
         if args.real_eval:
             summary = summarize_real_eval(results, cases)
             write_jsonl(args.output_dir / f"{args.model_name}_real_summary.jsonl", [summary])
+            by_rubric = summarize_real_eval_by_rubric(results, cases)
+            write_jsonl(
+                args.output_dir / f"{args.model_name}_real_by_rubric.jsonl",
+                [
+                    {"rubric_version": version, **item.model_dump(mode="json")}
+                    for version, item in by_rubric.items()
+                ],
+            )
         else:
             write_jsonl(
                 args.output_dir / f"{args.model_name}_summary.jsonl",

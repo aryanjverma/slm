@@ -16,3 +16,6 @@ artifacts/raw/tomrichey/*.pdf
 # Auto-generated eval table written by the notebook at runtime; the curated copy
 # lives at docs/v1_eval_results.md. Ignored so it never blocks `git pull`.
 artifacts/eval/v1_eval_results.md
+
+# Written permission records may contain private correspondence or identifiers.
+config/college_board_permission.json

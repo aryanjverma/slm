@@ -1,0 +1,10 @@
+increase the accuracy of my SLM by generating/finding more data in this format: (input: [prompt, student response],
+output: [grade, feedback]). Your reference/golden set is the real collegeboard. Look at the data right now at
+artifacts\data. Read the CLAUDE.md. Given this, draft a plan to improve my data. I suggest doing this: when you are
+generating input, find real prompts or base your prompts closely off existing prompts. Then, for generating student
+response input, have a good system prompt saying: You are a student taking the APUSH LEQ, and have 20-40 minutes (change
+it for different students) to write the LEQ. You are not worried about spelling mistakes, grammar, but rather getting the
+points from the rubric. From your limited historical knowledge, write the LEQ. As a grader, have a feedback output system
+prompt: You are a College Board grader, and this is the essay going on the released essay page on the College Board
+website. Make sure to grade it properly, ignoring grammar and spelling and focusing on argument and correct historical
+evidence. Obviously you can change these prompts to be better but that is the baseline.

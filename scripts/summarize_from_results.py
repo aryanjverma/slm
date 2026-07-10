@@ -16,9 +16,15 @@ the saved `*_results.jsonl` without re-running the model.
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
-from apush_frq_grader_slm.eval import summarize, summarize_real_eval
+from apush_frq_grader_slm.eval import (
+    summarize,
+    summarize_by_dimensions,
+    summarize_real_eval,
+    summarize_real_eval_by_rubric,
+)
 from apush_frq_grader_slm.io import read_jsonl, write_jsonl
 from apush_frq_grader_slm.schemas import EvalResult, FRQCase
 
@@ -36,11 +42,22 @@ def main() -> None:
     if args.real_eval:
         summary = summarize_real_eval(results, cases)
         out_path = args.output_dir / f"{model_name}_real_summary.jsonl"
+        write_jsonl(
+            args.output_dir / f"{model_name}_real_by_rubric.jsonl",
+            [
+                {"rubric_version": version, **item.model_dump(mode="json")}
+                for version, item in summarize_real_eval_by_rubric(results, cases).items()
+            ],
+        )
     else:
         summary = summarize(results, model_name)
         out_path = args.output_dir / f"{model_name}_summary.jsonl"
 
     write_jsonl(out_path, [summary])
+    (args.output_dir / f"{model_name}_dimensions.json").write_text(
+        json.dumps(summarize_by_dimensions(results, cases), indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
     print(f"Recomputed summary for {len(results)} results -> {out_path}")
     print(summary.model_dump())
 

@@ -1,0 +1,413 @@
+{
+  "total": 53,
+  "accepted_ids": [],
+  "rejected": {
+    "ap_central_2023_leq2_set1_2A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq2_set1_2B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq2_set1_2C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq2_set2_2A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq2_set2_2B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq2_set2_2C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq3_set1_3A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq3_set1_3B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq3_set1_3C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq3_set2_3A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq3_set2_3B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq3_set2_3C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq4_set1_4A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq4_set1_4B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq4_set1_4C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq4_set2_4A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq4_set2_4B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2023_leq4_set2_4C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq2_set1_2A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq2_set1_2B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq2_set1_2C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq2_set2_2A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq2_set2_2B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq2_set2_2C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq3_set1_3A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq3_set1_3B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq3_set1_3C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq3_set2_3A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq3_set2_3B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq3_set2_3C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq4_set1_4A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq4_set1_4B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq4_set1_4C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "source_text_contamination",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq4_set2_4A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2024_leq4_set2_4B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq2_set1_2A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq2_set1_2B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq2_set1_2C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq2_set2_2A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq2_set2_2B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq2_set2_2C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq3_set1_3A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq3_set1_3B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq3_set1_3C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq3_set2_3A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq3_set2_3B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq3_set2_3C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq4_set1_4A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq4_set1_4B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq4_set1_4C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq4_set2_4A": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq4_set2_4B": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ],
+    "ap_central_2025_leq4_set2_4C": [
+      "incomplete_manual_review",
+      "incomplete_provenance",
+      "low_extraction_confidence",
+      "not_official_college_board",
+      "untrusted_extraction_method"
+    ]
+  },
+  "rejection_counts": {
+    "incomplete_manual_review": 53,
+    "incomplete_provenance": 53,
+    "low_extraction_confidence": 53,
+    "not_official_college_board": 53,
+    "source_text_contamination": 28,
+    "untrusted_extraction_method": 53
+  }
+}

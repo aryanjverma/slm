@@ -6,7 +6,10 @@ import unittest
 from pathlib import Path
 
 from apush_frq_grader_slm.filters import passes_quality_gate
-from apush_frq_grader_slm.ingest.apc_parser import parse_apc_text
+from apush_frq_grader_slm.ingest.apc_parser import (
+    detect_essay_contamination,
+    parse_apc_text,
+)
 from apush_frq_grader_slm.ingest.distill import infer_failure_type, raw_sample_to_frq_case
 
 FIXTURE_PATH = Path(__file__).parent / "fixtures" / "apc" / "ap23_leq2_set1_full.txt"
@@ -40,8 +43,31 @@ class APCParserTests(unittest.TestCase):
         self.assertEqual(sample_2a.scores["evidence"], 2)
         self.assertEqual(sample_2a.scores["analysis_reasoning"], 2)
         self.assertEqual(sample_2a.total_score, 6)
-        self.assertGreater(len(sample_2a.essay), 200)
+        self.assertGreater(len(sample_2a.essay), 5_000)
+        self.assertTrue(sample_2a.essay.startswith("Since the beginning of the Era of Exploration"))
         self.assertIn("transatlantic", sample_2a.essay.lower())
+        self.assertEqual(sample_2a.essay_source, "pdf_text")
+        self.assertEqual(sample_2a.metadata["essay_source"], "pdf_text")
+        self.assertEqual(sample_2a.metadata["parser_confidence"], sample_2a.parser_confidence)
+        self.assertGreaterEqual(sample_2a.parser_confidence, 0.95)
+
+    def test_student_essays_exclude_all_document_and_commentary_text(self) -> None:
+        if self.full_text is None:
+            self.skipTest("Missing tests/fixtures/apc/ap23_leq2_set1_full.txt")
+        samples = parse_apc_text(
+            self.full_text,
+            metadata={"year": 2023, "leq_num": 2, "set": 1},
+        )
+        for sample in samples:
+            self.assertEqual(
+                detect_essay_contamination(sample.essay),
+                (),
+                msg=sample.sample_id,
+            )
+            self.assertNotIn("Scoring Commentary", sample.essay)
+            self.assertNotIn("Long Essay Question 2", sample.essay)
+            self.assertNotIn("College Board", sample.essay)
+            self.assertNotIn("Page 1 of 1", sample.essay)
 
     def test_commentary_blocks_extracted(self) -> None:
         if self.full_text is None:

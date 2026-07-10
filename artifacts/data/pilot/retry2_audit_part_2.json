@@ -1,0 +1,37 @@
+{
+  "accepted_rows": 18,
+  "distributions": {
+    "prompt_family": {
+      "p4_mass_democracy": 1,
+      "p4_native_removal_resistance": 2,
+      "p5_black_freedom_reconstruction": 1,
+      "p5_manifest_destiny": 1,
+      "p5_reconstruction_collapse": 2,
+      "p5_reconstruction_plans": 2,
+      "p5_western_communities": 1,
+      "p6_agrarian_protest": 1,
+      "p6_industrial_consolidation": 1,
+      "p7_progressive_reform": 1,
+      "p7_wartime_civil_liberties": 2,
+      "p7_world_war_two_homefront": 1,
+      "p9_cold_war_end": 1,
+      "p9_identity_movements": 1
+    },
+    "target_total": {
+      "0": 2,
+      "1": 2,
+      "2": 2,
+      "3": 5,
+      "4": 7
+    },
+    "time_budget": {
+      "20": 4,
+      "25": 2,
+      "30": 5,
+      "35": 4,
+      "40": 3
+    }
+  },
+  "rejected": [],
+  "total_rows": 18
+}

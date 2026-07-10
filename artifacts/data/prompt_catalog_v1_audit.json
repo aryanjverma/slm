@@ -1,0 +1,11 @@
+{
+  "family_count": 60,
+  "issues": [],
+  "max_cross_split_similarity": 0.36363636363636365,
+  "prompt_count": 60,
+  "split_counts": {
+    "synthetic_challenge": 9,
+    "synthetic_dev": 9,
+    "train": 42
+  }
+}

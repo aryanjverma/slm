@@ -13,6 +13,7 @@ import argparse
 from pathlib import Path
 
 from apush_frq_grader_slm.filters import passes_quality_gate
+from apush_frq_grader_slm.golden import load_permission_record, require_permission
 from apush_frq_grader_slm.ingest.apc_parser import parse_apc_pdf
 from apush_frq_grader_slm.ingest.dedup import is_duplicate_essay
 from apush_frq_grader_slm.ingest.distill import raw_sample_to_frq_case
@@ -60,6 +61,7 @@ def build_seed_cases(
 
 def main() -> None:
     args = parse_args()
+    require_permission(load_permission_record(args.permission_record), "training")
     seeds, dropped = build_seed_cases(args.input, args.frozen_eval, seed=args.seed)
     write_jsonl(args.output, seeds)
     print(f"Wrote {len(seeds)} net-new seed essays to {args.output}")
@@ -80,6 +82,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--seed", type=int, default=13)
     parser.add_argument("--verbose", action="store_true")
+    parser.add_argument(
+        "--permission-record",
+        type=Path,
+        default=Path("config/college_board_permission.json"),
+    )
     return parser.parse_args()
 
 

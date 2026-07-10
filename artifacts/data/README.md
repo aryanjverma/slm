@@ -25,6 +25,26 @@ and must pass the quality gate (`filters.passes_quality_gate`: valid JSON, in-ra
 scores, `total == sum`, feedback grounded in the essay, no rewrites, no fabricated
 quotes) before it is used.
 
+## v2 status
+
+The files documented below describe the legacy v1 pipeline. The implemented v2 pipeline now:
+
+- builds 60 original prompt families with deterministic train/dev/challenge splits;
+- generates unlabeled essays from 20/25/30/35/40-minute student personas;
+- uses two anonymous graders plus adjudication instead of writer self-grades;
+- carries source, rubric-version, extraction, generator, grader, and review provenance;
+- rejects source/generation contamination, repeated prose/feedback, and eval leakage;
+- requires 10% human review before immutable SFT artifacts are emitted;
+- keeps official, external, synthetic-dev, and synthetic-challenge evaluation tracks separate.
+
+Current generated planning artifacts are `prompt_catalog_v1.jsonl`,
+`synth_tasks_train_v2.jsonl`, `synth_tasks_dev_v2.jsonl`, and
+`synth_tasks_challenge_v2.jsonl`. See `artifacts/dataset_card.md` for the v2 build sequence.
+
+`eval_cb_cases.jsonl` remains a legacy artifact, not a verified golden set. The current audit
+rejects all 53 rows for missing v2 provenance/manual review and independently detects 28 rows with
+source-text contamination. Commentary reconstruction has been removed from the parser.
+
 ## Two eval tracks (deliberately separate)
 
 | Track | File | What it measures |

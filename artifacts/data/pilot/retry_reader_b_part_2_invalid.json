@@ -1,0 +1,22 @@
+[
+  {
+    "task_id": "train-real-013-p00-v00",
+    "reason": "feedback_not_grounded_thesis"
+  },
+  {
+    "task_id": "train-real-013-p01-v03",
+    "reason": "missing_evidence_span_contextualization,feedback_not_grounded_analysis_reasoning"
+  },
+  {
+    "task_id": "train-real-015-p01-v03",
+    "reason": "missing_evidence_span_contextualization"
+  },
+  {
+    "task_id": "train-real-021-p01-v03",
+    "reason": "missing_evidence_span_contextualization"
+  },
+  {
+    "task_id": "train-real-022-p01-v03",
+    "reason": "missing_evidence_span_contextualization"
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "accepted_rows": 4,
+  "distributions": {
+    "prompt_family": {
+      "p2_colonial_participation": 1,
+      "p2_middle_southern_diversity": 1,
+      "p2_new_england_chesapeake": 1,
+      "p3_first_party_system": 1
+    },
+    "target_total": {
+      "3": 3,
+      "4": 1
+    },
+    "time_budget": {
+      "30": 2,
+      "35": 1,
+      "40": 1
+    }
+  },
+  "rejected": [],
+  "total_rows": 4
+}

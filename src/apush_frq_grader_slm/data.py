@@ -9,7 +9,14 @@ from collections.abc import Iterable
 
 from apush_frq_grader_slm.behavior import SYSTEM_PROMPT
 from apush_frq_grader_slm.rubric import compute_total
-from apush_frq_grader_slm.schemas import FRQCase, FailureType, RubricFeedback, RubricScores
+from apush_frq_grader_slm.schemas import (
+    CaseProvenance,
+    FRQCase,
+    FailureType,
+    LabelingMetadata,
+    RubricFeedback,
+    RubricScores,
+)
 
 LEQ_PROMPTS: list[dict[str, str]] = [
     {
@@ -126,6 +133,15 @@ def build_case(
         difficulty=difficulty,
         assistant_response=assistant_response,
         tags=tags,
+        provenance=CaseProvenance(
+            source_type="synthetic",
+            source_id=case_id,
+            prompt_family_id=unit,
+            generator_name="template_v1",
+            generator_config={"seeded": True, "failure_type": failure_type.value},
+            review_status="machine_checked",
+        ),
+        labeling=LabelingMetadata(method="rule_based", confidence=1.0),
     )
 
 

@@ -1,0 +1,33 @@
+{
+  "accepted_rows": 20,
+  "distributions": {
+    "prompt_family": {
+      "p2_atlantic_consumer_revolution": 2,
+      "p2_colonial_participation": 3,
+      "p2_indigenous_diplomacy": 2,
+      "p2_middle_southern_diversity": 2,
+      "p2_new_england_chesapeake": 1,
+      "p2_plantation_slavery_growth": 1,
+      "p3_early_republic_diplomacy": 1,
+      "p3_first_party_system": 3,
+      "p3_hamilton_jefferson": 3,
+      "p3_revolution_women_enslaved": 2
+    },
+    "target_total": {
+      "0": 2,
+      "1": 2,
+      "2": 6,
+      "3": 5,
+      "4": 5
+    },
+    "time_budget": {
+      "20": 5,
+      "25": 1,
+      "30": 4,
+      "35": 6,
+      "40": 4
+    }
+  },
+  "rejected": [],
+  "total_rows": 20
+}

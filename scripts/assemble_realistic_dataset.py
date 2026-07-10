@@ -1,10 +1,4 @@
-"""Validate agent-generated raw essays into the realistic training slice.
-
-Joins agent output (synth_realistic_raw.jsonl) to the planned tasks
-(synth_tasks.jsonl), applies label discipline + rubric validity + the quality
-gate + anti-leakage checks, and writes accepted cases to
-artifacts/data/train_realistic_cases.jsonl (rejects -> a sidecar log).
-"""
+"""Assemble independently graded realistic candidates into training cases."""
 
 from __future__ import annotations
 
@@ -12,12 +6,13 @@ import argparse
 from collections import Counter
 from pathlib import Path
 
+from apush_frq_grader_slm.independent_grading import GradeDecision, assemble_consensus_case
 from apush_frq_grader_slm.io import read_jsonl, write_jsonl
 from apush_frq_grader_slm.schemas import FRQCase
 from apush_frq_grader_slm.synth_realistic import (
     GenTask,
-    parse_agent_row,
-    validate_generated_case,
+    parse_candidate_row,
+    validate_generated_candidate,
 )
 
 
@@ -30,38 +25,70 @@ def load_cases(path: Path) -> list[FRQCase]:
 def main() -> None:
     args = parse_args()
     tasks = {row["task_id"]: GenTask.from_row(row) for row in read_jsonl(args.tasks)}
-    leakage_sources = load_cases(args.seeds) + load_cases(args.frozen_eval)
+    decisions = {
+        row["task_id"]: GradeDecision.from_row(row) for row in read_jsonl(args.grades)
+    }
+    leakage_sources = (
+        load_cases(args.seeds)
+        + load_cases(args.golden_eval)
+        + load_cases(args.external_eval)
+    )
     if not leakage_sources:
         print("WARNING: no seed/frozen-eval essays loaded; anti-leakage check is weak.")
 
-    accepted: list[FRQCase] = []
+    accepted_rows: list[dict] = []
+    accepted_cases: list[FRQCase] = []
     rejects: list[dict] = []
+    seen_task_ids: set[str] = set()
     for row in read_jsonl(args.raw):
         task_id = row.get("task_id")
+        if task_id in seen_task_ids:
+            rejects.append({"task_id": task_id, "reasons": ["duplicate_candidate_task_id"]})
+            continue
+        seen_task_ids.add(task_id)
         task = tasks.get(task_id)
         if task is None:
             rejects.append({"task_id": task_id, "reasons": ["unknown_task_id"]})
             continue
         try:
-            case = parse_agent_row(row, task)
-        except Exception as exc:  # malformed structure from the agent
+            candidate = parse_candidate_row(row, task)
+        except Exception as exc:
             rejects.append({"task_id": task_id, "reasons": [f"parse_error:{exc}"]})
             continue
-        ok, reasons = validate_generated_case(case, task, row, leakage_sources)
-        if ok:
-            accepted.append(case)
-        else:
-            rejects.append({"task_id": task_id, "reasons": reasons})
+        candidate_ok, candidate_reasons = validate_generated_candidate(
+            candidate, task, leakage_sources
+        )
+        if not candidate_ok:
+            rejects.append({"task_id": task_id, "reasons": candidate_reasons})
+            continue
 
-    write_jsonl(args.output, accepted)
-    if rejects:
-        write_jsonl(args.rejects, rejects)
+        decision = decisions.get(task_id)
+        if decision is None:
+            rejects.append({"task_id": task_id, "reasons": ["missing_independent_grade"]})
+            continue
+        case, metadata, reasons = assemble_consensus_case(
+            candidate,
+            task,
+            decision,
+            max_target_distance=args.max_target_distance,
+        )
+        if case is None:
+            rejects.append(
+                {"task_id": task_id, "reasons": reasons, "labeling_metadata": metadata}
+            )
+            continue
+        output_row = case.model_dump(mode="json")
+        output_row["consensus_audit"] = metadata
+        accepted_rows.append(output_row)
+        accepted_cases.append(case)
 
-    _report(accepted, rejects)
+    write_jsonl(args.output, accepted_rows)
+    write_jsonl(args.rejects, rejects)
+    _report(accepted_cases, accepted_rows, rejects)
 
 
-def _report(accepted: list[FRQCase], rejects: list[dict]) -> None:
-    print(f"Accepted {len(accepted)} realistic cases; rejected {len(rejects)}.")
+def _report(accepted: list[FRQCase], rows: list[dict], rejects: list[dict]) -> None:
+    print(f"Accepted {len(accepted)} independently graded cases; rejected {len(rejects)}.")
     if rejects:
         reason_counts: Counter[str] = Counter()
         for row in rejects:
@@ -69,34 +96,43 @@ def _report(accepted: list[FRQCase], rejects: list[dict]) -> None:
         print("  reject reasons: " + ", ".join(f"{r}:{c}" for r, c in reason_counts.most_common()))
     if not accepted:
         return
-    totals = Counter(c.reference_scores.total for c in accepted)
-    print("  total distribution: " + ", ".join(f"{t}:{totals[t]}" for t in range(7)))
-    words = sorted(len(c.student_response.split()) for c in accepted)
-    mid = words[len(words) // 2]
-    print(f"  essay words: min={words[0]} median={mid} max={words[-1]}")
-    prompts = {c.prompt for c in accepted}
-    degenerate = sum(
-        1
-        for p in prompts
-        if len({c.reference_scores.total for c in accepted if c.prompt == p}) <= 1
-    )
-    print(f"  prompts: {len(prompts)} distinct; {degenerate} with a single total (degenerate)")
+    totals = Counter(case.reference_scores.total for case in accepted)
+    resolutions = Counter(row["consensus_audit"]["resolution"] for row in rows)
+    print("  total distribution: " + ", ".join(f"{total}:{totals[total]}" for total in range(7)))
+    print("  resolutions: " + ", ".join(f"{key}:{value}" for key, value in resolutions.items()))
+    words = sorted(len(case.student_response.split()) for case in accepted)
+    print(f"  essay words: min={words[0]} median={words[len(words) // 2]} max={words[-1]}")
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Assemble realistic training cases from agent output.")
-    parser.add_argument("--tasks", type=Path, default=Path("artifacts/data/synth_tasks.jsonl"))
-    parser.add_argument("--raw", type=Path, default=Path("artifacts/data/synth_realistic_raw.jsonl"))
+    parser = argparse.ArgumentParser(
+        description="Assemble independently graded realistic training cases."
+    )
+    parser.add_argument(
+        "--tasks", type=Path, default=Path("artifacts/data/synth_tasks_train_v2.jsonl")
+    )
+    parser.add_argument(
+        "--raw", type=Path, default=Path("artifacts/data/synth_realistic_validated_v2.jsonl")
+    )
+    parser.add_argument(
+        "--grades", type=Path, default=Path("artifacts/data/synth_realistic_grades_v2.jsonl")
+    )
     parser.add_argument("--seeds", type=Path, default=Path("artifacts/data/seed_real_cases.jsonl"))
     parser.add_argument(
-        "--frozen-eval", type=Path, default=Path("artifacts/data/eval_real_cases.jsonl")
+        "--golden-eval", type=Path, default=Path("artifacts/data/eval_cb_golden_v2.jsonl")
     )
     parser.add_argument(
-        "--output", type=Path, default=Path("artifacts/data/train_realistic_cases.jsonl")
+        "--external-eval", type=Path, default=Path("artifacts/data/eval_external_v2.jsonl")
     )
     parser.add_argument(
-        "--rejects", type=Path, default=Path("artifacts/data/synth_realistic_rejects.jsonl")
+        "--output",
+        type=Path,
+        default=Path("artifacts/data/train_realistic_v2_unreviewed.jsonl"),
     )
+    parser.add_argument(
+        "--rejects", type=Path, default=Path("artifacts/data/synth_realistic_rejects_v2.jsonl")
+    )
+    parser.add_argument("--max-target-distance", type=int, default=1)
     return parser.parse_args()
 
 
