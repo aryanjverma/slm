@@ -389,7 +389,7 @@ def write_training_artifacts(
 def _artifact_record(path: Path, *, rows: int | None = None) -> ArtifactRecord:
     payload = path.read_bytes()
     return ArtifactRecord(
-        path=str(path),
+        path=path.as_posix(),
         sha256=hashlib.sha256(payload).hexdigest(),
         bytes=len(payload),
         rows=rows,

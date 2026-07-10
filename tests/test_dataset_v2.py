@@ -144,6 +144,11 @@ def test_manifest_refuses_overwrite(tmp_path) -> None:
     assert audit.clean
     manifest = write_training_artifacts(tmp_path, [case], audit, seed=13, settings={})
     assert len(manifest.artifacts) == 3
+    assert all("\\" not in artifact.path for artifact in manifest.artifacts)
+    assert all(
+        b"\r\n" not in (tmp_path / artifact.path).read_bytes()
+        for artifact in manifest.artifacts
+    )
     with pytest.raises(FileExistsError):
         write_training_artifacts(tmp_path, [case], audit, seed=13, settings={})
 

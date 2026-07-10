@@ -1,22 +1,22 @@
 {
   "artifacts": [
     {
-      "bytes": 548280,
-      "path": "artifacts\\data\\v2\\train_realistic_v2.jsonl",
+      "bytes": 548193,
+      "path": "artifacts/data/v2/train_realistic_v2.jsonl",
       "rows": 87,
-      "sha256": "31facef675a9bf5c2cf0f65e28577de8f1c5522ed0e8084b153353a7e7b7d1db"
+      "sha256": "7ad33d7bf9e9fc49f05c3ac9e59861471dc96f6ba24ee633be06d950a17c6886"
     },
     {
-      "bytes": 40752,
-      "path": "artifacts\\data\\v2\\train_adversarial_v2.jsonl",
+      "bytes": 40737,
+      "path": "artifacts/data/v2/train_adversarial_v2.jsonl",
       "rows": 15,
-      "sha256": "fd90f538eb147321a0e1f9c7874e31640f9831f2a9f09a9cdb00356a2bda9214"
+      "sha256": "c64bc50f07e306cc06198359e09e10946285d51b7c7efcd826051e5adba5b2ba"
     },
     {
-      "bytes": 453465,
-      "path": "artifacts\\data\\v2\\train_chat_v2.jsonl",
+      "bytes": 453363,
+      "path": "artifacts/data/v2/train_chat_v2.jsonl",
       "rows": 102,
-      "sha256": "cfd2d778b04f573f68412b7243e9a31398c0e06df70eaf1a8e42a315a7f3a506"
+      "sha256": "68226cd4a7105ef650e27344d29440463a65f03a2bc270f406e419f61cac3693"
     }
   ],
   "audit": {

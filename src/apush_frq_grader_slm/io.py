@@ -14,7 +14,7 @@ T = TypeVar("T", bound=BaseModel)
 
 def write_jsonl(path: Path, rows: Iterable[BaseModel | dict]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as file:
+    with path.open("w", encoding="utf-8", newline="\n") as file:
         for row in rows:
             payload = row.model_dump(mode="json") if isinstance(row, BaseModel) else row
             file.write(json.dumps(payload, ensure_ascii=True) + "\n")
