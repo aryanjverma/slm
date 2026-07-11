@@ -269,7 +269,7 @@ def _metric_summary(
         if valid:
             valid_count += 1
         scores = payload.get("scores") if isinstance(payload, dict) else None
-        predicted = sum(int(scores[key]) for key in CRITERIA) if isinstance(scores, dict) else None
+        predicted = _score_total(scores)
         reference = case_by_id[record.case_id].reference_scores.total
         ref_totals.append(reference)
         if predicted is None:
@@ -295,3 +295,19 @@ def _metric_summary(
             else 0
         ),
     )
+
+
+def _score_total(scores: object) -> int | None:
+    """Return a total for complete score objects; partial raw payloads are unscorable."""
+    if not isinstance(scores, dict):
+        return None
+    values: list[int] = []
+    for criterion in CRITERIA:
+        value = scores.get(criterion)
+        if isinstance(value, bool):
+            return None
+        try:
+            values.append(int(value))
+        except (TypeError, ValueError):
+            return None
+    return sum(values)

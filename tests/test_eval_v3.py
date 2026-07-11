@@ -10,6 +10,7 @@ from apush_frq_grader_slm.eval_v3 import (
     load_resumable_records,
     make_record,
     select_official_split,
+    summarize_v3,
 )
 
 
@@ -73,3 +74,24 @@ def test_record_preserves_raw_response_while_normalizing_balanced_object() -> No
     assert record.raw_response == raw
     assert record.layered_schema_valid
     assert record.normalized_payload["total"] == 5
+
+
+def test_summary_treats_partial_raw_scores_as_unscorable() -> None:
+    case = generate_cases(count=1, split="eval", seed=3)[0]
+    raw = (
+        '{"scores":{"thesis":1,"contextualization":1},'
+        '"feedback":{"thesis":"a","contextualization":"b"}}'
+    )
+    identity = _identity()
+    record = make_record(
+        case_id=case.id,
+        identity=identity,
+        raw_response=raw,
+        prompt_tokens=10,
+        completion_tokens=10,
+        finish_reason="balanced_json",
+        repetition_detected=False,
+    )
+    summary = summarize_v3([record], [case], identity)
+    assert summary.raw_model.total_mae == 6.0
+    assert summary.layered_system.schema_valid_rate == 0.0
