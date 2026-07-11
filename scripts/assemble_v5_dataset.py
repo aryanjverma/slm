@@ -7,9 +7,9 @@ import json
 from pathlib import Path
 
 from apush_frq_grader_slm.dataset_v5 import (
-    PRIVATE_USE_NOTICE, assemble_v5_selection, assert_manual_approval,
-    candidate_to_case, file_sha256, manual_review_packet, select_v4_replay,
-    style_distribution_audit,
+    PRIVATE_USE_NOTICE, annotate_distribution_match, assemble_v5_selection,
+    assert_manual_approval, candidate_to_case, file_sha256, manual_review_packet,
+    select_v4_replay, style_distribution_audit,
 )
 from apush_frq_grader_slm.io import read_jsonl, write_jsonl
 from apush_frq_grader_slm.schemas import FRQCase
@@ -44,8 +44,9 @@ def main() -> None:
         overlap_texts = [case.student_response for case in golden_cases]
         for path in args.overlap_corpus:
             overlap_texts.extend(str(r.get("student_response") or r.get("essay") or "") for r in read_jsonl(path))
+        candidates = annotate_distribution_match(read_jsonl(args.candidates), golden_cases)
         train, dev = assemble_v5_selection(
-            read_jsonl(args.candidates), source_texts=overlap_texts, golden_cases=golden_cases
+            candidates, source_texts=overlap_texts, golden_cases=golden_cases
         )
         selected = train + dev
         style_audit = style_distribution_audit(
@@ -71,6 +72,7 @@ def main() -> None:
     # Apply human-corrected reviewed records to the provisional corpus.
     selected = [packet.get(row["task_id"], row) for row in selected]
     golden_cases = [FRQCase.model_validate(row) for row in read_jsonl(args.golden_cases)]
+    selected = annotate_distribution_match(selected, golden_cases)
     overlap_texts = [case.student_response for case in golden_cases]
     for path in args.overlap_corpus:
         overlap_texts.extend(
