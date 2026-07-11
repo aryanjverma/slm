@@ -3,11 +3,10 @@
 from __future__ import annotations
 
 import argparse
+import json
 import shlex
 import subprocess
 from pathlib import Path
-
-from datasets import load_dataset
 
 from apush_frq_grader_slm.training_v3 import (
     AssistantOnlyDataCollator,
@@ -41,16 +40,25 @@ def main() -> None:
     tokenizer = AutoTokenizer.from_pretrained(args.model)
     if tokenizer.pad_token_id is None:
         tokenizer.pad_token_id = tokenizer.eos_token_id
-    dataset = load_dataset("json", data_files=str(args.data), split="train")
-
-    def tokenize(row):
+    rows = [
+        json.loads(line)
+        for line in args.data.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    tokenized_rows = []
+    for row in rows:
         example = tokenize_assistant_only(row["messages"], tokenizer, max_length=3072)
         assert_assistant_only_example(example)
-        return example
+        tokenized_rows.append(example)
 
-    tokenized = dataset.map(tokenize, remove_columns=dataset.column_names)
-    for index in range(min(10, len(tokenized))):
-        assert_assistant_only_example(tokenized[index])
+    class TokenizedDataset:
+        def __len__(self):
+            return len(tokenized_rows)
+
+        def __getitem__(self, index):
+            return tokenized_rows[index]
+
+    tokenized = TokenizedDataset()
 
     quantization = BitsAndBytesConfig(
         load_in_4bit=True,
@@ -81,18 +89,23 @@ def main() -> None:
         ),
     )
 
-    callbacks = []
-    if args.dev_eval_command:
-        command_template = args.dev_eval_command
+    command_template = args.dev_eval_command
 
-        class DevGenerationCallback(TrainerCallback):
-            def on_save(self, callback_args, state, control, **kwargs):
-                checkpoint = Path(callback_args.output_dir) / f"checkpoint-{state.global_step}"
-                command = command_template.format(checkpoint=str(checkpoint))
-                subprocess.run(shlex.split(command), check=True)
-                return control
+    class DevGenerationCallback(TrainerCallback):
+        def on_save(self, callback_args, state, control, **kwargs):
+            checkpoint = Path(callback_args.output_dir) / f"checkpoint-{state.global_step}"
+            command = command_template.format(checkpoint=str(checkpoint))
+            subprocess.run(shlex.split(command), check=True)
+            return control
 
-        callbacks.append(DevGenerationCallback())
+    callbacks = [DevGenerationCallback()]
+
+    if args.resume_from_checkpoint:
+        checkpoint = Path(args.resume_from_checkpoint)
+        if not checkpoint.exists():
+            raise FileNotFoundError(f"Resume checkpoint does not exist: {checkpoint}")
+        command = command_template.format(checkpoint=str(checkpoint))
+        subprocess.run(shlex.split(command), check=True)
 
     trainer = Trainer(
         model=model,
@@ -117,7 +130,7 @@ def main() -> None:
             remove_unused_columns=False,
         ),
     )
-    trainer.train()
+    trainer.train(resume_from_checkpoint=args.resume_from_checkpoint or None)
     trainer.save_model(str(args.output / "final"))
     tokenizer.save_pretrained(str(args.output / "final"))
 
@@ -133,6 +146,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--grad-accum", type=int, default=16)
     parser.add_argument("--learning-rate", type=float, default=2e-4)
     parser.add_argument("--seed", type=int, default=13)
+    parser.add_argument("--resume-from-checkpoint")
     parser.add_argument("--bf16", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument(
         "--dev-eval-command",

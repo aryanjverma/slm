@@ -43,10 +43,11 @@ def load_model(model_id: str):
 
         config = json.loads(adapter_config.read_text(encoding="utf-8"))
         base = AutoModelForCausalLM.from_pretrained(
-            config["base_model_name_or_path"], torch_dtype=dtype, low_cpu_mem_usage=True
+            config["base_model_name_or_path"], dtype=dtype, low_cpu_mem_usage=True
         )
         tokenizer = AutoTokenizer.from_pretrained(path)
         model = PeftModel.from_pretrained(base, path).merge_and_unload()
+        model = model.to(device)
     else:
         tokenizer = AutoTokenizer.from_pretrained(model_id)
         model = AutoModelForCausalLM.from_pretrained(
@@ -55,7 +56,7 @@ def load_model(model_id: str):
             device_map="auto" if device == "cuda" else None,
             low_cpu_mem_usage=True,
         )
-    if device == "cpu":
+    if device == "cpu" and not adapter_config.exists():
         model = model.to(device)
     model.eval()
     return model, tokenizer, device
