@@ -216,15 +216,43 @@ def _ngrams(text: str, n: int = 8) -> set[tuple[str, ...]]:
     return {tuple(words[i:i + n]) for i in range(max(0, len(words) - n + 1))}
 
 
+def _word_ngrams(words: Sequence[str], n: int = 8) -> set[tuple[str, ...]]:
+    return {tuple(words[i : i + n]) for i in range(max(0, len(words) - n + 1))}
+
+
+def _scrub_allowed_phrases(text: str, phrases: Sequence[str]) -> str:
+    """Remove unavoidable names/dates/terms before eight-gram overlap checks."""
+    cleaned = normalize_essay(text)
+    scrubbers = sorted(
+        (normalize_essay(phrase) for phrase in phrases if str(phrase).strip()),
+        key=len,
+        reverse=True,
+    )
+    for phrase in scrubbers:
+        if phrase:
+            cleaned = cleaned.replace(phrase, " ")
+    return re.sub(r"\s+", " ", cleaned).strip()
+
+
 def overlap_reasons(
     essay: str, source_texts: Iterable[str], *, allowed_phrases: Iterable[str] = ()
 ) -> list[str]:
-    """Detect exact/near duplicates and normalized eight-word source copying."""
+    """Detect exact/near duplicates and normalized eight-word source copying.
+
+    ``allowed_phrases`` exempts unavoidable historical names, dates, and short
+    evidence terms: short phrases are scrubbed from both sides before the
+    eight-gram check, and long phrases (>= 8 words) have their grams subtracted.
+    """
     norm = normalize_essay(essay)
     if len(norm) < 80:
         return ["essay_too_short_for_overlap_audit"]
-    allowed = set().union(*(_ngrams(item) for item in allowed_phrases)) if allowed_phrases else set()
-    essay_grams = _ngrams(essay) - allowed
+    allowed_list = [str(item).strip() for item in allowed_phrases if str(item).strip()]
+    long_allowed = [item for item in allowed_list if len(normalize_essay(item).split()) >= 8]
+    allowed_grams = (
+        set().union(*(_ngrams(item) for item in long_allowed)) if long_allowed else set()
+    )
+    essay_scrubbed = _scrub_allowed_phrases(essay, allowed_list)
+    essay_grams = _word_ngrams(essay_scrubbed.split()) - allowed_grams
     essay_words = set(norm.split())
     for source in source_texts:
         source_norm = normalize_essay(source)
@@ -234,7 +262,9 @@ def overlap_reasons(
         union = essay_words | source_words
         if union and len(essay_words & source_words) / len(union) >= 0.82:
             return ["near_duplicate"]
-        if essay_grams & (_ngrams(source) - allowed):
+        source_scrubbed = _scrub_allowed_phrases(source, allowed_list)
+        source_grams = _word_ngrams(source_scrubbed.split()) - allowed_grams
+        if essay_grams & source_grams:
             return ["verbatim_eight_word_overlap"]
     return []
 
@@ -487,6 +517,16 @@ def style_features(text: str) -> dict[str, float]:
     }
 
 
+_STYLE_TOLERANCES: dict[str, float] = {
+    "word_count": 0.20,
+    "paragraph_count": 0.30,
+    "sentence_word_mean": 0.25,
+    "sentence_word_std": 0.35,
+    "informal_marker_per_100": 1.00,
+    "punctuation_per_100": 0.40,
+}
+
+
 def style_distribution_audit(
     rows: Sequence[Mapping[str, Any]], golden_cases: Sequence[FRQCase]
 ) -> dict[str, Any]:
@@ -496,17 +536,9 @@ def style_distribution_audit(
         style_features(str(row.get("student_response") or row.get("essay") or "")) for row in rows
     ]
     golden_features = [style_features(case.student_response) for case in golden_cases]
-    tolerances = {
-        "word_count": 0.20,
-        "paragraph_count": 0.30,
-        "sentence_word_mean": 0.25,
-        "sentence_word_std": 0.35,
-        "informal_marker_per_100": 1.00,
-        "punctuation_per_100": 0.40,
-    }
     metrics: dict[str, Any] = {}
     passed = True
-    for key, relative_tolerance in tolerances.items():
+    for key, relative_tolerance in _STYLE_TOLERANCES.items():
         candidate_mean = sum(item[key] for item in candidate_features) / len(candidate_features)
         golden_mean = sum(item[key] for item in golden_features) / len(golden_features)
         floor = 0.5 if key in {"paragraph_count", "informal_marker_per_100"} else 0.1
@@ -520,6 +552,83 @@ def style_distribution_audit(
             "passed": metric_passed,
         }
     return {"passed": passed, "metrics": metrics, "golden_text_retained": False}
+
+
+def compute_distribution_match(
+    row: Mapping[str, Any],
+    golden_cases: Sequence[FRQCase],
+) -> dict[str, Any]:
+    """Recompute whether a candidate fits the golden score/style envelope.
+
+    External tools may propose ``distribution_match``, but assembly and validation
+    should call this helper (or :func:`annotate_distribution_match`) rather than
+    trusting the proposal blindly. Membership uses the golden joint score-vector
+    set plus per-essay style features against golden means / tolerances from
+    :func:`style_distribution_audit`.
+    """
+    if not golden_cases:
+        return {
+            "passed": False,
+            "score_vector_in_golden": False,
+            "style_within_tolerance": False,
+            "recomputed": True,
+            "reason": "no_golden_cases",
+        }
+    scores = (row.get("resolved_grade") or {}).get("scores") or row.get("scores") or {}
+    try:
+        signature = _score_signature(scores)  # type: ignore[arg-type]
+    except (KeyError, TypeError, ValueError):
+        return {
+            "passed": False,
+            "score_vector_in_golden": False,
+            "style_within_tolerance": False,
+            "recomputed": True,
+            "reason": "invalid_scores",
+        }
+    golden_signatures = {
+        _score_signature(case.reference_scores.model_dump()) for case in golden_cases
+    }
+    score_ok = signature in golden_signatures
+
+    essay = str(row.get("student_response") or row.get("essay") or "")
+    features = style_features(essay)
+    golden_features = [style_features(case.student_response) for case in golden_cases]
+    style_metrics: dict[str, Any] = {}
+    style_ok = True
+    for key, relative_tolerance in _STYLE_TOLERANCES.items():
+        golden_mean = sum(item[key] for item in golden_features) / len(golden_features)
+        floor = 0.5 if key in {"paragraph_count", "informal_marker_per_100"} else 0.1
+        # Per-row tolerance is looser than aggregate audit (individual essays vary).
+        allowed_delta = max(abs(golden_mean) * relative_tolerance * 2.5, floor * 2.0)
+        metric_passed = abs(features[key] - golden_mean) <= allowed_delta
+        style_ok = style_ok and metric_passed
+        style_metrics[key] = {
+            "value": round(features[key], 4),
+            "golden_mean": round(golden_mean, 4),
+            "allowed_delta": round(allowed_delta, 4),
+            "passed": metric_passed,
+        }
+    return {
+        "passed": bool(score_ok and style_ok),
+        "score_vector_in_golden": score_ok,
+        "score_vector": list(signature),
+        "style_within_tolerance": style_ok,
+        "style_metrics": style_metrics,
+        "recomputed": True,
+    }
+
+
+def annotate_distribution_match(
+    rows: Sequence[Mapping[str, Any]],
+    golden_cases: Sequence[FRQCase],
+) -> list[dict[str, Any]]:
+    """Set ``distribution_match`` on each row via :func:`compute_distribution_match`."""
+    annotated: list[dict[str, Any]] = []
+    for row in rows:
+        updated = dict(row)
+        updated["distribution_match"] = compute_distribution_match(updated, golden_cases)
+        annotated.append(updated)
+    return annotated
 
 
 def assemble_v5_selection(

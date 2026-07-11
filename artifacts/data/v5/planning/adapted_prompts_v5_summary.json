@@ -1,0 +1,9 @@
+{
+  "adapted_per_family": 3,
+  "contains_essays": false,
+  "families_path": "artifacts/data/v5/planning/prompt_families_v5.jsonl",
+  "n_families": 18,
+  "n_seeds": 53,
+  "seeds_path": "artifacts/data/v5/planning/cb_seed_profiles_v5.jsonl",
+  "seeds_with_adapted_prompts": 53
+}

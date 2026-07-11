@@ -63,5 +63,7 @@ Each record must contain:
 Use a third authenticity review when the first two disagree. Set `resolved_grade.adjudicated` to
 `true` whenever rubric readers disagree or any reader confidence is below 0.85. For boundary tasks,
 the validator restores the contrast metadata from the private task plan; the external tool must not
-invent or modify it. `distribution_match` is required only for distribution-matched tasks and must
-be based on the aggregate golden style/score audit rather than copying golden prose.
+invent or modify it. `distribution_match` may be proposed by the external tool, but assembly should
+recompute it with `compute_distribution_match` / `annotate_distribution_match` from golden score-vector
+membership and style tolerances rather than trusting the proposal blindly. It is required only for
+distribution-matched tasks.

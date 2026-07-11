@@ -13,7 +13,13 @@ from apush_frq_grader_slm.dataset_v5 import (
     candidate_gate_reasons,
     normalize_external_candidate,
 )
+from apush_frq_grader_slm.fact_cards_v5 import (
+    default_allowed_overlap_phrases,
+    load_allowed_phrases_file,
+    merge_allowed_phrases,
+)
 from apush_frq_grader_slm.io import read_jsonl, write_jsonl
+from apush_frq_grader_slm.knowledge.amsco import load_kb
 
 
 def task_from_row(row: dict) -> V5GenerationTask:
@@ -34,6 +40,23 @@ def task_from_row(row: dict) -> V5GenerationTask:
         contrast_pair_id=row.get("contrast_pair_id", ""),
         contrast_side=row.get("contrast_side", ""),
     )
+
+
+def collect_allowed_phrases(args: argparse.Namespace) -> list[str]:
+    groups: list[list[str]] = []
+    if args.allowed_phrases:
+        groups.append(load_allowed_phrases_file(args.allowed_phrases))
+    kb_rows = load_kb(args.amsco_kb) if args.amsco_kb else None
+    fact_cards = read_jsonl(args.fact_cards) if args.fact_cards else None
+    if args.amsco_kb or args.fact_cards or args.include_default_phrases:
+        groups.append(
+            default_allowed_overlap_phrases(
+                kb=kb_rows,
+                fact_cards=fact_cards,
+                kb_path=args.amsco_kb,
+            )
+        )
+    return merge_allowed_phrases(*groups)
 
 
 def main() -> None:
@@ -66,12 +89,15 @@ def main() -> None:
             str(row.get("student_response") or row.get("essay") or "")
             for row in read_jsonl(path)
         )
+    allowed_phrases = collect_allowed_phrases(args)
     accepted: list[dict] = []
     rejected: dict[str, list[str]] = {}
     seen_texts = list(overlap_texts)
     for task_id in sorted(set(returned) & set(tasks)):
         row = normalize_external_candidate(tasks[task_id], returned[task_id])
-        reasons = candidate_gate_reasons(row, source_texts=seen_texts)
+        reasons = candidate_gate_reasons(
+            row, source_texts=seen_texts, allowed_phrases=allowed_phrases
+        )
         if reasons:
             rejected[task_id] = sorted(set(reasons))
             continue
@@ -89,6 +115,7 @@ def main() -> None:
         "missing_task_ids": missing_ids,
         "rejection_reasons": dict(sorted(reason_counts.items())),
         "coverage": dict(sorted(Counter(row["selection_class"] for row in accepted).items())),
+        "allowed_phrase_count": len(allowed_phrases),
         "contains_private_rows": True,
         "redistribution_authorized": False,
     }
@@ -104,6 +131,30 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--audit", type=Path, required=True)
     parser.add_argument("--overlap-corpus", type=Path, action="append", default=[])
+    parser.add_argument(
+        "--allowed-phrases",
+        type=Path,
+        default=None,
+        help="JSONL ({phrase|text|term}) or plain-text file of overlap exemptions",
+    )
+    parser.add_argument(
+        "--fact-cards",
+        type=Path,
+        default=None,
+        help="Semantic fact cards JSONL; evidence terms auto-join allowed phrases",
+    )
+    parser.add_argument(
+        "--amsco-kb",
+        type=Path,
+        default=None,
+        help="AMSCO KB JSONL; evidence_bank terms/years auto-join allowed phrases",
+    )
+    parser.add_argument(
+        "--include-default-phrases",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Include built-in historical name/date exemptions even without --fact-cards/--amsco-kb",
+    )
     parser.add_argument(
         "--require-complete", action=argparse.BooleanOptionalAction, default=True
     )

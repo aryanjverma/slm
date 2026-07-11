@@ -1,0 +1,8 @@
+{
+  "amsco_kb": "artifacts/knowledge/amsco_2016_kb.jsonl",
+  "contains_essays": false,
+  "n_cards": 1095,
+  "n_chapters": 31,
+  "output": "artifacts/data/v5/planning/semantic_fact_cards_v5.jsonl",
+  "source_kind": "semantic_rewrite"
+}
