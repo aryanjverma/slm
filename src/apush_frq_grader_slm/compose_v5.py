@@ -715,16 +715,16 @@ def _topic_slot(topic: str, *, article: str | None = None) -> str:
 def _length_band(knowledge: str, time_pressure: str) -> tuple[int, int]:
     # Floors kept modest so padding stays short (≤4 pads) and stock reuse stays rare.
     bands = {
-        "limited": (100, 140),
-        "uneven": (125, 175),
-        "competent": (150, 200),
-        "strong": (170, 240),
+        "limited": (120, 170),
+        "uneven": (160, 220),
+        "competent": (200, 280),
+        "strong": (240, 340),
     }
-    lo, hi = bands.get(knowledge, (140, 190))
+    lo, hi = bands.get(knowledge, (180, 250))
     if time_pressure == "severe":
-        hi = min(hi, lo + 30)
+        hi = min(hi, lo + 50)
     elif time_pressure == "moderate":
-        hi = min(hi, lo + 45)
+        hi = min(hi, lo + 70)
     return lo, hi
 
 

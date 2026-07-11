@@ -312,7 +312,11 @@ class DistributionMatchTests(unittest.TestCase):
             "i think markets changed a lot because canals linked farms to cities and "
             "also banks made credit easier but it wasnt equal for everyone in the west. "
             "factories grew too and wage work spread though many people still farmed. "
-            "politics also shifted when more white men voted and parties argued about banks.\n\n"
+            "politics also shifted when more white men voted and parties argued about banks. "
+            "roads and steamboats cut travel time, and newspapers spread party messages faster "
+            "than before, so ordinary voters heard more about tariffs and land sales. "
+            "some regions gained while others lagged, and that uneven pattern matters for "
+            "how national markets grew across the early republic.\n\n"
             "overall the economy remade daily life from 1800 to 1848 in uneven ways."
         )
         scores = {
