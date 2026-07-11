@@ -1,0 +1,6 @@
+{
+  "total_packets": 250,
+  "batches": 10,
+  "batch_size": 25,
+  "rubric_embedded": true
+}

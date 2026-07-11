@@ -23,6 +23,7 @@ HALLUCINATION_PATTERNS = [
 SOURCE_CONTAMINATION_PATTERNS = [
     r"\bscoring commentary\b",
     r"\blong essay question\s+\d+\s*\(continued\)",
+    r"\blong essay question\s+\d+\b",
     r"\bthesis(?:/claim)? score:\s*\d",
     r"\bcontextualization score:\s*\d",
     r"\bevidence score:\s*\d",
@@ -30,6 +31,9 @@ SOURCE_CONTAMINATION_PATTERNS = [
     r"\btotal score:\s*\d",
     r"©\s*\d{4}\s+college board",
     r"\bpage\s+\d+\s+of\s+\d+\b",
+    r"\bthe response (?:earned|did not earn)\b",
+    r"\bap(?:®|\s+)?\s*united states history\s+20\d{2}\b",
+    r"visit\s+college board on the web",
 ]
 
 GENERATION_LEAKAGE_PATTERNS = [

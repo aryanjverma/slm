@@ -1,0 +1,3214 @@
+{
+  "source": "amsco_2016",
+  "chapter_count": 31,
+  "periods": {
+    "1": [
+      "amsco_ch01"
+    ],
+    "2": [
+      "amsco_ch02",
+      "amsco_ch03"
+    ],
+    "3": [
+      "amsco_ch04",
+      "amsco_ch05",
+      "amsco_ch06"
+    ],
+    "4": [
+      "amsco_ch07",
+      "amsco_ch08",
+      "amsco_ch09",
+      "amsco_ch10",
+      "amsco_ch11"
+    ],
+    "5": [
+      "amsco_ch12",
+      "amsco_ch13",
+      "amsco_ch14",
+      "amsco_ch15"
+    ],
+    "6": [
+      "amsco_ch16",
+      "amsco_ch17",
+      "amsco_ch18",
+      "amsco_ch19"
+    ],
+    "7": [
+      "amsco_ch20",
+      "amsco_ch21",
+      "amsco_ch22",
+      "amsco_ch23",
+      "amsco_ch24",
+      "amsco_ch25"
+    ],
+    "8": [
+      "amsco_ch26",
+      "amsco_ch27",
+      "amsco_ch28",
+      "amsco_ch29"
+    ],
+    "9": [
+      "amsco_ch30",
+      "amsco_ch31"
+    ]
+  },
+  "chapters": [
+    {
+      "id": "amsco_ch01",
+      "chapter": 1,
+      "title": "A New World of Many Cultures, 1491-1607",
+      "period": 1,
+      "date_range": "1491-1607",
+      "book_page_start": 2,
+      "fact_count": 36,
+      "topic_keywords": [
+        "world",
+        "many",
+        "cultures",
+        "columbian exchange",
+        "treaty of tordesillas (1494)",
+        "encomienda system",
+        "asiento system",
+        "valladolid debate",
+        "new laws of 1542",
+        "bartolome de las casas",
+        "hernan cortes",
+        "francisco pizarro",
+        "roanoke island",
+        "iroquois confederation",
+        "juan gines de sepulveda",
+        "established",
+        "spanish",
+        "indians",
+        "columbus",
+        "french"
+      ]
+    },
+    {
+      "id": "amsco_ch02",
+      "chapter": 2,
+      "title": "The Thirteen Colonies and the British Empire, 1607-1754",
+      "period": 2,
+      "date_range": "1607-1754",
+      "book_page_start": 24,
+      "fact_count": 40,
+      "topic_keywords": [
+        "thirteen",
+        "colonies",
+        "british",
+        "empire",
+        "jamestown (1607)",
+        "mayflower compact",
+        "house of burgesses",
+        "act of toleration (maryland)",
+        "navigation acts",
+        "mercantilism",
+        "triangular trade",
+        "halfway covenant",
+        "william penn / pennsylvania",
+        "dominion of new england",
+        "burgesses separatists sir william berkeley pilgrims bacon's rebellion",
+        "cabot metacom middle passage jamestown king philip's war",
+        "colony",
+        "virginia",
+        "england",
+        "royal"
+      ]
+    },
+    {
+      "id": "amsco_ch03",
+      "chapter": 3,
+      "title": "Colonial Society in the 18th Century",
+      "period": 2,
+      "date_range": "1700-1775",
+      "book_page_start": 45,
+      "fact_count": 35,
+      "topic_keywords": [
+        "colonial",
+        "society",
+        "great awakening",
+        "jonathan edwards",
+        "george whitefield",
+        "enlightenment",
+        "john peter zenger trial",
+        "poor richard's almanack",
+        "phillis wheatley",
+        "colonial legislatures / town meetings",
+        "established churches",
+        "scotch-irish migration",
+        "subsistence farming",
+        "hereditary aristocracy (limited in colonies)",
+        "colonies",
+        "population",
+        "college",
+        "elected",
+        "england",
+        "governor"
+      ]
+    },
+    {
+      "id": "amsco_ch04",
+      "chapter": 4,
+      "title": "Imperial Wars and Colonial Protest, 1754-1774",
+      "period": 3,
+      "date_range": "1754-1774",
+      "book_page_start": 69,
+      "fact_count": 40,
+      "topic_keywords": [
+        "imperial",
+        "wars",
+        "colonial",
+        "protest",
+        "french and indian war / seven years' war",
+        "albany plan of union",
+        "treaty of paris (1763)",
+        "stamp act (1765)",
+        "townshend acts",
+        "boston massacre",
+        "boston tea party",
+        "intolerable / coercive acts",
+        "first continental congress",
+        "sons and daughters of liberty",
+        "committees of correspondence",
+        "colonial reactions the proclamation of 1763",
+        "acts",
+        "british",
+        "colonies",
+        "parliament"
+      ]
+    },
+    {
+      "id": "amsco_ch05",
+      "chapter": 5,
+      "title": "The American Revolution and Confederation, 1774-1787",
+      "period": 3,
+      "date_range": "1774-1787",
+      "book_page_start": 85,
+      "fact_count": 40,
+      "topic_keywords": [
+        "revolution",
+        "confederation",
+        "second continental congress",
+        "declaration of independence",
+        "battle of saratoga",
+        "battle of yorktown",
+        "treaty of paris (1783)",
+        "articles of confederation",
+        "northwest ordinance (1787)",
+        "shays' rebellion",
+        "common sense (thomas paine)",
+        "loyalists / tories",
+        "valley forge",
+        "franco-american alliance",
+        "british",
+        "colonies",
+        "congress",
+        "revolutionary",
+        "massachusetts",
+        "first"
+      ]
+    },
+    {
+      "id": "amsco_ch06",
+      "chapter": 6,
+      "title": "The Constitution and the New Republic, 1787-1800",
+      "period": 3,
+      "date_range": "1787-1800",
+      "book_page_start": 103,
+      "fact_count": 40,
+      "topic_keywords": [
+        "constitution",
+        "republic",
+        "constitutional convention (1787)",
+        "great compromise",
+        "three-fifths compromise",
+        "federalist papers",
+        "bill of rights",
+        "judiciary act of 1789",
+        "hamilton's financial plan",
+        "whiskey rebellion",
+        "washington's farewell address",
+        "alien and sedition acts",
+        "kentucky and virginia resolutions",
+        "xyz affair",
+        "congress",
+        "federalists",
+        "first",
+        "president",
+        "treaty",
+        "elected"
+      ]
+    },
+    {
+      "id": "amsco_ch07",
+      "chapter": 7,
+      "title": "The Age of Jefferson, 1800-1816",
+      "period": 4,
+      "date_range": "1800-1816",
+      "book_page_start": 131,
+      "fact_count": 40,
+      "topic_keywords": [
+        "jefferson",
+        "election of 1800",
+        "louisiana purchase",
+        "marbury v. madison",
+        "embargo act (1807)",
+        "war of 1812",
+        "battle of new orleans",
+        "hartford convention",
+        "lewis and clark expedition",
+        "chesapeake-leopard affair",
+        "treaty of ghent",
+        "barbary pirates conflict",
+        "judiciary act of 1789",
+        "congress",
+        "britain",
+        "democratic",
+        "french",
+        "louisiana",
+        "purchase",
+        "republican"
+      ]
+    },
+    {
+      "id": "amsco_ch08",
+      "chapter": 8,
+      "title": "Nationalism and Economic Development, 1816-1848",
+      "period": 4,
+      "date_range": "1816-1848",
+      "book_page_start": 150,
+      "fact_count": 40,
+      "topic_keywords": [
+        "nationalism",
+        "economic",
+        "development",
+        "american system (henry clay)",
+        "era of good feelings",
+        "panic of 1819",
+        "missouri compromise (1820)",
+        "monroe doctrine",
+        "gibbons v. ogden",
+        "adams-onis treaty",
+        "tariff of 1816",
+        "erie canal",
+        "market revolution",
+        "dartmouth college v. woodward",
+        "road treaty of 1818",
+        "missouri",
+        "million",
+        "slavery",
+        "congress",
+        "amendment"
+      ]
+    },
+    {
+      "id": "amsco_ch09",
+      "chapter": 9,
+      "title": "Sectionalism, 1820-1860",
+      "period": 4,
+      "date_range": "1820-1860",
+      "book_page_start": 173,
+      "fact_count": 28,
+      "topic_keywords": [
+        "sectionalism",
+        "cotton gin / king cotton",
+        "peculiar institution",
+        "nat turner's rebellion",
+        "planter aristocracy",
+        "irish and german immigration",
+        "nativism / know-nothings",
+        "urbanization in the northeast",
+        "old northwest agriculture",
+        "free african americans in the north",
+        "mountain whites",
+        "deep south plantation belt",
+        "sectional economic specialization",
+        "slaves",
+        "industrial",
+        "south",
+        "americans",
+        "increase",
+        "million",
+        "north"
+      ]
+    },
+    {
+      "id": "amsco_ch10",
+      "chapter": 10,
+      "title": "The Age of Jackson, 1824-1844",
+      "period": 4,
+      "date_range": "1824-1844",
+      "book_page_start": 191,
+      "fact_count": 40,
+      "topic_keywords": [
+        "jackson",
+        "universal white male suffrage",
+        "spoils system",
+        "nullification crisis",
+        "tariff of abominations",
+        "indian removal act (1830)",
+        "worcester v. georgia",
+        "trail of tears",
+        "bank war / second bank of the u.s",
+        "specie circular",
+        "panic of 1837",
+        "whig party",
+        "log cabin campaign (1840)",
+        "election",
+        "president",
+        "state",
+        "common",
+        "tariff",
+        "carolina",
+        "congress"
+      ]
+    },
+    {
+      "id": "amsco_ch11",
+      "chapter": 11,
+      "title": "Society, Culture, and Reform, 1820-1860",
+      "period": 4,
+      "date_range": "1820-1860",
+      "book_page_start": 207,
+      "fact_count": 40,
+      "topic_keywords": [
+        "society",
+        "culture",
+        "reform",
+        "second great awakening",
+        "temperance movement",
+        "seneca falls convention (1848)",
+        "declaration of sentiments",
+        "abolitionism / william lloyd garrison",
+        "frederick douglass",
+        "transcendentalism",
+        "utopian communities (brook farm, oneida)",
+        "public school movement (horace mann)",
+        "dorothea dix / asylum reform",
+        "cult of domesticity",
+        "american colonization society",
+        "founded",
+        "protestant",
+        "african",
+        "massachusetts",
+        "antislavery"
+      ]
+    },
+    {
+      "id": "amsco_ch12",
+      "chapter": 12,
+      "title": "Territorial and Economic Expansion, 1830-1860",
+      "period": 5,
+      "date_range": "1830-1860",
+      "book_page_start": 230,
+      "fact_count": 40,
+      "topic_keywords": [
+        "territorial",
+        "economic",
+        "expansion",
+        "manifest destiny",
+        "texas revolution / alamo",
+        "oregon trail",
+        "mexican-american war",
+        "treaty of guadalupe hidalgo",
+        "mexican cession",
+        "wilmot proviso",
+        "california gold rush",
+        "gadsden purchase",
+        "ostend manifesto",
+        "mormon migration",
+        "adams-onfs treaty of 1819",
+        "treaty",
+        "mexico",
+        "texas",
+        "british",
+        "republic"
+      ]
+    },
+    {
+      "id": "amsco_ch13",
+      "chapter": 13,
+      "title": "The Union in Peril, 1848-1861",
+      "period": 5,
+      "date_range": "1848-1861",
+      "book_page_start": 247,
+      "fact_count": 40,
+      "topic_keywords": [
+        "union",
+        "peril",
+        "compromise of 1850",
+        "fugitive slave act",
+        "uncle tom's cabin",
+        "bleeding kansas",
+        "dred scott v. sandford",
+        "lincoln-douglas debates",
+        "john brown's raid on harpers ferry",
+        "election of 1860",
+        "secession of the lower south",
+        "crittenden compromise",
+        "free-soil party",
+        "kansas-nebraska act of 1854",
+        "president",
+        "slave",
+        "slavery",
+        "kansas",
+        "nebraska",
+        "both"
+      ]
+    },
+    {
+      "id": "amsco_ch14",
+      "chapter": 14,
+      "title": "The Civil War, 1861-1865",
+      "period": 5,
+      "date_range": "1861-1865",
+      "book_page_start": 268,
+      "fact_count": 40,
+      "topic_keywords": [
+        "civil",
+        "fort sumter",
+        "anaconda plan",
+        "gettysburg",
+        "vicksburg",
+        "sherman's march to the sea",
+        "appomattox court house",
+        "homestead act (1862)",
+        "morrill land grant act",
+        "pacific railway act",
+        "new york city draft riots",
+        "thirteenth amendment",
+        "confiscation act",
+        "union",
+        "lincoln",
+        "first",
+        "emancipation",
+        "slavery",
+        "congress",
+        "freed"
+      ]
+    },
+    {
+      "id": "amsco_ch15",
+      "chapter": 15,
+      "title": "Reconstruction, 1863-1877",
+      "period": 5,
+      "date_range": "1863-1877",
+      "book_page_start": 291,
+      "fact_count": 40,
+      "topic_keywords": [
+        "reconstruction",
+        "freedmen's bureau",
+        "black codes",
+        "civil rights act of 1866",
+        "fourteenth amendment",
+        "fifteenth amendment",
+        "military reconstruction act (1867)",
+        "impeachment of andrew johnson",
+        "sharecropping / tenant farming",
+        "ku klux klan / enforcement acts",
+        "compromise of 1877",
+        "scalawags and carpetbaggers",
+        "redeemers",
+        "congress",
+        "johnson",
+        "president",
+        "civil",
+        "rights",
+        "southern",
+        "african"
+      ]
+    },
+    {
+      "id": "amsco_ch16",
+      "chapter": 16,
+      "title": "The Rise of Industrial America, 1865-1900",
+      "period": 6,
+      "date_range": "1865-1900",
+      "book_page_start": 319,
+      "fact_count": 40,
+      "topic_keywords": [
+        "rise",
+        "industrial",
+        "transcontinental railroad",
+        "vertical and horizontal integration",
+        "standard oil / john d. rockefeller",
+        "andrew carnegie / gospel of wealth",
+        "sherman antitrust act (1890)",
+        "knights of labor",
+        "american federation of labor",
+        "haymarket riot",
+        "homestead strike",
+        "pullman strike",
+        "social darwinism",
+        "interstate commerce act of 1886",
+        "railroad",
+        "carnegie",
+        "civil",
+        "steel",
+        "class",
+        "first"
+      ]
+    },
+    {
+      "id": "amsco_ch17",
+      "chapter": 17,
+      "title": "The Last West and the New South, 1865-1900",
+      "period": 6,
+      "date_range": "1865-1900",
+      "book_page_start": 339,
+      "fact_count": 40,
+      "topic_keywords": [
+        "last",
+        "west",
+        "south",
+        "homestead act settlement",
+        "dawes severalty act (1887)",
+        "battle of little bighorn",
+        "wounded knee massacre",
+        "ghost dance movement",
+        "new south / henry grady",
+        "plessy v. ferguson (1896)",
+        "jim crow laws",
+        "booker t. washington",
+        "ida b. wells",
+        "sharecropping in the new south",
+        "cattle drives / open range",
+        "indians",
+        "land",
+        "plains",
+        "civil",
+        "federal"
+      ]
+    },
+    {
+      "id": "amsco_ch18",
+      "chapter": 18,
+      "title": "The Growth of Cities and American Culture, 1865-1900",
+      "period": 6,
+      "date_range": "1865-1900",
+      "book_page_start": 360,
+      "fact_count": 40,
+      "topic_keywords": [
+        "growth",
+        "cities",
+        "culture",
+        "new immigration (southern/eastern europe)",
+        "ellis island / angel island",
+        "political machines / tammany hall",
+        "settlement houses / jane addams",
+        "social gospel",
+        "tenements / jacob riis",
+        "chinese exclusion act (1882)",
+        "nativism",
+        "skyscrapers / urban technology",
+        "spectator sports / mass culture",
+        "ashcan school",
+        "public high schools expansion",
+        "chicago",
+        "first",
+        "president",
+        "urban",
+        "city"
+      ]
+    },
+    {
+      "id": "amsco_ch19",
+      "chapter": 19,
+      "title": "The Politics of the Gilded Age, 1877-1900",
+      "period": 6,
+      "date_range": "1877-1900",
+      "book_page_start": 380,
+      "fact_count": 40,
+      "topic_keywords": [
+        "politics",
+        "gilded",
+        "gilded age patronage politics",
+        "pendleton civil service act",
+        "interstate commerce commission",
+        "populist party / omaha platform",
+        "william jennings bryan cross of gold speech",
+        "election of 1896",
+        "panic of 1893",
+        "coxey's army",
+        "solid south",
+        "mugwumps",
+        "sherman silver purchase act of 1890",
+        "compromise of 1877",
+        "election",
+        "president",
+        "congress",
+        "civil",
+        "tariff",
+        "cleveland"
+      ]
+    },
+    {
+      "id": "amsco_ch20",
+      "chapter": 20,
+      "title": "Becoming a World Power, 1865-1917",
+      "period": 7,
+      "date_range": "1865-1917",
+      "book_page_start": 409,
+      "fact_count": 40,
+      "topic_keywords": [
+        "becoming",
+        "world",
+        "power",
+        "alfred thayer mahan",
+        "spanish-american war",
+        "uss maine",
+        "treaty of paris (1898)",
+        "philippine-american war",
+        "open door policy",
+        "roosevelt corollary",
+        "panama canal",
+        "gentlemen's agreement",
+        "dollar diplomacy",
+        "anti-imperialist league",
+        "hay-bunau-varilla treaty of 1903",
+        "president",
+        "cuba",
+        "amendment",
+        "congress",
+        "doctrine"
+      ]
+    },
+    {
+      "id": "amsco_ch21",
+      "chapter": 21,
+      "title": "The Progressive Era, 1901-1917",
+      "period": 7,
+      "date_range": "1901-1917",
+      "book_page_start": 431,
+      "fact_count": 40,
+      "topic_keywords": [
+        "progressive",
+        "muckrakers",
+        "square deal",
+        "pure food and drug act",
+        "meat inspection act",
+        "sixteenth amendment",
+        "seventeenth amendment",
+        "eighteenth amendment",
+        "federal reserve act",
+        "naacp",
+        "triangle shirtwaist fire",
+        "forest reserve act of 1891",
+        "board standard oil company clayton antitrust act",
+        "president",
+        "first",
+        "federal",
+        "labor",
+        "national",
+        "roosevelt",
+        "state"
+      ]
+    },
+    {
+      "id": "amsco_ch22",
+      "chapter": 22,
+      "title": "World War I and Its Aftermath, 1914-1920",
+      "period": 7,
+      "date_range": "1914-1920",
+      "book_page_start": 454,
+      "fact_count": 40,
+      "topic_keywords": [
+        "world",
+        "aftermath",
+        "unrestricted submarine warfare",
+        "zimmermann telegram",
+        "selective service act",
+        "espionage and sedition acts",
+        "schenck v. united states",
+        "fourteen points",
+        "treaty of versailles",
+        "league of nations debate",
+        "great migration",
+        "red scare / palmer raids",
+        "war industries board",
+        "committee on public information",
+        "peace",
+        "wilson",
+        "treaty",
+        "germany",
+        "versailles",
+        "president"
+      ]
+    },
+    {
+      "id": "amsco_ch23",
+      "chapter": 23,
+      "title": "The Modern Era of the 1920s",
+      "period": 7,
+      "date_range": "1920-1929",
+      "book_page_start": 475,
+      "fact_count": 40,
+      "topic_keywords": [
+        "modern",
+        "return to normalcy",
+        "teapot dome scandal",
+        "scopes trial",
+        "immigration act of 1924",
+        "prohibition / volstead act",
+        "harlem renaissance",
+        "jazz age / flappers",
+        "sacco and vanzetti",
+        "ku klux klan revival",
+        "installment buying",
+        "ford assembly line",
+        "lost generation",
+        "congress",
+        "percent",
+        "amendment",
+        "coolidge",
+        "president",
+        "republican",
+        "world"
+      ]
+    },
+    {
+      "id": "amsco_ch24",
+      "chapter": 24,
+      "title": "The Great Depression and the New Deal, 1929-1939",
+      "period": 7,
+      "date_range": "1929-1939",
+      "book_page_start": 496,
+      "fact_count": 40,
+      "topic_keywords": [
+        "great",
+        "depression",
+        "deal",
+        "stock market crash (1929)",
+        "hawley-smoot tariff",
+        "bonus march",
+        "hundred days / first new deal",
+        "ccc / wpa / aaa",
+        "fdic / glass-steagall banking act",
+        "social security act (1935)",
+        "wagner act / nlrb",
+        "court-packing plan",
+        "dust bowl",
+        "indian reorganization act",
+        "fair labor standards act",
+        "congress",
+        "labor",
+        "president",
+        "roosevelt",
+        "court"
+      ]
+    },
+    {
+      "id": "amsco_ch25",
+      "chapter": 25,
+      "title": "Diplomacy and World War II, 1929-1945",
+      "period": 7,
+      "date_range": "1929-1945",
+      "book_page_start": 521,
+      "fact_count": 40,
+      "topic_keywords": [
+        "diplomacy",
+        "world",
+        "stimson doctrine",
+        "neutrality acts",
+        "lend-lease act",
+        "atlantic charter",
+        "pearl harbor",
+        "d-day / normandy invasion",
+        "island hopping",
+        "manhattan project",
+        "yalta and potsdam conferences",
+        "japanese american internment / korematsu",
+        "wartime mobilization / rosie the riveter",
+        "united nations founding",
+        "congress",
+        "president",
+        "roosevelt",
+        "japan",
+        "treaty",
+        "troops"
+      ]
+    },
+    {
+      "id": "amsco_ch26",
+      "chapter": 26,
+      "title": "Truman and the Cold War, 1945-1952",
+      "period": 8,
+      "date_range": "1945-1952",
+      "book_page_start": 557,
+      "fact_count": 40,
+      "topic_keywords": [
+        "truman",
+        "cold",
+        "containment / george kennan",
+        "truman doctrine",
+        "berlin airlift",
+        "korean war",
+        "nsc-68",
+        "alger hiss and rosenberg cases",
+        "taft-hartley act",
+        "fair deal",
+        "gi bill",
+        "employment act of 1946",
+        "smith act of 1940",
+        "veterans the servicemen's readjustment act of 1944",
+        "congress",
+        "million",
+        "president",
+        "bill",
+        "communist",
+        "japan"
+      ]
+    },
+    {
+      "id": "amsco_ch27",
+      "chapter": 27,
+      "title": "The Eisenhower Years, 1952-1960",
+      "period": 8,
+      "date_range": "1952-1960",
+      "book_page_start": 579,
+      "fact_count": 40,
+      "topic_keywords": [
+        "eisenhower",
+        "years",
+        "modern republicanism",
+        "interstate highway system",
+        "brinkmanship / massive retaliation",
+        "cia coups in iran and guatemala",
+        "sputnik / nasa",
+        "brown v. board of education",
+        "montgomery bus boycott",
+        "little rock nine",
+        "u-2 incident",
+        "military-industrial complex",
+        "levittown / suburbanization",
+        "civil rights highway act",
+        "cold",
+        "first",
+        "congress",
+        "schools",
+        "asia",
+        "communism"
+      ]
+    },
+    {
+      "id": "amsco_ch28",
+      "chapter": 28,
+      "title": "Promise and Turmoil, The 1960s",
+      "period": 8,
+      "date_range": "1960-1969",
+      "book_page_start": 600,
+      "fact_count": 40,
+      "topic_keywords": [
+        "promise",
+        "turmoil",
+        "new frontier",
+        "bay of pigs / cuban missile crisis",
+        "march on washington",
+        "civil rights act of 1964",
+        "voting rights act of 1965",
+        "great society / war on poverty",
+        "medicare and medicaid",
+        "gulf of tonkin resolution",
+        "tet offensive",
+        "students for a democratic society",
+        "betty friedan / now",
+        "assassinations of mlk and rfk",
+        "president",
+        "congress",
+        "rights",
+        "johnson",
+        "vietnam",
+        "kennedy"
+      ]
+    },
+    {
+      "id": "amsco_ch29",
+      "chapter": 29,
+      "title": "Limits of a Superpower, 1969-1980",
+      "period": 8,
+      "date_range": "1969-1980",
+      "book_page_start": 625,
+      "fact_count": 40,
+      "topic_keywords": [
+        "limits",
+        "superpower",
+        "vietnamization",
+        "kent state shootings",
+        "pentagon papers",
+        "detente / salt i",
+        "nixon visit to china",
+        "watergate scandal",
+        "resignation of nixon",
+        "oil embargo / stagflation",
+        "camp david accords",
+        "iran hostage crisis",
+        "roe v. wade",
+        "environmental protection agency",
+        "nixon",
+        "congress",
+        "president",
+        "treaty",
+        "soviet",
+        "canal"
+      ]
+    },
+    {
+      "id": "amsco_ch30",
+      "chapter": 30,
+      "title": "Conservative Resurgence, 1980-2000",
+      "period": 9,
+      "date_range": "1980-2000",
+      "book_page_start": 654,
+      "fact_count": 40,
+      "topic_keywords": [
+        "conservative",
+        "resurgence",
+        "reaganomics / supply-side economics",
+        "strategic defense initiative",
+        "iran-contra affair",
+        "fall of the berlin wall",
+        "persian gulf war (1991)",
+        "contract with america",
+        "nafta",
+        "clinton impeachment",
+        "welfare reform act (1996)",
+        "moral majority / religious right",
+        "aids crisis",
+        "1990s technology boom",
+        "congress",
+        "reagan",
+        "first",
+        "president",
+        "income",
+        "since"
+      ]
+    },
+    {
+      "id": "amsco_ch31",
+      "chapter": 31,
+      "title": "Challenges of the 21st Century",
+      "period": 9,
+      "date_range": "2000-present",
+      "book_page_start": 679,
+      "fact_count": 40,
+      "topic_keywords": [
+        "challenges",
+        "bush v. gore (2000)",
+        "september 11 attacks",
+        "war in afghanistan",
+        "iraq war (2003)",
+        "patriot act / department of homeland security",
+        "great recession (2008)",
+        "obama election (2008)",
+        "tea party movement",
+        "citizens united v. fec",
+        "same-sex marriage legalization",
+        "social media and polarization",
+        "affordable care act of 2010",
+        "bush",
+        "president",
+        "election",
+        "congress",
+        "first",
+        "obama",
+        "court"
+      ]
+    }
+  ],
+  "topic_keywords": {
+    "1990s technology boom": [
+      "amsco_ch30"
+    ],
+    "abolitionism / william lloyd garrison": [
+      "amsco_ch11"
+    ],
+    "acres": [
+      "amsco_ch17"
+    ],
+    "act of toleration (maryland)": [
+      "amsco_ch02"
+    ],
+    "acts": [
+      "amsco_ch02",
+      "amsco_ch04",
+      "amsco_ch05",
+      "amsco_ch06"
+    ],
+    "adams-onfs treaty of 1819": [
+      "amsco_ch12"
+    ],
+    "adams-onis treaty": [
+      "amsco_ch08"
+    ],
+    "affordable care act of 2010": [
+      "amsco_ch31"
+    ],
+    "african": [
+      "amsco_ch03",
+      "amsco_ch11",
+      "amsco_ch15"
+    ],
+    "aftermath": [
+      "amsco_ch22"
+    ],
+    "aids crisis": [
+      "amsco_ch30"
+    ],
+    "albany plan of union": [
+      "amsco_ch04"
+    ],
+    "alfred thayer mahan": [
+      "amsco_ch20"
+    ],
+    "alger hiss and rosenberg cases": [
+      "amsco_ch26"
+    ],
+    "alien and sedition acts": [
+      "amsco_ch06"
+    ],
+    "amendment": [
+      "amsco_ch08",
+      "amsco_ch20",
+      "amsco_ch21",
+      "amsco_ch23",
+      "amsco_ch24",
+      "amsco_ch28",
+      "amsco_ch30"
+    ],
+    "american colonization society": [
+      "amsco_ch11"
+    ],
+    "american federation of labor": [
+      "amsco_ch16"
+    ],
+    "american system (henry clay)": [
+      "amsco_ch08"
+    ],
+    "americans": [
+      "amsco_ch03",
+      "amsco_ch09",
+      "amsco_ch12",
+      "amsco_ch15"
+    ],
+    "anaconda plan": [
+      "amsco_ch14"
+    ],
+    "andrew": [
+      "amsco_ch16"
+    ],
+    "andrew carnegie / gospel of wealth": [
+      "amsco_ch16"
+    ],
+    "another": [
+      "amsco_ch04"
+    ],
+    "anti-imperialist league": [
+      "amsco_ch20"
+    ],
+    "antislavery": [
+      "amsco_ch11"
+    ],
+    "appointed": [
+      "amsco_ch03"
+    ],
+    "appomattox court house": [
+      "amsco_ch14"
+    ],
+    "articles": [
+      "amsco_ch05"
+    ],
+    "articles of confederation": [
+      "amsco_ch05"
+    ],
+    "ashcan school": [
+      "amsco_ch18"
+    ],
+    "asia": [
+      "amsco_ch27"
+    ],
+    "asiento system": [
+      "amsco_ch01"
+    ],
+    "assassinations of mlk and rfk": [
+      "amsco_ch28"
+    ],
+    "atlantic charter": [
+      "amsco_ch25"
+    ],
+    "bank war / second bank of the u.s": [
+      "amsco_ch10"
+    ],
+    "barbary pirates conflict": [
+      "amsco_ch07"
+    ],
+    "bartolome de las casas": [
+      "amsco_ch01"
+    ],
+    "battle of little bighorn": [
+      "amsco_ch17"
+    ],
+    "battle of new orleans": [
+      "amsco_ch07"
+    ],
+    "battle of saratoga": [
+      "amsco_ch05"
+    ],
+    "battle of yorktown": [
+      "amsco_ch05"
+    ],
+    "bay of pigs / cuban missile crisis": [
+      "amsco_ch28"
+    ],
+    "became": [
+      "amsco_ch11",
+      "amsco_ch18",
+      "amsco_ch21",
+      "amsco_ch26",
+      "amsco_ch27"
+    ],
+    "because": [
+      "amsco_ch04"
+    ],
+    "becoming": [
+      "amsco_ch20"
+    ],
+    "berlin airlift": [
+      "amsco_ch26"
+    ],
+    "betty friedan / now": [
+      "amsco_ch28"
+    ],
+    "bill": [
+      "amsco_ch07",
+      "amsco_ch26"
+    ],
+    "bill of rights": [
+      "amsco_ch06"
+    ],
+    "billion": [
+      "amsco_ch30"
+    ],
+    "black": [
+      "amsco_ch28"
+    ],
+    "black codes": [
+      "amsco_ch15"
+    ],
+    "bleeding kansas": [
+      "amsco_ch13"
+    ],
+    "board standard oil company clayton antitrust act": [
+      "amsco_ch21"
+    ],
+    "bonus march": [
+      "amsco_ch24"
+    ],
+    "book": [
+      "amsco_ch18"
+    ],
+    "booker t. washington": [
+      "amsco_ch17"
+    ],
+    "boston massacre": [
+      "amsco_ch04"
+    ],
+    "boston tea party": [
+      "amsco_ch04"
+    ],
+    "both": [
+      "amsco_ch09",
+      "amsco_ch13",
+      "amsco_ch26"
+    ],
+    "brinkmanship / massive retaliation": [
+      "amsco_ch27"
+    ],
+    "britain": [
+      "amsco_ch07",
+      "amsco_ch09",
+      "amsco_ch25"
+    ],
+    "british": [
+      "amsco_ch02",
+      "amsco_ch04",
+      "amsco_ch05",
+      "amsco_ch07",
+      "amsco_ch12",
+      "amsco_ch20"
+    ],
+    "brown v. board of education": [
+      "amsco_ch27"
+    ],
+    "buchanan": [
+      "amsco_ch13"
+    ],
+    "budget": [
+      "amsco_ch30"
+    ],
+    "build": [
+      "amsco_ch12"
+    ],
+    "bureau": [
+      "amsco_ch15"
+    ],
+    "burgesses separatists sir william berkeley pilgrims bacon's rebellion": [
+      "amsco_ch02"
+    ],
+    "bush": [
+      "amsco_ch31"
+    ],
+    "bush v. gore (2000)": [
+      "amsco_ch31"
+    ],
+    "business": [
+      "amsco_ch23"
+    ],
+    "cabot metacom middle passage jamestown king philip's war": [
+      "amsco_ch02"
+    ],
+    "california": [
+      "amsco_ch12"
+    ],
+    "california gold rush": [
+      "amsco_ch12"
+    ],
+    "camp david accords": [
+      "amsco_ch29"
+    ],
+    "canal": [
+      "amsco_ch20",
+      "amsco_ch29"
+    ],
+    "carnegie": [
+      "amsco_ch16"
+    ],
+    "carolina": [
+      "amsco_ch10"
+    ],
+    "cattle drives / open range": [
+      "amsco_ch17"
+    ],
+    "ccc / wpa / aaa": [
+      "amsco_ch24"
+    ],
+    "century": [
+      "amsco_ch16"
+    ],
+    "challenges": [
+      "amsco_ch31"
+    ],
+    "charter": [
+      "amsco_ch02"
+    ],
+    "chesapeake-leopard affair": [
+      "amsco_ch07"
+    ],
+    "chicago": [
+      "amsco_ch18"
+    ],
+    "chiefly": [
+      "amsco_ch09"
+    ],
+    "china": [
+      "amsco_ch25"
+    ],
+    "chinese exclusion act (1882)": [
+      "amsco_ch18"
+    ],
+    "cia coups in iran and guatemala": [
+      "amsco_ch27"
+    ],
+    "cities": [
+      "amsco_ch09",
+      "amsco_ch18"
+    ],
+    "citizens united v. fec": [
+      "amsco_ch31"
+    ],
+    "city": [
+      "amsco_ch18",
+      "amsco_ch21"
+    ],
+    "civil": [
+      "amsco_ch12",
+      "amsco_ch14",
+      "amsco_ch15",
+      "amsco_ch16",
+      "amsco_ch17",
+      "amsco_ch19",
+      "amsco_ch20",
+      "amsco_ch26",
+      "amsco_ch28"
+    ],
+    "civil rights act of 1866": [
+      "amsco_ch15"
+    ],
+    "civil rights act of 1964": [
+      "amsco_ch28"
+    ],
+    "civil rights highway act": [
+      "amsco_ch27"
+    ],
+    "class": [
+      "amsco_ch16"
+    ],
+    "clean": [
+      "amsco_ch29"
+    ],
+    "cleveland": [
+      "amsco_ch19"
+    ],
+    "clinton": [
+      "amsco_ch30"
+    ],
+    "clinton impeachment": [
+      "amsco_ch30"
+    ],
+    "coast": [
+      "amsco_ch01"
+    ],
+    "coercive": [
+      "amsco_ch04"
+    ],
+    "cold": [
+      "amsco_ch26",
+      "amsco_ch27"
+    ],
+    "college": [
+      "amsco_ch03"
+    ],
+    "colleges": [
+      "amsco_ch18"
+    ],
+    "colonial": [
+      "amsco_ch02",
+      "amsco_ch03",
+      "amsco_ch04",
+      "amsco_ch05"
+    ],
+    "colonial legislatures / town meetings": [
+      "amsco_ch03"
+    ],
+    "colonial reactions the proclamation of 1763": [
+      "amsco_ch04"
+    ],
+    "colonies": [
+      "amsco_ch02",
+      "amsco_ch03",
+      "amsco_ch04",
+      "amsco_ch05"
+    ],
+    "colonists": [
+      "amsco_ch04"
+    ],
+    "colony": [
+      "amsco_ch02"
+    ],
+    "columbian exchange": [
+      "amsco_ch01"
+    ],
+    "columbus": [
+      "amsco_ch01"
+    ],
+    "commission": [
+      "amsco_ch21"
+    ],
+    "committee on public information": [
+      "amsco_ch22"
+    ],
+    "committees of correspondence": [
+      "amsco_ch04"
+    ],
+    "common": [
+      "amsco_ch10"
+    ],
+    "common sense (thomas paine)": [
+      "amsco_ch05"
+    ],
+    "communism": [
+      "amsco_ch27"
+    ],
+    "communist": [
+      "amsco_ch26"
+    ],
+    "compromise": [
+      "amsco_ch08",
+      "amsco_ch13"
+    ],
+    "compromise of 1850": [
+      "amsco_ch13"
+    ],
+    "compromise of 1877": [
+      "amsco_ch15",
+      "amsco_ch19"
+    ],
+    "confederate": [
+      "amsco_ch14",
+      "amsco_ch15"
+    ],
+    "confederation": [
+      "amsco_ch05"
+    ],
+    "confiscation act": [
+      "amsco_ch14"
+    ],
+    "congress": [
+      "amsco_ch05",
+      "amsco_ch06",
+      "amsco_ch07",
+      "amsco_ch08",
+      "amsco_ch10",
+      "amsco_ch14",
+      "amsco_ch15",
+      "amsco_ch17",
+      "amsco_ch19",
+      "amsco_ch20",
+      "amsco_ch21",
+      "amsco_ch22",
+      "amsco_ch23",
+      "amsco_ch24",
+      "amsco_ch25",
+      "amsco_ch26",
+      "amsco_ch27",
+      "amsco_ch28",
+      "amsco_ch29",
+      "amsco_ch30",
+      "amsco_ch31"
+    ],
+    "conservative": [
+      "amsco_ch30"
+    ],
+    "constitution": [
+      "amsco_ch06",
+      "amsco_ch13"
+    ],
+    "constitutional convention (1787)": [
+      "amsco_ch06"
+    ],
+    "containment / george kennan": [
+      "amsco_ch26"
+    ],
+    "contract with america": [
+      "amsco_ch30"
+    ],
+    "control": [
+      "amsco_ch30"
+    ],
+    "convention": [
+      "amsco_ch06",
+      "amsco_ch28"
+    ],
+    "coolidge": [
+      "amsco_ch23"
+    ],
+    "cotton gin / king cotton": [
+      "amsco_ch09"
+    ],
+    "country": [
+      "amsco_ch12"
+    ],
+    "court": [
+      "amsco_ch07",
+      "amsco_ch08",
+      "amsco_ch24",
+      "amsco_ch27",
+      "amsco_ch31"
+    ],
+    "court-packing plan": [
+      "amsco_ch24"
+    ],
+    "coxey's army": [
+      "amsco_ch19"
+    ],
+    "created": [
+      "amsco_ch16",
+      "amsco_ch24",
+      "amsco_ch29"
+    ],
+    "crittenden compromise": [
+      "amsco_ch13"
+    ],
+    "cuba": [
+      "amsco_ch20"
+    ],
+    "cult of domesticity": [
+      "amsco_ch11"
+    ],
+    "culture": [
+      "amsco_ch11",
+      "amsco_ch18"
+    ],
+    "cultures": [
+      "amsco_ch01"
+    ],
+    "cuts": [
+      "amsco_ch30"
+    ],
+    "d-day / normandy invasion": [
+      "amsco_ch25"
+    ],
+    "dartmouth college v. woodward": [
+      "amsco_ch08"
+    ],
+    "david": [
+      "amsco_ch11"
+    ],
+    "dawes": [
+      "amsco_ch17",
+      "amsco_ch23"
+    ],
+    "dawes severalty act (1887)": [
+      "amsco_ch17"
+    ],
+    "deal": [
+      "amsco_ch24"
+    ],
+    "declaration of independence": [
+      "amsco_ch05"
+    ],
+    "declaration of sentiments": [
+      "amsco_ch11"
+    ],
+    "deep south plantation belt": [
+      "amsco_ch09"
+    ],
+    "deficit": [
+      "amsco_ch30"
+    ],
+    "delegates": [
+      "amsco_ch05",
+      "amsco_ch06"
+    ],
+    "democratic": [
+      "amsco_ch06",
+      "amsco_ch07",
+      "amsco_ch24"
+    ],
+    "democrats": [
+      "amsco_ch13",
+      "amsco_ch19",
+      "amsco_ch31"
+    ],
+    "depression": [
+      "amsco_ch24"
+    ],
+    "detente / salt i": [
+      "amsco_ch29"
+    ],
+    "determination": [
+      "amsco_ch29"
+    ],
+    "developed": [
+      "amsco_ch16"
+    ],
+    "development": [
+      "amsco_ch08"
+    ],
+    "diplomacy": [
+      "amsco_ch25"
+    ],
+    "doctrine": [
+      "amsco_ch20"
+    ],
+    "dollar diplomacy": [
+      "amsco_ch20"
+    ],
+    "dominion of new england": [
+      "amsco_ch02"
+    ],
+    "dorothea dix / asylum reform": [
+      "amsco_ch11"
+    ],
+    "douglas": [
+      "amsco_ch13"
+    ],
+    "dred scott v. sandford": [
+      "amsco_ch13"
+    ],
+    "dust bowl": [
+      "amsco_ch24"
+    ],
+    "economic": [
+      "amsco_ch08",
+      "amsco_ch12",
+      "amsco_ch26",
+      "amsco_ch31"
+    ],
+    "education": [
+      "amsco_ch27"
+    ],
+    "eighteenth amendment": [
+      "amsco_ch21"
+    ],
+    "eisenhower": [
+      "amsco_ch27"
+    ],
+    "elected": [
+      "amsco_ch03",
+      "amsco_ch06"
+    ],
+    "election": [
+      "amsco_ch08",
+      "amsco_ch10",
+      "amsco_ch13",
+      "amsco_ch19",
+      "amsco_ch22",
+      "amsco_ch24",
+      "amsco_ch28",
+      "amsco_ch29",
+      "amsco_ch31"
+    ],
+    "election of 1800": [
+      "amsco_ch07"
+    ],
+    "election of 1860": [
+      "amsco_ch13"
+    ],
+    "election of 1896": [
+      "amsco_ch19"
+    ],
+    "elections": [
+      "amsco_ch21",
+      "amsco_ch31"
+    ],
+    "ellis island / angel island": [
+      "amsco_ch18"
+    ],
+    "emancipation": [
+      "amsco_ch14"
+    ],
+    "embargo act (1807)": [
+      "amsco_ch07"
+    ],
+    "empire": [
+      "amsco_ch02"
+    ],
+    "employment act of 1946": [
+      "amsco_ch26"
+    ],
+    "enacted": [
+      "amsco_ch04"
+    ],
+    "encomienda system": [
+      "amsco_ch01"
+    ],
+    "england": [
+      "amsco_ch02",
+      "amsco_ch03",
+      "amsco_ch07"
+    ],
+    "english": [
+      "amsco_ch01"
+    ],
+    "enlightenment": [
+      "amsco_ch03"
+    ],
+    "environmental protection agency": [
+      "amsco_ch29"
+    ],
+    "era of good feelings": [
+      "amsco_ch08"
+    ],
+    "erie canal": [
+      "amsco_ch08"
+    ],
+    "espionage": [
+      "amsco_ch22"
+    ],
+    "espionage and sedition acts": [
+      "amsco_ch22"
+    ],
+    "established": [
+      "amsco_ch01",
+      "amsco_ch08",
+      "amsco_ch25"
+    ],
+    "established churches": [
+      "amsco_ch03"
+    ],
+    "european": [
+      "amsco_ch01"
+    ],
+    "europeans": [
+      "amsco_ch01"
+    ],
+    "expansion": [
+      "amsco_ch12"
+    ],
+    "explored": [
+      "amsco_ch01"
+    ],
+    "fair deal": [
+      "amsco_ch26"
+    ],
+    "fair labor standards act": [
+      "amsco_ch24"
+    ],
+    "fall of the berlin wall": [
+      "amsco_ch30"
+    ],
+    "family": [
+      "amsco_ch11"
+    ],
+    "farmers": [
+      "amsco_ch17"
+    ],
+    "fdic / glass-steagall banking act": [
+      "amsco_ch24"
+    ],
+    "federal": [
+      "amsco_ch06",
+      "amsco_ch10",
+      "amsco_ch12",
+      "amsco_ch15",
+      "amsco_ch17",
+      "amsco_ch19",
+      "amsco_ch21"
+    ],
+    "federal reserve act": [
+      "amsco_ch21"
+    ],
+    "federalist papers": [
+      "amsco_ch06"
+    ],
+    "federalists": [
+      "amsco_ch06",
+      "amsco_ch07"
+    ],
+    "ferdinand": [
+      "amsco_ch01"
+    ],
+    "fifteenth amendment": [
+      "amsco_ch15"
+    ],
+    "first": [
+      "amsco_ch01",
+      "amsco_ch02",
+      "amsco_ch05",
+      "amsco_ch06",
+      "amsco_ch14",
+      "amsco_ch16",
+      "amsco_ch18",
+      "amsco_ch21",
+      "amsco_ch22",
+      "amsco_ch27",
+      "amsco_ch30",
+      "amsco_ch31"
+    ],
+    "first continental congress": [
+      "amsco_ch04"
+    ],
+    "florida": [
+      "amsco_ch08"
+    ],
+    "ford": [
+      "amsco_ch29"
+    ],
+    "ford assembly line": [
+      "amsco_ch23"
+    ],
+    "foreign": [
+      "amsco_ch23"
+    ],
+    "forest reserve act of 1891": [
+      "amsco_ch21"
+    ],
+    "fort sumter": [
+      "amsco_ch14"
+    ],
+    "founded": [
+      "amsco_ch02",
+      "amsco_ch11",
+      "amsco_ch18"
+    ],
+    "fourteen points": [
+      "amsco_ch22"
+    ],
+    "fourteenth amendment": [
+      "amsco_ch15"
+    ],
+    "francisco pizarro": [
+      "amsco_ch01"
+    ],
+    "franco-american alliance": [
+      "amsco_ch05"
+    ],
+    "frederick douglass": [
+      "amsco_ch11"
+    ],
+    "free african americans in the north": [
+      "amsco_ch09"
+    ],
+    "free-soil party": [
+      "amsco_ch13"
+    ],
+    "freed": [
+      "amsco_ch14"
+    ],
+    "freedmen's bureau": [
+      "amsco_ch15"
+    ],
+    "french": [
+      "amsco_ch01",
+      "amsco_ch07"
+    ],
+    "french and indian war / seven years' war": [
+      "amsco_ch04"
+    ],
+    "fugitive": [
+      "amsco_ch13"
+    ],
+    "fugitive slave act": [
+      "amsco_ch13"
+    ],
+    "gadsden purchase": [
+      "amsco_ch12"
+    ],
+    "garrison": [
+      "amsco_ch11"
+    ],
+    "gave": [
+      "amsco_ch12"
+    ],
+    "gentlemen's agreement": [
+      "amsco_ch20"
+    ],
+    "george whitefield": [
+      "amsco_ch03"
+    ],
+    "georgia": [
+      "amsco_ch02",
+      "amsco_ch10"
+    ],
+    "germany": [
+      "amsco_ch22",
+      "amsco_ch25"
+    ],
+    "gettysburg": [
+      "amsco_ch14"
+    ],
+    "ghost dance movement": [
+      "amsco_ch17"
+    ],
+    "gi bill": [
+      "amsco_ch26"
+    ],
+    "gibbons v. ogden": [
+      "amsco_ch08"
+    ],
+    "gilded": [
+      "amsco_ch19"
+    ],
+    "gilded age patronage politics": [
+      "amsco_ch19"
+    ],
+    "gold": [
+      "amsco_ch19"
+    ],
+    "governor": [
+      "amsco_ch03"
+    ],
+    "governors": [
+      "amsco_ch03"
+    ],
+    "great": [
+      "amsco_ch17",
+      "amsco_ch24"
+    ],
+    "great awakening": [
+      "amsco_ch03"
+    ],
+    "great compromise": [
+      "amsco_ch06"
+    ],
+    "great migration": [
+      "amsco_ch22"
+    ],
+    "great recession (2008)": [
+      "amsco_ch31"
+    ],
+    "great society / war on poverty": [
+      "amsco_ch28"
+    ],
+    "group": [
+      "amsco_ch11"
+    ],
+    "growth": [
+      "amsco_ch18"
+    ],
+    "gulf of tonkin resolution": [
+      "amsco_ch28"
+    ],
+    "halfway covenant": [
+      "amsco_ch02"
+    ],
+    "hamilton's financial plan": [
+      "amsco_ch06"
+    ],
+    "harding": [
+      "amsco_ch23"
+    ],
+    "harlem renaissance": [
+      "amsco_ch23"
+    ],
+    "harrison": [
+      "amsco_ch19"
+    ],
+    "hartford convention": [
+      "amsco_ch07"
+    ],
+    "hawley-smoot tariff": [
+      "amsco_ch24"
+    ],
+    "hay-bunau-varilla treaty of 1903": [
+      "amsco_ch20"
+    ],
+    "haymarket riot": [
+      "amsco_ch16"
+    ],
+    "hereditary aristocracy (limited in colonies)": [
+      "amsco_ch03"
+    ],
+    "hernan cortes": [
+      "amsco_ch01"
+    ],
+    "homestead": [
+      "amsco_ch16"
+    ],
+    "homestead act (1862)": [
+      "amsco_ch14"
+    ],
+    "homestead act settlement": [
+      "amsco_ch17"
+    ],
+    "homestead strike": [
+      "amsco_ch16"
+    ],
+    "house": [
+      "amsco_ch29"
+    ],
+    "house of burgesses": [
+      "amsco_ch02"
+    ],
+    "hundred days / first new deal": [
+      "amsco_ch24"
+    ],
+    "ida b. wells": [
+      "amsco_ch17"
+    ],
+    "immigrants": [
+      "amsco_ch18"
+    ],
+    "immigration act of 1924": [
+      "amsco_ch23"
+    ],
+    "impeachment of andrew johnson": [
+      "amsco_ch15"
+    ],
+    "imperial": [
+      "amsco_ch04"
+    ],
+    "income": [
+      "amsco_ch30"
+    ],
+    "increase": [
+      "amsco_ch09"
+    ],
+    "indian": [
+      "amsco_ch17",
+      "amsco_ch29"
+    ],
+    "indian removal act (1830)": [
+      "amsco_ch10"
+    ],
+    "indian reorganization act": [
+      "amsco_ch24"
+    ],
+    "indians": [
+      "amsco_ch01",
+      "amsco_ch17"
+    ],
+    "industrial": [
+      "amsco_ch09",
+      "amsco_ch16"
+    ],
+    "installment buying": [
+      "amsco_ch23"
+    ],
+    "interstate commerce act of 1886": [
+      "amsco_ch16"
+    ],
+    "interstate commerce commission": [
+      "amsco_ch19"
+    ],
+    "interstate highway system": [
+      "amsco_ch27"
+    ],
+    "intolerable / coercive acts": [
+      "amsco_ch04"
+    ],
+    "iran hostage crisis": [
+      "amsco_ch29"
+    ],
+    "iran-contra affair": [
+      "amsco_ch30"
+    ],
+    "iraq": [
+      "amsco_ch31"
+    ],
+    "iraq war (2003)": [
+      "amsco_ch31"
+    ],
+    "irish and german immigration": [
+      "amsco_ch09"
+    ],
+    "iroquois confederation": [
+      "amsco_ch01"
+    ],
+    "isabella": [
+      "amsco_ch01"
+    ],
+    "island hopping": [
+      "amsco_ch25"
+    ],
+    "jackson": [
+      "amsco_ch10"
+    ],
+    "james": [
+      "amsco_ch02"
+    ],
+    "jamestown": [
+      "amsco_ch02"
+    ],
+    "jamestown (1607)": [
+      "amsco_ch02"
+    ],
+    "january": [
+      "amsco_ch22"
+    ],
+    "japan": [
+      "amsco_ch25",
+      "amsco_ch26"
+    ],
+    "japanese american internment / korematsu": [
+      "amsco_ch25"
+    ],
+    "jazz age / flappers": [
+      "amsco_ch23"
+    ],
+    "jefferson": [
+      "amsco_ch07"
+    ],
+    "jim crow laws": [
+      "amsco_ch17"
+    ],
+    "john": [
+      "amsco_ch03",
+      "amsco_ch12"
+    ],
+    "john brown's raid on harpers ferry": [
+      "amsco_ch13"
+    ],
+    "john peter zenger trial": [
+      "amsco_ch03"
+    ],
+    "johnson": [
+      "amsco_ch15",
+      "amsco_ch28"
+    ],
+    "jonathan edwards": [
+      "amsco_ch03"
+    ],
+    "juan gines de sepulveda": [
+      "amsco_ch01"
+    ],
+    "judiciary act of 1789": [
+      "amsco_ch06",
+      "amsco_ch07"
+    ],
+    "june": [
+      "amsco_ch22"
+    ],
+    "kansas": [
+      "amsco_ch13"
+    ],
+    "kansas-nebraska act of 1854": [
+      "amsco_ch13"
+    ],
+    "kennedy": [
+      "amsco_ch28"
+    ],
+    "kent state shootings": [
+      "amsco_ch29"
+    ],
+    "kentucky and virginia resolutions": [
+      "amsco_ch06"
+    ],
+    "king": [
+      "amsco_ch01",
+      "amsco_ch02",
+      "amsco_ch05"
+    ],
+    "knights of labor": [
+      "amsco_ch16"
+    ],
+    "korean war": [
+      "amsco_ch26"
+    ],
+    "ku klux klan / enforcement acts": [
+      "amsco_ch15"
+    ],
+    "ku klux klan revival": [
+      "amsco_ch23"
+    ],
+    "labor": [
+      "amsco_ch21",
+      "amsco_ch24"
+    ],
+    "land": [
+      "amsco_ch17"
+    ],
+    "last": [
+      "amsco_ch17"
+    ],
+    "laws": [
+      "amsco_ch27",
+      "amsco_ch28"
+    ],
+    "league": [
+      "amsco_ch22"
+    ],
+    "league of nations debate": [
+      "amsco_ch22"
+    ],
+    "lend-lease act": [
+      "amsco_ch25"
+    ],
+    "levittown / suburbanization": [
+      "amsco_ch27"
+    ],
+    "lewis and clark expedition": [
+      "amsco_ch07"
+    ],
+    "liberty": [
+      "amsco_ch18"
+    ],
+    "limits": [
+      "amsco_ch29"
+    ],
+    "lincoln": [
+      "amsco_ch14"
+    ],
+    "lincoln-douglas debates": [
+      "amsco_ch13"
+    ],
+    "line": [
+      "amsco_ch01"
+    ],
+    "little rock nine": [
+      "amsco_ch27"
+    ],
+    "log cabin campaign (1840)": [
+      "amsco_ch10"
+    ],
+    "long": [
+      "amsco_ch24"
+    ],
+    "lost generation": [
+      "amsco_ch23"
+    ],
+    "louisiana": [
+      "amsco_ch07"
+    ],
+    "louisiana purchase": [
+      "amsco_ch07"
+    ],
+    "loyalists / tories": [
+      "amsco_ch05"
+    ],
+    "manhattan project": [
+      "amsco_ch25"
+    ],
+    "manifest destiny": [
+      "amsco_ch12"
+    ],
+    "many": [
+      "amsco_ch01"
+    ],
+    "marbury v. madison": [
+      "amsco_ch07"
+    ],
+    "march": [
+      "amsco_ch14",
+      "amsco_ch24"
+    ],
+    "march on washington": [
+      "amsco_ch28"
+    ],
+    "market revolution": [
+      "amsco_ch08"
+    ],
+    "marshall": [
+      "amsco_ch07"
+    ],
+    "massachusetts": [
+      "amsco_ch03",
+      "amsco_ch05",
+      "amsco_ch11"
+    ],
+    "mayflower compact": [
+      "amsco_ch02"
+    ],
+    "mcclellan": [
+      "amsco_ch14"
+    ],
+    "mckinley": [
+      "amsco_ch20"
+    ],
+    "meat inspection act": [
+      "amsco_ch21"
+    ],
+    "medicare and medicaid": [
+      "amsco_ch28"
+    ],
+    "mercantilism": [
+      "amsco_ch02"
+    ],
+    "mexican cession": [
+      "amsco_ch12"
+    ],
+    "mexican-american war": [
+      "amsco_ch12"
+    ],
+    "mexico": [
+      "amsco_ch12"
+    ],
+    "middle": [
+      "amsco_ch29"
+    ],
+    "military": [
+      "amsco_ch14",
+      "amsco_ch25",
+      "amsco_ch27"
+    ],
+    "military reconstruction act (1867)": [
+      "amsco_ch15"
+    ],
+    "military-industrial complex": [
+      "amsco_ch27"
+    ],
+    "million": [
+      "amsco_ch08",
+      "amsco_ch09",
+      "amsco_ch16",
+      "amsco_ch23",
+      "amsco_ch26"
+    ],
+    "missouri": [
+      "amsco_ch08"
+    ],
+    "missouri compromise (1820)": [
+      "amsco_ch08"
+    ],
+    "modern": [
+      "amsco_ch23"
+    ],
+    "modern republicanism": [
+      "amsco_ch27"
+    ],
+    "monroe": [
+      "amsco_ch08",
+      "amsco_ch20"
+    ],
+    "monroe doctrine": [
+      "amsco_ch08"
+    ],
+    "montgomery bus boycott": [
+      "amsco_ch27"
+    ],
+    "moral majority / religious right": [
+      "amsco_ch30"
+    ],
+    "mormon migration": [
+      "amsco_ch12"
+    ],
+    "morrill land grant act": [
+      "amsco_ch14"
+    ],
+    "mountain whites": [
+      "amsco_ch09"
+    ],
+    "movement": [
+      "amsco_ch11"
+    ],
+    "muckrakers": [
+      "amsco_ch21"
+    ],
+    "mugwumps": [
+      "amsco_ch19"
+    ],
+    "naacp": [
+      "amsco_ch21"
+    ],
+    "nafta": [
+      "amsco_ch30"
+    ],
+    "nat turner's rebellion": [
+      "amsco_ch09"
+    ],
+    "nation": [
+      "amsco_ch23"
+    ],
+    "national": [
+      "amsco_ch21",
+      "amsco_ch24"
+    ],
+    "nationalism": [
+      "amsco_ch08"
+    ],
+    "nations": [
+      "amsco_ch22",
+      "amsco_ch25"
+    ],
+    "nativism": [
+      "amsco_ch18"
+    ],
+    "nativism / know-nothings": [
+      "amsco_ch09"
+    ],
+    "navigation": [
+      "amsco_ch02"
+    ],
+    "navigation acts": [
+      "amsco_ch02"
+    ],
+    "nebraska": [
+      "amsco_ch13"
+    ],
+    "neutrality": [
+      "amsco_ch25"
+    ],
+    "neutrality acts": [
+      "amsco_ch25"
+    ],
+    "new frontier": [
+      "amsco_ch28"
+    ],
+    "new immigration (southern/eastern europe)": [
+      "amsco_ch18"
+    ],
+    "new laws of 1542": [
+      "amsco_ch01"
+    ],
+    "new south / henry grady": [
+      "amsco_ch17"
+    ],
+    "new york city draft riots": [
+      "amsco_ch14"
+    ],
+    "nixon": [
+      "amsco_ch29"
+    ],
+    "nixon visit to china": [
+      "amsco_ch29"
+    ],
+    "north": [
+      "amsco_ch09"
+    ],
+    "northwest": [
+      "amsco_ch09"
+    ],
+    "northwest ordinance (1787)": [
+      "amsco_ch05"
+    ],
+    "nsc-68": [
+      "amsco_ch26"
+    ],
+    "nuclear": [
+      "amsco_ch29"
+    ],
+    "nullification crisis": [
+      "amsco_ch10"
+    ],
+    "number": [
+      "amsco_ch09",
+      "amsco_ch18"
+    ],
+    "obama": [
+      "amsco_ch31"
+    ],
+    "obama election (2008)": [
+      "amsco_ch31"
+    ],
+    "oil embargo / stagflation": [
+      "amsco_ch29"
+    ],
+    "old northwest agriculture": [
+      "amsco_ch09"
+    ],
+    "open door policy": [
+      "amsco_ch20"
+    ],
+    "oregon": [
+      "amsco_ch12"
+    ],
+    "oregon trail": [
+      "amsco_ch12"
+    ],
+    "ostend manifesto": [
+      "amsco_ch12"
+    ],
+    "pacific railway act": [
+      "amsco_ch14"
+    ],
+    "panama canal": [
+      "amsco_ch20"
+    ],
+    "panic of 1819": [
+      "amsco_ch08"
+    ],
+    "panic of 1837": [
+      "amsco_ch10"
+    ],
+    "panic of 1893": [
+      "amsco_ch19"
+    ],
+    "parliament": [
+      "amsco_ch04"
+    ],
+    "party": [
+      "amsco_ch19",
+      "amsco_ch21"
+    ],
+    "passed": [
+      "amsco_ch15",
+      "amsco_ch18",
+      "amsco_ch19",
+      "amsco_ch23",
+      "amsco_ch28",
+      "amsco_ch31"
+    ],
+    "patriot act / department of homeland security": [
+      "amsco_ch31"
+    ],
+    "peace": [
+      "amsco_ch20",
+      "amsco_ch22",
+      "amsco_ch23"
+    ],
+    "pearl harbor": [
+      "amsco_ch25"
+    ],
+    "peculiar institution": [
+      "amsco_ch09"
+    ],
+    "pendleton civil service act": [
+      "amsco_ch19"
+    ],
+    "pentagon papers": [
+      "amsco_ch29"
+    ],
+    "percent": [
+      "amsco_ch18",
+      "amsco_ch23"
+    ],
+    "peril": [
+      "amsco_ch13"
+    ],
+    "persian gulf war (1991)": [
+      "amsco_ch30"
+    ],
+    "philadelphia": [
+      "amsco_ch05",
+      "amsco_ch06"
+    ],
+    "philippine-american war": [
+      "amsco_ch20"
+    ],
+    "phillis wheatley": [
+      "amsco_ch03"
+    ],
+    "plains": [
+      "amsco_ch17"
+    ],
+    "planter aristocracy": [
+      "amsco_ch09"
+    ],
+    "plessy v. ferguson (1896)": [
+      "amsco_ch17"
+    ],
+    "political": [
+      "amsco_ch15"
+    ],
+    "political machines / tammany hall": [
+      "amsco_ch18"
+    ],
+    "politics": [
+      "amsco_ch10",
+      "amsco_ch19"
+    ],
+    "poor richard's almanack": [
+      "amsco_ch03"
+    ],
+    "population": [
+      "amsco_ch03"
+    ],
+    "populist party / omaha platform": [
+      "amsco_ch19"
+    ],
+    "poverty": [
+      "amsco_ch28"
+    ],
+    "power": [
+      "amsco_ch20"
+    ],
+    "president": [
+      "amsco_ch06",
+      "amsco_ch08",
+      "amsco_ch10",
+      "amsco_ch13",
+      "amsco_ch14",
+      "amsco_ch15",
+      "amsco_ch18",
+      "amsco_ch19",
+      "amsco_ch20",
+      "amsco_ch21",
+      "amsco_ch22",
+      "amsco_ch23",
+      "amsco_ch24",
+      "amsco_ch25",
+      "amsco_ch26",
+      "amsco_ch27",
+      "amsco_ch28",
+      "amsco_ch29",
+      "amsco_ch30",
+      "amsco_ch31"
+    ],
+    "presidential": [
+      "amsco_ch31"
+    ],
+    "progressive": [
+      "amsco_ch21"
+    ],
+    "prohibition / volstead act": [
+      "amsco_ch23"
+    ],
+    "promise": [
+      "amsco_ch28"
+    ],
+    "protest": [
+      "amsco_ch04"
+    ],
+    "protestant": [
+      "amsco_ch11"
+    ],
+    "public high schools expansion": [
+      "amsco_ch18"
+    ],
+    "public school movement (horace mann)": [
+      "amsco_ch11"
+    ],
+    "pullman strike": [
+      "amsco_ch16"
+    ],
+    "purchase": [
+      "amsco_ch07"
+    ],
+    "pure food and drug act": [
+      "amsco_ch21"
+    ],
+    "quebec": [
+      "amsco_ch04"
+    ],
+    "railroad": [
+      "amsco_ch16"
+    ],
+    "railroads": [
+      "amsco_ch16",
+      "amsco_ch17"
+    ],
+    "reagan": [
+      "amsco_ch30"
+    ],
+    "reaganomics / supply-side economics": [
+      "amsco_ch30"
+    ],
+    "reconstruction": [
+      "amsco_ch15"
+    ],
+    "recovery": [
+      "amsco_ch24"
+    ],
+    "red scare / palmer raids": [
+      "amsco_ch22"
+    ],
+    "redeemers": [
+      "amsco_ch15"
+    ],
+    "reform": [
+      "amsco_ch11",
+      "amsco_ch19"
+    ],
+    "repeal": [
+      "amsco_ch04"
+    ],
+    "republic": [
+      "amsco_ch06",
+      "amsco_ch12"
+    ],
+    "republican": [
+      "amsco_ch07",
+      "amsco_ch19",
+      "amsco_ch23",
+      "amsco_ch26"
+    ],
+    "republicans": [
+      "amsco_ch19"
+    ],
+    "resignation of nixon": [
+      "amsco_ch29"
+    ],
+    "resolution": [
+      "amsco_ch20"
+    ],
+    "resurgence": [
+      "amsco_ch30"
+    ],
+    "return to normalcy": [
+      "amsco_ch23"
+    ],
+    "revolution": [
+      "amsco_ch05",
+      "amsco_ch09",
+      "amsco_ch11"
+    ],
+    "revolutionary": [
+      "amsco_ch05"
+    ],
+    "rights": [
+      "amsco_ch15",
+      "amsco_ch26",
+      "amsco_ch28"
+    ],
+    "rise": [
+      "amsco_ch16"
+    ],
+    "road treaty of 1818": [
+      "amsco_ch08"
+    ],
+    "roanoke island": [
+      "amsco_ch01"
+    ],
+    "roe v. wade": [
+      "amsco_ch29"
+    ],
+    "roosevelt": [
+      "amsco_ch20",
+      "amsco_ch21",
+      "amsco_ch24",
+      "amsco_ch25"
+    ],
+    "roosevelt corollary": [
+      "amsco_ch20"
+    ],
+    "royal": [
+      "amsco_ch02"
+    ],
+    "sacco and vanzetti": [
+      "amsco_ch23"
+    ],
+    "same-sex marriage legalization": [
+      "amsco_ch31"
+    ],
+    "scalawags and carpetbaggers": [
+      "amsco_ch15"
+    ],
+    "schenck v. united states": [
+      "amsco_ch22"
+    ],
+    "schools": [
+      "amsco_ch11",
+      "amsco_ch27"
+    ],
+    "scopes trial": [
+      "amsco_ch23"
+    ],
+    "scotch-irish migration": [
+      "amsco_ch03"
+    ],
+    "secession of the lower south": [
+      "amsco_ch13"
+    ],
+    "second continental congress": [
+      "amsco_ch05"
+    ],
+    "second great awakening": [
+      "amsco_ch11"
+    ],
+    "sectional economic specialization": [
+      "amsco_ch09"
+    ],
+    "sectionalism": [
+      "amsco_ch09"
+    ],
+    "selective service act": [
+      "amsco_ch22"
+    ],
+    "seneca falls convention (1848)": [
+      "amsco_ch11"
+    ],
+    "september 11 attacks": [
+      "amsco_ch31"
+    ],
+    "settlement houses / jane addams": [
+      "amsco_ch18"
+    ],
+    "seventeenth amendment": [
+      "amsco_ch21"
+    ],
+    "sharecropping / tenant farming": [
+      "amsco_ch15"
+    ],
+    "sharecropping in the new south": [
+      "amsco_ch17"
+    ],
+    "shays' rebellion": [
+      "amsco_ch05"
+    ],
+    "sherman antitrust act (1890)": [
+      "amsco_ch16"
+    ],
+    "sherman silver purchase act of 1890": [
+      "amsco_ch19"
+    ],
+    "sherman's march to the sea": [
+      "amsco_ch14"
+    ],
+    "signed": [
+      "amsco_ch25"
+    ],
+    "since": [
+      "amsco_ch30"
+    ],
+    "sioux": [
+      "amsco_ch17"
+    ],
+    "sixteenth amendment": [
+      "amsco_ch21"
+    ],
+    "skyscrapers / urban technology": [
+      "amsco_ch18"
+    ],
+    "slave": [
+      "amsco_ch13"
+    ],
+    "slavery": [
+      "amsco_ch08",
+      "amsco_ch11",
+      "amsco_ch13",
+      "amsco_ch14"
+    ],
+    "slaves": [
+      "amsco_ch09"
+    ],
+    "smith act of 1940": [
+      "amsco_ch26"
+    ],
+    "social darwinism": [
+      "amsco_ch16"
+    ],
+    "social gospel": [
+      "amsco_ch18"
+    ],
+    "social media and polarization": [
+      "amsco_ch31"
+    ],
+    "social security act (1935)": [
+      "amsco_ch24"
+    ],
+    "society": [
+      "amsco_ch03",
+      "amsco_ch11"
+    ],
+    "solid south": [
+      "amsco_ch19"
+    ],
+    "sons and daughters of liberty": [
+      "amsco_ch04"
+    ],
+    "south": [
+      "amsco_ch08",
+      "amsco_ch09",
+      "amsco_ch10",
+      "amsco_ch13",
+      "amsco_ch14",
+      "amsco_ch15",
+      "amsco_ch17"
+    ],
+    "southern": [
+      "amsco_ch15"
+    ],
+    "soviet": [
+      "amsco_ch26",
+      "amsco_ch29"
+    ],
+    "spanish": [
+      "amsco_ch01"
+    ],
+    "spanish-american war": [
+      "amsco_ch20"
+    ],
+    "specie circular": [
+      "amsco_ch10"
+    ],
+    "spectator sports / mass culture": [
+      "amsco_ch18"
+    ],
+    "spoils system": [
+      "amsco_ch10"
+    ],
+    "sputnik / nasa": [
+      "amsco_ch27"
+    ],
+    "square deal": [
+      "amsco_ch21"
+    ],
+    "stamp": [
+      "amsco_ch04"
+    ],
+    "stamp act (1765)": [
+      "amsco_ch04"
+    ],
+    "standard oil / john d. rockefeller": [
+      "amsco_ch16"
+    ],
+    "state": [
+      "amsco_ch05",
+      "amsco_ch06",
+      "amsco_ch08",
+      "amsco_ch10",
+      "amsco_ch21",
+      "amsco_ch31"
+    ],
+    "steel": [
+      "amsco_ch16"
+    ],
+    "stimson doctrine": [
+      "amsco_ch25"
+    ],
+    "stock": [
+      "amsco_ch24"
+    ],
+    "stock market crash (1929)": [
+      "amsco_ch24"
+    ],
+    "strategic defense initiative": [
+      "amsco_ch30"
+    ],
+    "students for a democratic society": [
+      "amsco_ch28"
+    ],
+    "subsistence farming": [
+      "amsco_ch03"
+    ],
+    "superpower": [
+      "amsco_ch29"
+    ],
+    "supreme": [
+      "amsco_ch24",
+      "amsco_ch27",
+      "amsco_ch31"
+    ],
+    "taft": [
+      "amsco_ch21"
+    ],
+    "taft-hartley act": [
+      "amsco_ch26"
+    ],
+    "tariff": [
+      "amsco_ch10",
+      "amsco_ch19"
+    ],
+    "tariff of 1816": [
+      "amsco_ch08"
+    ],
+    "tariff of abominations": [
+      "amsco_ch10"
+    ],
+    "taxes": [
+      "amsco_ch04"
+    ],
+    "tea party movement": [
+      "amsco_ch31"
+    ],
+    "teapot dome scandal": [
+      "amsco_ch23"
+    ],
+    "temperance movement": [
+      "amsco_ch11"
+    ],
+    "tenements / jacob riis": [
+      "amsco_ch18"
+    ],
+    "term": [
+      "amsco_ch10"
+    ],
+    "territorial": [
+      "amsco_ch12"
+    ],
+    "territories": [
+      "amsco_ch13"
+    ],
+    "territory": [
+      "amsco_ch12"
+    ],
+    "tet offensive": [
+      "amsco_ch28"
+    ],
+    "texas": [
+      "amsco_ch12"
+    ],
+    "texas revolution / alamo": [
+      "amsco_ch12"
+    ],
+    "thirteen": [
+      "amsco_ch02"
+    ],
+    "thirteenth amendment": [
+      "amsco_ch14"
+    ],
+    "three-fifths compromise": [
+      "amsco_ch06"
+    ],
+    "townshend": [
+      "amsco_ch04"
+    ],
+    "townshend acts": [
+      "amsco_ch04"
+    ],
+    "trade": [
+      "amsco_ch30"
+    ],
+    "trail of tears": [
+      "amsco_ch10"
+    ],
+    "transcendentalism": [
+      "amsco_ch11"
+    ],
+    "transcontinental railroad": [
+      "amsco_ch16"
+    ],
+    "treaty": [
+      "amsco_ch06",
+      "amsco_ch07",
+      "amsco_ch12",
+      "amsco_ch20",
+      "amsco_ch22",
+      "amsco_ch25",
+      "amsco_ch29"
+    ],
+    "treaty of ghent": [
+      "amsco_ch07"
+    ],
+    "treaty of guadalupe hidalgo": [
+      "amsco_ch12"
+    ],
+    "treaty of paris (1763)": [
+      "amsco_ch04"
+    ],
+    "treaty of paris (1783)": [
+      "amsco_ch05"
+    ],
+    "treaty of paris (1898)": [
+      "amsco_ch20"
+    ],
+    "treaty of tordesillas (1494)": [
+      "amsco_ch01"
+    ],
+    "treaty of versailles": [
+      "amsco_ch22"
+    ],
+    "triangle shirtwaist fire": [
+      "amsco_ch21"
+    ],
+    "triangular trade": [
+      "amsco_ch02"
+    ],
+    "troops": [
+      "amsco_ch25"
+    ],
+    "truman": [
+      "amsco_ch26"
+    ],
+    "truman doctrine": [
+      "amsco_ch26"
+    ],
+    "turmoil": [
+      "amsco_ch28"
+    ],
+    "u-2 incident": [
+      "amsco_ch27"
+    ],
+    "uncle tom's cabin": [
+      "amsco_ch13"
+    ],
+    "union": [
+      "amsco_ch10",
+      "amsco_ch13",
+      "amsco_ch14"
+    ],
+    "united nations founding": [
+      "amsco_ch25"
+    ],
+    "universal white male suffrage": [
+      "amsco_ch10"
+    ],
+    "unrestricted submarine warfare": [
+      "amsco_ch22"
+    ],
+    "urban": [
+      "amsco_ch18"
+    ],
+    "urbanization in the northeast": [
+      "amsco_ch09"
+    ],
+    "uss maine": [
+      "amsco_ch20"
+    ],
+    "utopian communities (brook farm, oneida)": [
+      "amsco_ch11"
+    ],
+    "valladolid debate": [
+      "amsco_ch01"
+    ],
+    "valley forge": [
+      "amsco_ch05"
+    ],
+    "versailles": [
+      "amsco_ch22"
+    ],
+    "vertical and horizontal integration": [
+      "amsco_ch16"
+    ],
+    "veterans the servicemen's readjustment act of 1944": [
+      "amsco_ch26"
+    ],
+    "vetoed": [
+      "amsco_ch10"
+    ],
+    "vicksburg": [
+      "amsco_ch14"
+    ],
+    "vietnam": [
+      "amsco_ch28"
+    ],
+    "vietnamization": [
+      "amsco_ch29"
+    ],
+    "virginia": [
+      "amsco_ch02",
+      "amsco_ch03",
+      "amsco_ch05",
+      "amsco_ch14"
+    ],
+    "voting": [
+      "amsco_ch28"
+    ],
+    "voting rights act of 1965": [
+      "amsco_ch28"
+    ],
+    "wages": [
+      "amsco_ch16"
+    ],
+    "wagner act / nlrb": [
+      "amsco_ch24"
+    ],
+    "war in afghanistan": [
+      "amsco_ch31"
+    ],
+    "war industries board": [
+      "amsco_ch22"
+    ],
+    "war of 1812": [
+      "amsco_ch07"
+    ],
+    "wars": [
+      "amsco_ch04"
+    ],
+    "wartime mobilization / rosie the riveter": [
+      "amsco_ch25"
+    ],
+    "washington": [
+      "amsco_ch05",
+      "amsco_ch06"
+    ],
+    "washington's farewell address": [
+      "amsco_ch06"
+    ],
+    "watergate scandal": [
+      "amsco_ch29"
+    ],
+    "welfare reform act (1996)": [
+      "amsco_ch30"
+    ],
+    "west": [
+      "amsco_ch08",
+      "amsco_ch17"
+    ],
+    "western": [
+      "amsco_ch17"
+    ],
+    "whig party": [
+      "amsco_ch10"
+    ],
+    "whiskey rebellion": [
+      "amsco_ch06"
+    ],
+    "william jennings bryan cross of gold speech": [
+      "amsco_ch19"
+    ],
+    "william penn / pennsylvania": [
+      "amsco_ch02"
+    ],
+    "wilmot proviso": [
+      "amsco_ch12"
+    ],
+    "wilson": [
+      "amsco_ch20",
+      "amsco_ch22"
+    ],
+    "worcester v. georgia": [
+      "amsco_ch10"
+    ],
+    "world": [
+      "amsco_ch01",
+      "amsco_ch20",
+      "amsco_ch22",
+      "amsco_ch23",
+      "amsco_ch25",
+      "amsco_ch30"
+    ],
+    "wounded knee massacre": [
+      "amsco_ch17"
+    ],
+    "xyz affair": [
+      "amsco_ch06"
+    ],
+    "yalta and potsdam conferences": [
+      "amsco_ch25"
+    ],
+    "year": [
+      "amsco_ch09"
+    ],
+    "years": [
+      "amsco_ch27"
+    ],
+    "york": [
+      "amsco_ch03"
+    ],
+    "zimmermann telegram": [
+      "amsco_ch22"
+    ]
+  },
+  "failed_chapters": []
+}

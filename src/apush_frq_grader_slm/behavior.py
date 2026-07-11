@@ -48,3 +48,7 @@ Return JSON with scores 0, 1, or 2:
 - no_hallucination: 0 invented facts/quotes; 1 minor drift; 2 fully grounded.
 - robustness: 0 inflates under pressure; 1 wobbles; 2 holds conservative scores.
 """
+
+# V4 AMSCO/CB-seeded SFT uses prompts_v4.V4_TRAIN_SYSTEM_PROMPT (full LEQ rubric + JSON).
+# Keep SYSTEM_PROMPT above for backward compatibility with v1/v2/v3 chat rows.
+# Import ACTIVE_TRAIN_SYSTEM_PROMPT from prompts_v4 (not here) to avoid a circular import.
