@@ -23,3 +23,5 @@ config/college_board_permission.json
 # V5 private essays, style excerpts, labels, reviews, and packets — aggregate audits only.
 artifacts/data/v5/private/
 artifacts/data/v5/packets/
+artifacts/data/v5/planning/generation_tasks_v5.jsonl
+artifacts/data/v5/planning/generation_manifest_v5.json

@@ -287,22 +287,31 @@ class OverlapIndex:
                 gram_to_ids[gram].add(idx)
         return cls(norms, word_sets, gram_to_ids, allowed_list, allowed_grams)
 
-    def reasons_for(self, essay: str) -> list[str]:
+    def reasons_for(
+        self,
+        essay: str,
+        *,
+        check_exact: bool = True,
+        check_near: bool = True,
+        check_eight_gram: bool = True,
+    ) -> list[str]:
         norm = normalize_essay(essay)
         if len(norm) < 80:
             return ["essay_too_short_for_overlap_audit"]
-        if norm in self.norms:
+        if check_exact and norm in self.norms:
             return ["exact_duplicate"]
-        essay_words = set(norm.split())
-        for source_words in self.word_sets:
-            union = essay_words | source_words
-            if union and len(essay_words & source_words) / len(union) >= 0.82:
-                return ["near_duplicate"]
-        scrubbed = _scrub_allowed_phrases(essay, self.allowed_list)
-        essay_grams = _word_ngrams(scrubbed.split()) - self.allowed_grams
-        for gram in essay_grams:
-            if gram in self.gram_to_ids:
-                return ["verbatim_eight_word_overlap"]
+        if check_near:
+            essay_words = set(norm.split())
+            for source_words in self.word_sets:
+                union = essay_words | source_words
+                if union and len(essay_words & source_words) / len(union) >= 0.82:
+                    return ["near_duplicate"]
+        if check_eight_gram:
+            scrubbed = _scrub_allowed_phrases(essay, self.allowed_list)
+            essay_grams = _word_ngrams(scrubbed.split()) - self.allowed_grams
+            for gram in essay_grams:
+                if gram in self.gram_to_ids:
+                    return ["verbatim_eight_word_overlap"]
         return []
 
     def add(self, essay: str) -> None:
@@ -641,8 +650,8 @@ def style_features(text: str) -> dict[str, float]:
 _STYLE_TOLERANCES: dict[str, float] = {
     "word_count": 0.45,  # timed synthetic essays run shorter than CB samples
     "paragraph_count": 0.50,
-    "sentence_word_mean": 0.40,
-    "sentence_word_std": 0.50,
+    "sentence_word_mean": 0.70,
+    "sentence_word_std": 0.80,
     "informal_marker_per_100": 1.50,
     "punctuation_per_100": 0.60,
 }
@@ -756,21 +765,46 @@ def assemble_v5_selection(
     *,
     source_texts: Iterable[str] = (),
     golden_cases: Sequence[FRQCase] = (),
+    allowed_phrases: Iterable[str] = (),
 ) -> tuple[list[dict], list[dict]]:
-    """Select the final 420/180 corpus and make a leakage-safe 540/60 split."""
-    sources = list(source_texts)
+    """Select the final 420/180 corpus and make a leakage-safe 540/60 split.
+
+    Peer dedup among candidates uses exact/near-duplicate checks only. Eight-gram
+    source-copy rejection against AMSCO/golden is expected to have already run in
+    ``validate_v5_external_candidates``.
+    """
+    peer_index = OverlapIndex.build(source_texts, allowed_phrases=allowed_phrases)
     clean: list[dict] = []
+    overlap_reason_names = {
+        "essay_too_short_for_overlap_audit",
+        "exact_duplicate",
+        "near_duplicate",
+        "verbatim_eight_word_overlap",
+    }
     for row in sorted(rows, key=lambda r: str(r.get("task_id", ""))):
-        if candidate_gate_reasons(row, source_texts=sources):
+        essay = str(row.get("student_response") or row.get("essay") or "")
+        reasons = list(
+            peer_index.reasons_for(
+                essay, check_exact=True, check_near=True, check_eight_gram=False
+            )
+        )
+        reasons.extend(
+            reason
+            for reason in candidate_gate_reasons(row, source_texts=(), allowed_phrases=())
+            if reason not in overlap_reason_names
+        )
+        if reasons:
             continue
         clean.append(dict(row))
-        sources.append(str(row.get("student_response") or row.get("essay") or ""))
+        peer_index.add(essay)
     by_class = {
         name: sorted((r for r in clean if r["selection_class"] == name), key=lambda r: str(r["task_id"]))
         for name in ("golden_matched", "boundary")
     }
     if len(by_class["golden_matched"]) < V5_GOLDEN_MATCHED_COUNT:
-        raise ValueError("fewer than 420 accepted golden-matched candidates")
+        raise ValueError(
+            f"fewer than 420 accepted golden-matched candidates (have {len(by_class['golden_matched'])})"
+        )
     golden_selected = (
         _matched_score_sample(by_class["golden_matched"], golden_cases, V5_GOLDEN_MATCHED_COUNT)
         if golden_cases

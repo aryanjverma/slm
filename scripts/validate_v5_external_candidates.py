@@ -100,21 +100,59 @@ def main() -> None:
     golden_cases: list[FRQCase] = []
     if args.golden_cases and Path(args.golden_cases).exists():
         golden_cases = [FRQCase.model_validate(row) for row in read_jsonl(args.golden_cases)]
+    # 8-gram source-copy index: AMSCO/fact cards/golden prose only (plan wording).
+    source_copy_texts: list[str] = []
+    if args.golden_cases and Path(args.golden_cases).exists():
+        source_copy_texts.extend(
+            str(row.get("student_response") or row.get("essay") or "")
+            for row in read_jsonl(args.golden_cases)
+        )
+    if args.amsco_kb and Path(args.amsco_kb).exists():
+        for chapter in load_kb(args.amsco_kb):
+            source_copy_texts.extend(str(x) for x in (chapter.get("key_facts") or []))
+            source_copy_texts.extend(str(x) for x in (chapter.get("context_hooks") or []))
+            source_copy_texts.extend(str(x) for x in (chapter.get("evidence_bank") or []))
+    if args.fact_cards and Path(args.fact_cards).exists():
+        source_copy_texts.extend(
+            str(row.get("concept") or row.get("fact") or "") for row in read_jsonl(args.fact_cards)
+        )
+    source_copy_index = OverlapIndex.build(source_copy_texts, allowed_phrases=allowed_phrases)
+    # Exact/near-duplicate index: golden + v4 + accepted v5 peers.
+    peer_index = OverlapIndex.build(overlap_texts, allowed_phrases=allowed_phrases)
     accepted: list[dict] = []
     rejected: dict[str, list[str]] = {}
-    index = OverlapIndex.build(overlap_texts, allowed_phrases=allowed_phrases)
     for task_id in sorted(set(returned) & set(tasks)):
         row = normalize_external_candidate(tasks[task_id], returned[task_id])
         if golden_cases:
             row = annotate_distribution_match([row], golden_cases)[0]
-        reasons = candidate_gate_reasons(
-            row, allowed_phrases=allowed_phrases, overlap_index=index
+        essay = str(row.get("student_response") or row.get("essay") or "")
+        reasons = []
+        reasons.extend(
+            source_copy_index.reasons_for(
+                essay, check_exact=False, check_near=False, check_eight_gram=True
+            )
+        )
+        reasons.extend(
+            peer_index.reasons_for(
+                essay, check_exact=True, check_near=True, check_eight_gram=False
+            )
+        )
+        # Non-overlap gates (pass empty sources; overlap already handled).
+        reasons.extend(
+            reason
+            for reason in candidate_gate_reasons(row, source_texts=(), allowed_phrases=())
+            if reason not in {
+                "essay_too_short_for_overlap_audit",
+                "exact_duplicate",
+                "near_duplicate",
+                "verbatim_eight_word_overlap",
+            }
         )
         if reasons:
             rejected[task_id] = sorted(set(reasons))
             continue
         accepted.append(row)
-        index.add(str(row.get("student_response") or row.get("essay") or ""))
+        peer_index.add(essay)
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     write_jsonl(args.output, accepted)
