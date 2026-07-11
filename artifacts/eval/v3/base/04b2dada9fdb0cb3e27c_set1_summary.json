@@ -1,0 +1,46 @@
+{
+  "acceptance": {
+    "mae_lte_1_5": false,
+    "passed": false,
+    "qwk_gte_0_35": false,
+    "schema_valid_100pct": false,
+    "within_one_gte_60pct": false,
+    "zero_truncations": false
+  },
+  "identity": {
+    "data_hash": "ed226e01ba3bc6b7a3d44af122af75106a27e579804664a6500f38b497b02c80",
+    "decoding_settings": {
+      "balanced_json_stopping": true,
+      "do_sample": false,
+      "max_new_tokens": 320,
+      "score_enum_constraint": "scores_only_v2",
+      "temperature": 0.0
+    },
+    "model_hash": "5d53059d05825bbef0ae5f31d471ce6302ed8198af7e693f8914fc78d4439875",
+    "model_name": "Qwen2.5-0.5B-base",
+    "prompt_version": "v3_scores_feedback_1",
+    "run_id": "04b2dada9fdb0cb3e27c",
+    "split": "set1"
+  },
+  "layered_system": {
+    "count": 27,
+    "qwk": 0.2583,
+    "repetition_rate": 0.0,
+    "schema_valid_rate": 0.7778,
+    "total_mae": 2.3704,
+    "total_within_one_rate": 0.3704,
+    "truncation_count": 1
+  },
+  "model_name": "Qwen2.5-0.5B-base",
+  "raw_model": {
+    "count": 27,
+    "qwk": 0.4214,
+    "repetition_rate": 0.0,
+    "schema_valid_rate": 0.7778,
+    "total_mae": 1.7407,
+    "total_within_one_rate": 0.4815,
+    "truncation_count": 1
+  },
+  "run_id": "04b2dada9fdb0cb3e27c",
+  "split": "set1"
+}

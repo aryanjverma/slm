@@ -1,0 +1,33 @@
+{
+  "accepted": 200,
+  "distributions": {
+    "essay_length": {
+      "400_plus": 11,
+      "under_400": 189
+    },
+    "labeling_method": {
+      "adjudicated": 15,
+      "independent_consensus": 62,
+      "rule_based": 123
+    },
+    "rubric_version": {
+      "2023_leq": 79,
+      "2024_2026_leq": 121
+    },
+    "source_type": {
+      "synthetic": 200
+    },
+    "total": {
+      "0": 17,
+      "1": 42,
+      "2": 42,
+      "3": 6,
+      "4": 25,
+      "5": 26,
+      "6": 42
+    }
+  },
+  "global_reasons": [],
+  "rejected": {},
+  "total": 200
+}

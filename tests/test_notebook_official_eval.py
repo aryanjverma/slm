@@ -31,3 +31,10 @@ def test_notebook_evaluation_is_drive_backed_resumable_and_512_tokens() -> None:
     assert '"--eval-output-root", str(EVAL_DIR / "checkpoints")' in source
     assert "MAX_NEW_TOKENS = 512" in source
     assert "evaluation_sha256" in source
+
+
+def test_notebook_restores_nested_drive_adapter_or_uses_local_model() -> None:
+    source = _source()
+    assert 'local_config = MODEL_DIR / "adapter_config.json"' in source
+    assert 'drive_model_root.rglob("adapter_config.json")' in source
+    assert 'src / "adapter_model.safetensors"' in source

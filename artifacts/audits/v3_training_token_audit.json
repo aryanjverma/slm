@@ -1,0 +1,11 @@
+{
+  "all_assistant_targets_visible": true,
+  "max_context_tokens": 3072,
+  "maximum_assistant_tokens": 213,
+  "maximum_row_tokens": 945,
+  "minimum_assistant_tokens": 117,
+  "minimum_row_tokens": 367,
+  "only_assistant_tokens_supervised": true,
+  "rows": 200,
+  "tokenizer": "adapter-v2/adapter"
+}

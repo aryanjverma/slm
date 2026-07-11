@@ -1,0 +1,61 @@
+{
+  "categories": {
+    "json_schema_invalid": 25,
+    "likely_max_token_truncation": 8,
+    "malformed_or_non_json": 1,
+    "valid_structured_json": 19
+  },
+  "example_case_ids": {
+    "json_schema_invalid": [
+      "ap_central_2023_leq3_set1_3B",
+      "ap_central_2023_leq3_set1_3C",
+      "ap_central_2023_leq3_set2_3C",
+      "ap_central_2023_leq4_set1_4A",
+      "ap_central_2023_leq4_set1_4B",
+      "ap_central_2023_leq4_set1_4C",
+      "ap_central_2023_leq4_set2_4B",
+      "ap_central_2023_leq4_set2_4C",
+      "ap_central_2024_leq2_set1_2A",
+      "ap_central_2024_leq2_set1_2B"
+    ],
+    "likely_max_token_truncation": [
+      "ap_central_2023_leq4_set2_4A",
+      "ap_central_2024_leq3_set1_3B",
+      "ap_central_2024_leq3_set2_3C",
+      "ap_central_2025_leq3_set1_3A",
+      "ap_central_2025_leq3_set2_3A",
+      "ap_central_2025_leq4_set1_4A",
+      "ap_central_2025_leq4_set1_4C",
+      "ap_central_2025_leq4_set2_4A"
+    ],
+    "malformed_or_non_json": [
+      "ap_central_2024_leq3_set1_3A"
+    ],
+    "valid_structured_json": [
+      "ap_central_2023_leq2_set1_2A",
+      "ap_central_2023_leq2_set1_2B",
+      "ap_central_2023_leq2_set1_2C",
+      "ap_central_2023_leq2_set2_2A",
+      "ap_central_2023_leq2_set2_2B",
+      "ap_central_2023_leq2_set2_2C",
+      "ap_central_2023_leq3_set1_3A",
+      "ap_central_2023_leq3_set2_3A",
+      "ap_central_2023_leq3_set2_3B",
+      "ap_central_2024_leq2_set1_2C"
+    ]
+  },
+  "max_new_tokens": 512,
+  "rates": {
+    "json_schema_invalid": 0.4717,
+    "likely_max_token_truncation": 0.1509,
+    "malformed_or_non_json": 0.0189,
+    "valid_structured_json": 0.3585
+  },
+  "response_tokens": {
+    "maximum": 512,
+    "median": 224,
+    "minimum": 138
+  },
+  "tokenizer_used": true,
+  "total": 53
+}

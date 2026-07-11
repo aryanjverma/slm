@@ -1,0 +1,371 @@
+{
+  "essay_length": {
+    "250_399": {
+      "count": 11.0,
+      "evidence_grounding_rate": 0.9091,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.5455,
+      "rubric_accuracy_mean": 0.8409,
+      "structured_output_valid_rate": 0.1818,
+      "total_score_mean": 0.7409
+    },
+    "400_599": {
+      "count": 6.0,
+      "evidence_grounding_rate": 0.5,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 0.8333,
+      "rubric_accuracy_mean": 0.375,
+      "structured_output_valid_rate": 0.1667,
+      "total_score_mean": 0.4917
+    },
+    "600_plus": {
+      "count": 5.0,
+      "evidence_grounding_rate": 0.6,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 0.8,
+      "rubric_accuracy_mean": 0.45,
+      "structured_output_valid_rate": 0.2,
+      "total_score_mean": 0.53
+    },
+    "under_250": {
+      "count": 31.0,
+      "evidence_grounding_rate": 0.7742,
+      "no_hallucination_rate": 0.9677,
+      "robustness_mean": 1.4839,
+      "rubric_accuracy_mean": 0.7742,
+      "structured_output_valid_rate": 0.4839,
+      "total_score_mean": 0.7484
+    }
+  },
+  "failure_type": {
+    "borderline_complexity": {
+      "count": 12.0,
+      "evidence_grounding_rate": 0.8333,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.3333,
+      "rubric_accuracy_mean": 0.8125,
+      "structured_output_valid_rate": 0.25,
+      "total_score_mean": 0.7125
+    },
+    "evidence_list": {
+      "count": 10.0,
+      "evidence_grounding_rate": 0.7,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.4,
+      "rubric_accuracy_mean": 0.8,
+      "structured_output_valid_rate": 0.5,
+      "total_score_mean": 0.74
+    },
+    "missing_context": {
+      "count": 6.0,
+      "evidence_grounding_rate": 1.0,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.8333,
+      "rubric_accuracy_mean": 0.7917,
+      "structured_output_valid_rate": 0.6667,
+      "total_score_mean": 0.875
+    },
+    "strong": {
+      "count": 20.0,
+      "evidence_grounding_rate": 0.7,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.3,
+      "rubric_accuracy_mean": 0.6,
+      "structured_output_valid_rate": 0.35,
+      "total_score_mean": 0.66
+    },
+    "weak_thesis": {
+      "count": 5.0,
+      "evidence_grounding_rate": 0.6,
+      "no_hallucination_rate": 0.8,
+      "robustness_mean": 1.0,
+      "rubric_accuracy_mean": 0.65,
+      "structured_output_valid_rate": 0.0,
+      "total_score_mean": 0.51
+    }
+  },
+  "knowledge_profile": {
+    "unknown": {
+      "count": 53.0,
+      "evidence_grounding_rate": 0.7547,
+      "no_hallucination_rate": 0.9811,
+      "robustness_mean": 1.3585,
+      "rubric_accuracy_mean": 0.7123,
+      "structured_output_valid_rate": 0.3585,
+      "total_score_mean": 0.6972
+    }
+  },
+  "period": {
+    "unknown": {
+      "count": 53.0,
+      "evidence_grounding_rate": 0.7547,
+      "no_hallucination_rate": 0.9811,
+      "robustness_mean": 1.3585,
+      "rubric_accuracy_mean": 0.7123,
+      "structured_output_valid_rate": 0.3585,
+      "total_score_mean": 0.6972
+    }
+  },
+  "prompt_family": {
+    "ap_central_2023_leq2_set1": {
+      "count": 3.0,
+      "evidence_grounding_rate": 1.0,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.6667,
+      "rubric_accuracy_mean": 1.0,
+      "structured_output_valid_rate": 1.0,
+      "total_score_mean": 0.9667
+    },
+    "ap_central_2023_leq2_set2": {
+      "count": 3.0,
+      "evidence_grounding_rate": 1.0,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.6667,
+      "rubric_accuracy_mean": 1.0,
+      "structured_output_valid_rate": 1.0,
+      "total_score_mean": 0.9667
+    },
+    "ap_central_2023_leq3_set1": {
+      "count": 3.0,
+      "evidence_grounding_rate": 1.0,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.6667,
+      "rubric_accuracy_mean": 0.8333,
+      "structured_output_valid_rate": 0.3333,
+      "total_score_mean": 0.8
+    },
+    "ap_central_2023_leq3_set2": {
+      "count": 3.0,
+      "evidence_grounding_rate": 1.0,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 2.0,
+      "rubric_accuracy_mean": 0.75,
+      "structured_output_valid_rate": 0.6667,
+      "total_score_mean": 0.8833
+    },
+    "ap_central_2023_leq4_set1": {
+      "count": 3.0,
+      "evidence_grounding_rate": 1.0,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.0,
+      "rubric_accuracy_mean": 1.0,
+      "structured_output_valid_rate": 0.0,
+      "total_score_mean": 0.7
+    },
+    "ap_central_2023_leq4_set2": {
+      "count": 3.0,
+      "evidence_grounding_rate": 0.3333,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.0,
+      "rubric_accuracy_mean": 0.6667,
+      "structured_output_valid_rate": 0.0,
+      "total_score_mean": 0.5
+    },
+    "ap_central_2024_leq2_set1": {
+      "count": 3.0,
+      "evidence_grounding_rate": 1.0,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.3333,
+      "rubric_accuracy_mean": 1.0,
+      "structured_output_valid_rate": 0.3333,
+      "total_score_mean": 0.8
+    },
+    "ap_central_2024_leq2_set2": {
+      "count": 3.0,
+      "evidence_grounding_rate": 1.0,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.3333,
+      "rubric_accuracy_mean": 0.9167,
+      "structured_output_valid_rate": 0.0,
+      "total_score_mean": 0.7167
+    },
+    "ap_central_2024_leq3_set1": {
+      "count": 3.0,
+      "evidence_grounding_rate": 0.3333,
+      "no_hallucination_rate": 0.6667,
+      "robustness_mean": 0.6667,
+      "rubric_accuracy_mean": 0.3333,
+      "structured_output_valid_rate": 0.0,
+      "total_score_mean": 0.3333
+    },
+    "ap_central_2024_leq3_set2": {
+      "count": 3.0,
+      "evidence_grounding_rate": 0.6667,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.0,
+      "rubric_accuracy_mean": 0.3333,
+      "structured_output_valid_rate": 0.3333,
+      "total_score_mean": 0.5667
+    },
+    "ap_central_2024_leq4_set1": {
+      "count": 3.0,
+      "evidence_grounding_rate": 1.0,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 2.0,
+      "rubric_accuracy_mean": 0.8333,
+      "structured_output_valid_rate": 0.6667,
+      "total_score_mean": 0.9
+    },
+    "ap_central_2024_leq4_set2": {
+      "count": 2.0,
+      "evidence_grounding_rate": 1.0,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 2.0,
+      "rubric_accuracy_mean": 1.0,
+      "structured_output_valid_rate": 1.0,
+      "total_score_mean": 1.0
+    },
+    "ap_central_2025_leq2_set1": {
+      "count": 3.0,
+      "evidence_grounding_rate": 1.0,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.3333,
+      "rubric_accuracy_mean": 0.5833,
+      "structured_output_valid_rate": 0.0,
+      "total_score_mean": 0.65
+    },
+    "ap_central_2025_leq2_set2": {
+      "count": 3.0,
+      "evidence_grounding_rate": 1.0,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.6667,
+      "rubric_accuracy_mean": 0.6667,
+      "structured_output_valid_rate": 0.3333,
+      "total_score_mean": 0.7667
+    },
+    "ap_central_2025_leq3_set1": {
+      "count": 3.0,
+      "evidence_grounding_rate": 0.3333,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.3333,
+      "rubric_accuracy_mean": 0.6667,
+      "structured_output_valid_rate": 0.3333,
+      "total_score_mean": 0.6
+    },
+    "ap_central_2025_leq3_set2": {
+      "count": 3.0,
+      "evidence_grounding_rate": 0.3333,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.0,
+      "rubric_accuracy_mean": 0.3333,
+      "structured_output_valid_rate": 0.0,
+      "total_score_mean": 0.4333
+    },
+    "ap_central_2025_leq4_set1": {
+      "count": 3.0,
+      "evidence_grounding_rate": 0.0,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 0.6667,
+      "rubric_accuracy_mean": 0.3333,
+      "structured_output_valid_rate": 0.3333,
+      "total_score_mean": 0.4
+    },
+    "ap_central_2025_leq4_set2": {
+      "count": 3.0,
+      "evidence_grounding_rate": 0.6667,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.3333,
+      "rubric_accuracy_mean": 0.6667,
+      "structured_output_valid_rate": 0.3333,
+      "total_score_mean": 0.6667
+    }
+  },
+  "reasoning_skill": {
+    "unknown": {
+      "count": 53.0,
+      "evidence_grounding_rate": 0.7547,
+      "no_hallucination_rate": 0.9811,
+      "robustness_mean": 1.3585,
+      "rubric_accuracy_mean": 0.7123,
+      "structured_output_valid_rate": 0.3585,
+      "total_score_mean": 0.6972
+    }
+  },
+  "reference_total": {
+    "1": {
+      "count": 3.0,
+      "evidence_grounding_rate": 0.3333,
+      "no_hallucination_rate": 0.6667,
+      "robustness_mean": 1.6667,
+      "rubric_accuracy_mean": 0.6667,
+      "structured_output_valid_rate": 0.3333,
+      "total_score_mean": 0.5667
+    },
+    "2": {
+      "count": 12.0,
+      "evidence_grounding_rate": 0.75,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.1667,
+      "rubric_accuracy_mean": 0.7708,
+      "structured_output_valid_rate": 0.3333,
+      "total_score_mean": 0.6875
+    },
+    "3": {
+      "count": 3.0,
+      "evidence_grounding_rate": 1.0,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.6667,
+      "rubric_accuracy_mean": 0.75,
+      "structured_output_valid_rate": 0.3333,
+      "total_score_mean": 0.7833
+    },
+    "4": {
+      "count": 15.0,
+      "evidence_grounding_rate": 0.8667,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.4667,
+      "rubric_accuracy_mean": 0.8167,
+      "structured_output_valid_rate": 0.4,
+      "total_score_mean": 0.7633
+    },
+    "5": {
+      "count": 2.0,
+      "evidence_grounding_rate": 1.0,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 2.0,
+      "rubric_accuracy_mean": 1.0,
+      "structured_output_valid_rate": 0.0,
+      "total_score_mean": 0.8
+    },
+    "6": {
+      "count": 18.0,
+      "evidence_grounding_rate": 0.6667,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.2222,
+      "rubric_accuracy_mean": 0.5556,
+      "structured_output_valid_rate": 0.3889,
+      "total_score_mean": 0.6444
+    }
+  },
+  "rubric_version": {
+    "2023_leq": {
+      "count": 18.0,
+      "evidence_grounding_rate": 0.8889,
+      "no_hallucination_rate": 1.0,
+      "robustness_mean": 1.5,
+      "rubric_accuracy_mean": 0.875,
+      "structured_output_valid_rate": 0.5,
+      "total_score_mean": 0.8028
+    },
+    "2024_2026_leq": {
+      "count": 35.0,
+      "evidence_grounding_rate": 0.6857,
+      "no_hallucination_rate": 0.9714,
+      "robustness_mean": 1.2857,
+      "rubric_accuracy_mean": 0.6286,
+      "structured_output_valid_rate": 0.2857,
+      "total_score_mean": 0.6429
+    }
+  },
+  "time_budget": {
+    "unknown": {
+      "count": 53.0,
+      "evidence_grounding_rate": 0.7547,
+      "no_hallucination_rate": 0.9811,
+      "robustness_mean": 1.3585,
+      "rubric_accuracy_mean": 0.7123,
+      "structured_output_valid_rate": 0.3585,
+      "total_score_mean": 0.6972
+    }
+  }
+}

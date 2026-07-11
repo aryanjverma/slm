@@ -1,0 +1,37 @@
+{
+  "files": {
+    "audit": {
+      "path": "artifacts/data/v3/dataset_audit_v3.json",
+      "sha256": "88cb2473a5698275fde45e6b608f764ca879e6aa617bbd0bd416fd190cc0ae91"
+    },
+    "cases": {
+      "path": "artifacts/data/v3/train_cases_v3.jsonl",
+      "sha256": "5b4efcab413dee38dcb7c855f650c1a838663839c34ba89d7c59f7dc661a97fe"
+    },
+    "chat": {
+      "path": "artifacts/data/v3/train_chat_v3.jsonl",
+      "sha256": "c88f499b86b8bc12ba00cfe93c6a1d94afc96565765c397498bc8fe61dd1f63d"
+    }
+  },
+  "rows": 200,
+  "settings": {
+    "min_long_essay_rate": 0.05,
+    "seed": 13,
+    "sources": [
+      {
+        "path": "artifacts/data/train_cases.jsonl",
+        "sha256": "cd0d1e1c4aec00955cf1508edeefd49ff4170a3a52541ff5a979f13134832ef6"
+      },
+      {
+        "path": "artifacts/data/v2/train_realistic_v2.jsonl",
+        "sha256": "7ad33d7bf9e9fc49f05c3ac9e59861471dc96f6ba24ee633be06d950a17c6886"
+      },
+      {
+        "path": "artifacts/data/v2/train_adversarial_v2.jsonl",
+        "sha256": "c64bc50f07e306cc06198359e09e10946285d51b7c7efcd826051e5adba5b2ba"
+      }
+    ],
+    "target_count": 200
+  },
+  "version": "v3"
+}

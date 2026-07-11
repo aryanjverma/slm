@@ -51,6 +51,27 @@ and `OPENAI_API_KEY`. Offline reader outputs can be resolved with
 `scripts/resolve_synthetic_grades.py`. Official College Board artifacts have a separate written-
 permission and manual-review gate; see `docs/data_permission_checkpoint.md`.
 
+## V3 Failure-Driven Pipeline
+
+V3 keeps v2 reproducible and adds a separate layered grader, immutable 200-row audited training
+artifact, assistant-only training, checkpoint generation evaluation, and a locked official split.
+The model emits four scores plus four feedback strings; the application computes `total` and never
+clamps or otherwise changes a selected criterion score.
+
+```powershell
+python scripts/analyze_v2_for_v3.py
+python scripts/build_v3_dataset.py artifacts/data/train_cases.jsonl artifacts/data/v2/train_realistic_v2.jsonl artifacts/data/v2/train_adversarial_v2.jsonl
+python scripts/eval_v3.py --model Qwen/Qwen2.5-0.5B-Instruct --model-name Qwen2.5-0.5B-base
+python scripts/benchmark_v3_dev.py --base-summary PATH_TO_BASE_SET1_SUMMARY
+python scripts/train_v3.py --model Qwen/Qwen2.5-0.5B-Instruct --output artifacts/models/qwen-0.5b-v3 --dev-eval-command "python scripts/eval_v3.py --model {checkpoint} --model-name qwen-0.5b-v3 --output-dir artifacts/eval/v3/qwen-0.5b"
+python scripts/train_v3.py --model Qwen/Qwen2.5-1.5B-Instruct --output artifacts/models/qwen-1.5b-v3 --dev-eval-command "python scripts/eval_v3.py --model {checkpoint} --model-name qwen-1.5b-v3 --output-dir artifacts/eval/v3/qwen-1.5b"
+```
+
+`eval_v3.py` always selects the 27 set1 rows unless `--final-evaluation` and an exact passing lock
+manifest are both supplied. A successful set2 run writes a receipt that prevents a second run.
+The local 53-row College Board-derived file still carries the provenance and extraction warnings
+reported in `docs/v2_failure_analysis_for_v3.md`; saved v2 results are diagnostics, not golden data.
+
 ## Day 2 Smoke Test (50 cases, full loop)
 
 Proves generate → train → eval on a tiny dataset before the real v1 run:

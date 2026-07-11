@@ -1,0 +1,158 @@
+{
+  "diagnostic_categories": {
+    "json_schema_invalid": 25,
+    "likely_max_token_truncation": 8,
+    "malformed_or_non_json": 1,
+    "valid_structured_json": 19
+  },
+  "dimensions": {
+    "essay_length": {
+      "250_399": {
+        "count": 11,
+        "normalized_total_mae": 1.5,
+        "normalized_valid_rate": 0.7273,
+        "parseable_rate": 1.0,
+        "raw_schema_valid_rate": 0.1818,
+        "repetition_rate": 0.1818,
+        "truncation_rate": 0.0
+      },
+      "400_599": {
+        "count": 6,
+        "normalized_total_mae": 1.0,
+        "normalized_valid_rate": 0.3333,
+        "parseable_rate": 0.5,
+        "raw_schema_valid_rate": 0.1667,
+        "repetition_rate": 0.5,
+        "truncation_rate": 0.5
+      },
+      "600_plus": {
+        "count": 5,
+        "normalized_total_mae": 3.0,
+        "normalized_valid_rate": 0.4,
+        "parseable_rate": 0.6,
+        "raw_schema_valid_rate": 0.2,
+        "repetition_rate": 0.2,
+        "truncation_rate": 0.4
+      },
+      "under_250": {
+        "count": 31,
+        "normalized_total_mae": 2.0,
+        "normalized_valid_rate": 0.7742,
+        "parseable_rate": 0.871,
+        "raw_schema_valid_rate": 0.4839,
+        "repetition_rate": 0.2258,
+        "truncation_rate": 0.0968
+      }
+    },
+    "reference_total": {
+      "1": {
+        "count": 3,
+        "normalized_total_mae": 1.0,
+        "normalized_valid_rate": 0.3333,
+        "parseable_rate": 1.0,
+        "raw_schema_valid_rate": 0.3333,
+        "repetition_rate": 0.3333,
+        "truncation_rate": 0.0
+      },
+      "2": {
+        "count": 12,
+        "normalized_total_mae": 2.0,
+        "normalized_valid_rate": 0.75,
+        "parseable_rate": 0.8333,
+        "raw_schema_valid_rate": 0.3333,
+        "repetition_rate": 0.3333,
+        "truncation_rate": 0.1667
+      },
+      "3": {
+        "count": 3,
+        "normalized_total_mae": 2.0,
+        "normalized_valid_rate": 0.6667,
+        "parseable_rate": 1.0,
+        "raw_schema_valid_rate": 0.3333,
+        "repetition_rate": 0.0,
+        "truncation_rate": 0.0
+      },
+      "4": {
+        "count": 15,
+        "normalized_total_mae": 1.0,
+        "normalized_valid_rate": 0.8,
+        "parseable_rate": 0.9333,
+        "raw_schema_valid_rate": 0.4,
+        "repetition_rate": 0.2,
+        "truncation_rate": 0.0667
+      },
+      "5": {
+        "count": 2,
+        "normalized_total_mae": 1.0,
+        "normalized_valid_rate": 1.0,
+        "parseable_rate": 1.0,
+        "raw_schema_valid_rate": 0.0,
+        "repetition_rate": 0.0,
+        "truncation_rate": 0.0
+      },
+      "6": {
+        "count": 18,
+        "normalized_total_mae": 3.1,
+        "normalized_valid_rate": 0.5556,
+        "parseable_rate": 0.6667,
+        "raw_schema_valid_rate": 0.3889,
+        "repetition_rate": 0.2778,
+        "truncation_rate": 0.2778
+      }
+    },
+    "rubric_version": {
+      "2023_leq": {
+        "count": 18,
+        "normalized_total_mae": 2.0,
+        "normalized_valid_rate": 0.9444,
+        "parseable_rate": 0.9444,
+        "raw_schema_valid_rate": 0.5,
+        "repetition_rate": 0.1667,
+        "truncation_rate": 0.0556
+      },
+      "2024_2026_leq": {
+        "count": 35,
+        "normalized_total_mae": 1.7895,
+        "normalized_valid_rate": 0.5429,
+        "parseable_rate": 0.7714,
+        "raw_schema_valid_rate": 0.2857,
+        "repetition_rate": 0.2857,
+        "truncation_rate": 0.2
+      }
+    }
+  },
+  "inputs": {
+    "cases_path": "artifacts/data/eval_cb_cases.jsonl",
+    "results_path": "apush-frq-grader-v2-eval/apush-frq-grader-v2/apush_frq_grader_v2_cb_eval_real_results.jsonl",
+    "rows": 53
+  },
+  "normalization_actions": {
+    "computed_total": 36,
+    "extracted_balanced_object": 13
+  },
+  "overall": {
+    "normalized_qwk": 0.072,
+    "normalized_total_mae": 1.8889,
+    "normalized_usable": 36,
+    "normalized_usable_rate": 0.6792,
+    "normalized_within_one_rate": 0.3889,
+    "parseable_json": 44,
+    "parseable_json_rate": 0.8302,
+    "raw_schema_valid": 19,
+    "raw_schema_valid_rate": 0.3585,
+    "repetition_count": 13,
+    "repetition_rate": 0.2453
+  },
+  "provenance_and_extraction_warnings": {
+    "commentary_text_present_in_essay": 28,
+    "missing_extraction_confidence": 53,
+    "missing_extraction_method": 53,
+    "missing_file_sha256": 53,
+    "missing_source_url": 53
+  },
+  "score_distribution": {
+    "(0, 0, 0, 0)": 10,
+    "(1, 1, 1, 1)": 25,
+    "(1, 1, 2, 1)": 1
+  }
+}

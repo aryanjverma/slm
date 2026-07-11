@@ -1,0 +1,34 @@
+{
+  "configurations": {
+    "base_qwen_0_5b_layered": {
+      "count": 27,
+      "qwk": 0.2583,
+      "repetition_rate": 0.0,
+      "schema_valid_rate": 0.7778,
+      "total_mae": 2.3704,
+      "total_within_one_rate": 0.3704,
+      "truncation_count": 1
+    },
+    "v2_raw_generation": {
+      "count": 27,
+      "qwk": 0.1825,
+      "repetition_rate": 0.2593,
+      "schema_valid_rate": 0.3333,
+      "total_mae": 3.037,
+      "total_within_one_rate": 0.2593,
+      "truncation_count": 4
+    },
+    "v2_with_v3_structured_layer": {
+      "count": 27,
+      "qwk": 0.2222,
+      "repetition_rate": 0.2593,
+      "schema_valid_rate": 0.6667,
+      "total_mae": 3.3333,
+      "total_within_one_rate": 0.2222,
+      "truncation_count": 4
+    }
+  },
+  "note": "All three pretraining configurations are populated.",
+  "rows": 27,
+  "split": "set1"
+}
