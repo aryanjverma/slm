@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+import re
 import unittest
 
 from apush_frq_grader_slm.compose_v4 import rng_for_task
 from apush_frq_grader_slm.compose_v5 import (
     GENERATOR_NAME,
+    _topic_phrase,
     compose_essay,
     resolve_observable_behavior,
 )
@@ -235,6 +237,99 @@ class ComposeV5Tests(unittest.TestCase):
         a = compose_essay(packet, rng=rng_for_task("v5-test-det"))
         b = compose_essay(packet, rng=rng_for_task("v5-test-det"))
         self.assertEqual(a, b)
+
+    def test_topic_phrase_stays_short_noun_focus(self) -> None:
+        prompt = (
+            "Explain the ways sectional rivalries molded United States social "
+            "order from 1800 to 1848."
+        )
+        topic = _topic_phrase(prompt)
+        self.assertLessEqual(len(topic.split()), 14)
+        self.assertNotRegex(topic.lower(), r"^(explain|evaluate|assess|analyze)\b")
+        self.assertIn("sectional rivalries", topic.lower())
+        self.assertRegex(topic, r"1800\s*[–-]\s*1848")
+
+    def test_quality_hygiene_across_random_seeds(self) -> None:
+        prompts = [
+            (
+                "Explain the ways sectional rivalries molded United States social "
+                "order from 1800 to 1848."
+            ),
+            (
+                "Assess how far the expansion of Atlantic commerce remade "
+                "British North American colonial social order from 1607 to 1776."
+            ),
+            (
+                "Evaluate the extent to which the Spanish-American War changed "
+                "United States foreign policy from 1898 to 1914."
+            ),
+        ]
+        messy_cards = [
+            {"concept": "The Old Northwest is a remembered reference point in period 4 (1860)."},
+            {"concept": "By is a remembered reference point in period 4 (1861)."},
+            {"concept": "The is a remembered reference point in period 4 (1787)."},
+            {"concept": "Alger Hiss is a remembered reference point in period 8 (1948)."},
+            {
+                "concept": (
+                    "Treaty of Tordesillas renegotiated the papal demarcation and "
+                    "formalized it as a lasting Iberian settlement in 1494."
+                )
+            },
+            {
+                "concept": (
+                    "Transatlantic trade tied colonial ports to British credit and "
+                    "consumer goods across the eighteenth century."
+                )
+            },
+        ]
+        for seed in range(20):
+            prompt = prompts[seed % len(prompts)]
+            topic = _topic_phrase(prompt)
+            self.assertLessEqual(
+                len(topic.split()),
+                14,
+                msg=f"topic too long for seed {seed}: {topic!r}",
+            )
+            packet = _packet(
+                task_id=f"v5-test-hygiene-{seed:02d}",
+                prompt=prompt,
+                semantic_fact_cards=messy_cards,
+                student_capability={
+                    "historical_knowledge": ("competent", "strong", "uneven", "limited")[
+                        seed % 4
+                    ],
+                    "argument_control": ("consistent", "partial", "emerging", "nuanced")[
+                        seed % 4
+                    ],
+                },
+                timed_composition_style={
+                    "time_pressure": ("normal", "severe", "moderate")[seed % 3],
+                    "mechanics": (
+                        "minor_errors",
+                        "frequent_natural_errors",
+                        "fragments_and_runons",
+                        "occasional_errors",
+                    )[seed % 4],
+                    "organization": ("clear", "rough", "uneven", "repetitive")[seed % 4],
+                },
+            )
+            essay = compose_essay(packet, rng=rng_for_task(packet["task_id"]))
+            self.assertIsNone(
+                re.search(r"\bmattering\b", essay, flags=re.I),
+                msg=f"mattering stub in seed {seed}:\n{essay[:400]}",
+            )
+            prompt_words = prompt.split()
+            lowered = essay.lower()
+            for i in range(max(0, len(prompt_words) - 11)):
+                span = " ".join(prompt_words[i : i + 12]).lower()
+                self.assertLess(
+                    lowered.count(span),
+                    3,
+                    msg=(
+                        f"12-word prompt span repeated ≥3 times (seed {seed}): "
+                        f"{span!r}\n{essay[:400]}"
+                    ),
+                )
 
 
 if __name__ == "__main__":
