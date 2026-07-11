@@ -39,17 +39,31 @@ def _qwk(metrics: dict) -> float:
     return metrics["qwk"] if metrics["qwk"] is not None else -1.0
 
 
+def build_ranking(candidates: list[dict]) -> dict:
+    ranked = sorted(candidates, key=rank_key, reverse=True)
+    passing = [item for item in candidates if item.get("acceptance", {}).get("passed")]
+    winner = select_candidate(passing) if passing else None
+    return {
+        "ranking": ranked,
+        "selected": winner,
+        "set2_locked": winner is None,
+        "reason": None if winner is not None else "no_set1_candidate_passed",
+    }
+
+
 def main() -> None:
     args = parse_args()
     candidates = [json.loads(path.read_text(encoding="utf-8")) for path in args.summaries]
-    ranked = sorted(candidates, key=rank_key, reverse=True)
-    passing = [item for item in candidates if item.get("acceptance", {}).get("passed")]
-    if not passing:
-        raise SystemExit("No checkpoint passes set1 acceptance; set2 remains locked")
-    winner = select_candidate(passing)
-    output = {"ranking": ranked, "selected": winner}
+    output = build_ranking(candidates)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(output, indent=2, sort_keys=True), encoding="utf-8")
+    winner = output["selected"]
+    if winner is None:
+        if args.lock_manifest:
+            args.lock_manifest.unlink(missing_ok=True)
+        print("No checkpoint passes set1 acceptance; set2 remains locked")
+        print(f"Ranking written to {args.output}")
+        return
     if args.lock_manifest:
         identity = {key: winner[key] for key in ("model_name",) if key in winner}
         identity.update(winner.get("identity", {}))

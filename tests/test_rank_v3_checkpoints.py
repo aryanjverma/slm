@@ -1,4 +1,4 @@
-from scripts.rank_v3_checkpoints import select_candidate
+from scripts.rank_v3_checkpoints import build_ranking, select_candidate
 
 
 def _candidate(name: str, qwk: float, mae: float, within: float) -> dict:
@@ -19,3 +19,12 @@ def test_prefers_smaller_model_only_when_effectively_tied() -> None:
 
     clearly_better = _candidate("Qwen2.5-1.5B-v3", 0.45, 1.10, 0.70)
     assert select_candidate([clearly_better, small]) is clearly_better
+
+
+def test_ranking_cleanly_locks_set2_when_nothing_passes() -> None:
+    candidate = _candidate("Qwen2.5-0.5B-v3", 0.20, 2.0, 0.40)
+    candidate["acceptance"] = {"passed": False}
+    ranking = build_ranking([candidate])
+    assert ranking["selected"] is None
+    assert ranking["set2_locked"] is True
+    assert ranking["reason"] == "no_set1_candidate_passed"
