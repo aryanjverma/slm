@@ -72,6 +72,50 @@ manifest are both supplied. A successful set2 run writes a receipt that prevents
 The local 53-row College Board-derived file still carries the provenance and extraction warnings
 reported in `docs/v2_failure_analysis_for_v3.md`; saved v2 results are diagnostics, not golden data.
 
+## V5 Two-Pass Pipeline
+
+V5 inherits the merged v4 adapter as the base, then trains **separate scorer and feedback** LoRA
+adapters. Runtime still returns one JSON object (`scores`, deterministic `total`, grounded
+`feedback`) via two internal passes. The dataset goal is **600 filtered cases** from ~1,500
+score-blind candidates (30×50 shards).
+
+**Data** (private rows stay out of git; see `docs/v5_external_data_contract.md`):
+
+```powershell
+python scripts/plan_v5_tasks.py
+# Optional private helpers when present: build_v5_fact_cards.py, build_v5_adapted_prompts.py
+python scripts/export_v5_generation_packets.py --fact-cards PATH_TO_PRIVATE_FACT_CARDS
+# external writers + blind reviews return candidates
+python scripts/validate_v5_external_candidates.py --tasks ... --candidates ... --overlap-corpus ...
+python scripts/assemble_v5_dataset.py prepare-review --candidates ...
+# complete manual review + approval file, then:
+python scripts/assemble_v5_dataset.py finalize --candidates ...
+```
+
+**Training / release** (GPU / Colab):
+
+```powershell
+# notebooks/colab_train_v5.ipynb orchestrates the full Colab path
+python scripts/merge_v4_adapter.py --v4-adapter PATH --output artifacts/models/v5-inherited-base
+python scripts/train_v5.py --task scorer --data PATH --output artifacts/models/v5-scorer
+python scripts/train_v5.py --task feedback --data PATH --output artifacts/models/v5-feedback
+python scripts/rank_v5_checkpoints.py   # scorer/feedback checkpoint selection
+python scripts/package_v5_bundle.py --bundle PATH --inherited-base ... --scorer ... --feedback ...
+python scripts/eval_v5.py --bundle PATH --eval-path PATH --output-dir artifacts/eval/v5
+python scripts/check_v5_release.py --summary PATH_TO_SUMMARY
+python scripts/smoke_v5_pipeline.py     # CPU-friendly contract smoke (no GPU train)
+```
+
+**Release gates** (all required; failure ⇒ non-production-ready, do not retune on golden):
+QWK ≥ 0.40, total MAE ≤ 1.50, ≥60% totals within one, every criterion exact-match > v4,
+mean predicted total within 0.50 of the golden mean, structured validity ≥ 98%, grounding ≥ 85%.
+
+**Privacy:** essays, style excerpts, per-case labels, and review packets under
+`artifacts/data/v5/private/` are not committed — only aggregate audits may be shared.
+
+**Golden eval note:** the 53-case golden evaluation is **development-informed** because capped
+style excerpts shaped synthetic generation; treat it as contaminated relative to a fully blind holdout.
+
 ## Day 2 Smoke Test (50 cases, full loop)
 
 Proves generate → train → eval on a tiny dataset before the real v1 run:

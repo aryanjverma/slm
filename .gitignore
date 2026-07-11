@@ -19,3 +19,6 @@ artifacts/eval/v1_eval_results.md
 
 # Written permission records may contain private correspondence or identifiers.
 config/college_board_permission.json
+
+# V5 private essays, style excerpts, labels, reviews, and packets — aggregate audits only.
+artifacts/data/v5/private/
