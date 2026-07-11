@@ -1,0 +1,1847 @@
+# V4 Shard 1 Judging Review
+
+Judging records: **48**
+
+## 1. `v4-cb-2025-leq3-set2-sampleA-t6-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how sectional tensions shaped United States society from 1800 to 1848.
+
+### Essay
+
+> After the Revolution and the early years under the Constitution, Americans celebrated their independence and tried to build a shared national identity, yet by the early 1800s loyalty to region was already competing with loyalty to the Union. Sectional tensions shaped United States society from 1800 to 1848 by driving the South deeper into a cotton-and-slavery economy while the North urbanized and industrialized, and those diverging paths remade politics, labor, and everyday life even before the Civil War of the 1860s.
+>
+> The cotton boom after the cotton gin made slavery more profitable and the enslaved population grew from about one million around 1800 toward several million by mid-century, so Southern society organized around the planter aristocracy and the so-called peculiar institution. Slave rebellions such as Denmark Vesey's plot in 1822 and Nat Turner's uprising in 1831 terrified white Southerners and led to harsher slave codes, which shows how fear of unrest hardened sectional attitudes. At the same time Britain depended on Southern cotton for its mills, so the South's economy stayed agricultural and export-oriented while Northern factories by the 1830s were turning out farm tools, clocks, and shoes, and that economic split made compromise harder because each region needed different federal policies.
+>
+> In the North, urban population rose from roughly five percent in 1800 to about fifteen percent by 1850, and cities like Buffalo, Cleveland, Cincinnati, and Chicago grew at transportation hubs after 1820 as canals and lakes shipping expanded. Immigrants arrived in larger numbers after the early 1830s, especially Irish and Germans, and nativist hostility appeared even though antiforeign feeling later faded as slavery became the main national divide. Labor groups formed, including an early labor party in Philadelphia in 1828, and Commonwealth v. Hunt in Massachusetts in 1842 gave unions a legal foothold, which mattered because factory work created a wage-earning class the South largely lacked. The Old Northwest filled with free-labor farms under the older Northwest Ordinance pattern as Ohio, Indiana, Illinois, Michigan, and Wisconsin entered the Union, and those states usually sided with Northern interests against the expansion of slavery.
+>
+> Still, sectionalism did not mean the sections never cooperated, because national markets linked Southern cotton to Northern mills and Western food, so economic interdependence existed alongside political conflict. Overall, though, from Missouri debates through the 1840s, sectional tensions reshaped society by locking the South into slavery, accelerating Northern industry and immigration, and teaching Americans to think of themselves as Northerners or Southerners first, which prepared the ground for the later crisis of the Union.
+
+### Consensus Grade
+
+**Total:** 6/6 · **Confidence:** 0.97 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The claim contrasting a cotton-and-slavery South with an urbanizing, industrial North establishes a defensible line of reasoning. |
+| Contextualization | 1 | The opening situates sectional loyalty after the Revolution and early constitutional nation-building before developing the argument. |
+| Evidence | 2 | Cotton, Vesey, Turner, factories, immigration, Commonwealth v. Hunt, and the Old Northwest are accurately used to support regional divergence. |
+| Analysis Reasoning | 2 | The essay sustains causation and comparison across labor, politics, migration, and markets, then qualifies the division with economic interdependence. |
+
+**Evidence spans**
+
+- **Thesis:** “driving the South deeper into a cotton-and-slavery economy while the North urbanized and industrialized”
+- **Contextualization:** “After the Revolution and the early years under the Constitution”
+- **Evidence:** “Nat Turner's uprising in 1831 terrified white Southerners and led to harsher slave codes”; “Commonwealth v. Hunt in Massachusetts in 1842 gave unions a legal foothold”
+- **Analysis Reasoning:** “economic interdependence existed alongside political conflict”
+
+---
+
+## 2. `v4-cb-2024-leq4-set2-sampleA-t0-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which migration influenced United States society from 1932 to 2000.
+
+### Essay
+
+> Migration was a big deal in America for a long time and people moved around for jobs and stuff. In the depression everyone was scared and Roosevelt said the only thing we have to fear is fear itself which people heard on the radio. Hoover and Roosevelt both tried to fix the economy for like twelve years. There was a Bonus March when veterans went to Washington wanting there money early. The New Deal was revolutionary and changed everything forever which is just a fact. Banks failed and credit collapsed like in older depressions. People also moved west in covered wagons and that influenced society too. Overall migration kind of happened and society changed somehow because of presidents and laws and fear.
+
+### Consensus Grade
+
+**Total:** 0/6 · **Confidence:** 0.99 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 0 | The statement that migration kind of happened does not make a defensible claim explaining its influence on society. |
+| Contextualization | 0 | The Depression and Roosevelt references remain inside the period and do not frame migration with relevant broader context. |
+| Evidence | 0 | The Bonus March, New Deal, and covered wagons are not used as accurate evidence of migration shaping society from 1932 to 2000. |
+| Analysis Reasoning | 0 | The response says society changed somehow but supplies no causation, comparison, or change-over-time structure. |
+
+**Evidence spans**
+
+- **Thesis:** “Overall migration kind of happened and society changed somehow”
+- **Contextualization:** “In the depression everyone was scared”
+- **Evidence:** “People also moved west in covered wagons”
+- **Analysis Reasoning:** “society changed somehow because of presidents and laws and fear”
+
+---
+
+## 3. `v4-cb-2025-leq3-set2-sampleB-t2-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how sectional tensions shaped United States society from 1800 to 1848.
+
+### Essay
+
+> Sectional tensions shaped United States society from 1800 to 1848 because the North and South developed different economies and argued over slavery more and more as the years went on.
+>
+> Cotton made slavery expand across the South. Slave numbers rose a lot after 1800 because of the cotton boom. Nat Turner led a rebellion in 1831 that scared white planters. Denmark Vesey also planned one earlier in Charleston. Northern cities grew and factories made shoes and clocks by the 1830s. Immigrants came in bigger numbers after 1832 from Ireland and Germany. The Old Northwest added free states like Ohio and Illinois.
+>
+> The regions were just different in how people lived and worked. Slavery was basically paternalistic and fine for everyone involved according to what some people said in class. Society changed because of cotton and factories and fear. People in each section stuck with their own side. That is how sectional tensions shaped society in that time period without needing a longer explanation.
+
+### Consensus Grade
+
+**Total:** 4/6 · **Confidence:** 0.93 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The North-South economic difference and growing slavery dispute form a clear, defensible claim. |
+| Contextualization | 0 | The essay begins directly in the period and provides no broader historical framing. |
+| Evidence | 2 | Cotton expansion, Turner, Vesey, northern factories, immigration, and free Old Northwest states support sectional differences despite the inaccurate paternalism sentence. |
+| Analysis Reasoning | 1 | The response organizes a basic comparison of northern and southern work and life, but does not sustain a nuanced or sophisticated argument. |
+
+**Evidence spans**
+
+- **Thesis:** “the North and South developed different economies and argued over slavery more and more”
+- **Contextualization:** “Cotton made slavery expand across the South”
+- **Evidence:** “Nat Turner led a rebellion in 1831 that scared white planters”; “Northern cities grew and factories made shoes and clocks by the 1830s”
+- **Analysis Reasoning:** “The regions were just different in how people lived and worked”
+
+---
+
+## 4. `v4-cb-2023-leq4-set2-sampleA-t3-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which the growth of civil rights activism contributed to changes in government action between 1940 and 1980.
+
+### Essay
+
+> During the years before and during World War II, Americans debated how involved the United States should be overseas, and that wartime struggle for democracy made many people notice the gap between American ideals and segregation at home. The growth of civil rights activism contributed to changes in goverment action between 1940 and 1980 to a large extent because protest forced leaders to pass new laws and court rulings that they had avoided for decades.
+>
+> Activism caused goverment change by making discrimination a national political problem instead of a local custom. When organizers marched, boycotted, and sued, presidents and Congress responded with legislation and enforcement that earlier generations had refused to attempt. Causation runs from pressure in the streets and courts to federal action, not the other way around.
+>
+> At the same time, goverment sometimes moved slowly or only after violence made headlines, so activism did not instantly rewrite every policy. Still, without sustained civil rights pressure, federal action on voting, public accomodations, and equal protection would have remained much weaker across this period.
+
+### Consensus Grade
+
+**Total:** 3/6 · **Confidence:** 0.95 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The essay claims activism forced reluctant leaders toward laws and court rulings, establishing a causal line of reasoning. |
+| Contextualization | 1 | World War II democracy and the contradiction of segregation accurately frame the later civil-rights struggle. |
+| Evidence | 0 | Marches, boycotts, legislation, voting, and public accommodations are broad categories rather than two specific historical examples. |
+| Analysis Reasoning | 1 | The response explicitly structures causation from pressure in streets and courts to federal action, but lacks evidence and complexity. |
+
+**Evidence spans**
+
+- **Thesis:** “protest forced leaders to pass new laws and court rulings that they had avoided for decades”
+- **Contextualization:** “that wartime struggle for democracy made many people notice the gap between American ideals and segregation at home”
+- **Evidence:** “When organizers marched, boycotted, and sued”
+- **Analysis Reasoning:** “Causation runs from pressure in the streets and courts to federal action”
+
+---
+
+## 5. `v4-cb-2025-leq2-set2-sampleA-t2-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/adjudication_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how British colonists in the Americas adapted to their environments from 1607 to 1754.
+
+### Essay
+
+> British colonists adapted to thier enviroments from 1607 to 1754 by changing how they farmed, traded, and governed based on where they settled along the Atlantic coast.
+>
+> Jamestown started in 1607 and later depended on tobacco after early failures. Puritans founded Boston around 1630 under John Winthrop and built towns suited to New England. Thomas Hooker went to Hartford in 1636. Roger Williams started Providence after being banished from the Bay colony. Anne Hutchinson helped found Portsmouth nearby. Navigation Acts tried to control colonial trade for England. Penn's Frame of Government and Charter of Liberties shaped Pennsylvania. Georgia was founded at Savannah in 1733 by Oglethorpe. Maryland made harsh rules about slavery and marriage.
+>
+> Colonists just did what worked in each place and copied neighbors when they could. Adaptation was different in the Chesapeake than in New England but it happened everywhere somehow.
+
+### Consensus Grade
+
+**Total:** 3/6 · **Confidence:** 0.91 · **Grader:** `adjudicator:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The opening makes a defensible claim that colonists adapted farming, trade, and government to the environments of different Atlantic regions. |
+| Contextualization | 0 | The response begins inside the assigned period with Jamestown and colonial settlements rather than explaining broader circumstances surrounding English colonization or environmental adaptation. |
+| Evidence | 1 | The tobacco dependence of Jamestown and the founding of Puritan Boston are relevant specific examples, but only tobacco is clearly connected to an environmental adaptation; most remaining facts are listed without explaining how they support the argument. |
+| Analysis Reasoning | 1 | The response uses basic comparison by distinguishing Chesapeake adaptation from New England adaptation, but it does not develop that comparison or sustain a complex argument. |
+
+**Evidence spans**
+
+- **Thesis:** “British colonists adapted to thier enviroments from 1607 to 1754 by changing how they farmed, traded, and governed based on where they settled along the Atlantic coast.”
+- **Contextualization:** “Jamestown started in 1607 and later depended on tobacco after early failures.”
+- **Evidence:** “Jamestown started in 1607 and later depended on tobacco after early failures.”; “Puritans founded Boston around 1630 under John Winthrop and built towns suited to New England.”
+- **Analysis Reasoning:** “Adaptation was different in the Chesapeake than in New England but it happened everywhere somehow.”
+
+---
+
+## 6. `v4-cb-2023-leq4-set1-sampleC-t6-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which growing concerns about national security contributed to changes in United States foreign policy from 1945 to 1991.
+
+### Essay
+
+> When World War II ended, millions of American soldiers returned home hoping for jobs, housing, and a normal peacetime life, and wartime savings sat unused because consumer goods had been scarce for years. That desire for domestic calm collided almost immediately with a new rivalry against the Soviet Union that Americans called the Cold War. Growing concerns about national security contributed to changes in United States foreign policy from 1945 to 1991 to a very great extent, because fear of communist expansion pushed the United States from temporary wartime alliance into long-term containment, overseas alliances, and limited wars, even while domestic politics sometimes pulled attention inward toward inflation and strikes.
+>
+> After 1945 the wartime partnership with the Soviets collapsed as Stalin tightened control in Eastern Europe, and Americans who had distrusted communism since the Bolshevik Revolution of 1917 now saw a global threat to capitalism. George Kennan's containment idea and the Truman Doctrine framed aid to threatened nations as essential to U.S. security, which marked a sharp break from earlier hopes of rapid demobilization and normalcy. The Berlin Airlift showed Washington would spend heavily to hold a Western outpost inside a divided city rather than abandon it to Soviet pressure. NSC-68 later argued for a much larger military and peacetime readiness, so national-security anxiety did not just inspire speeches; it rebuilt the peacetime state around permanent defense spending and planning.
+>
+> Asia became another testing ground for the same logic. The United States retained bases in the newly independent Philippines and signed security treaties with Japan in 1951 that ended formal occupation while keeping American forces nearby as a shield. When war broke out in Korea, U.S. troops fought under the banner of stopping communist advance across the thirty-eighth parallel, and the 1953 cease-fire left a lasting military commitment on the peninsula. Those choices show causation clearly: perceived security threats produced forward deployment and war, not isolation or a return to the 1930s mood.
+>
+> Domestic anti-communism reinforced the foreign turn at home. Cases like Alger Hiss and the Rosenbergs fed the belief that subversion inside the United States matched danger abroad, and the Supreme Court upheld the Smith Act's limits on advocating overthrow of the government. Congress also passed the Taft-Hartley Act in a conservative postwar mood after the 1946 elections, and Truman's Fair Deal stalled partly because Cold War priorities crowded the legislative agenda. Even so, security fears were not the only driver of policy, because economic recovery goals, alliance politics, and presidential ideology also shaped decisions, and at times leaders chose negotiation or limited engagement rather than open war with the Soviets.
+>
+> By 1991 the Cold War framework that began in the late 1940s still defined how Americans understood national security, from NATO-style commitments to crises in Asia and debates over military budgets. Overall, security concerns were the primary engine of foreign-policy change across the period, converting a nation eager for normalcy into a global containment power, even if other motives sometimes moderated how far that power went in each crisis.
+
+### Consensus Grade
+
+**Total:** 6/6 · **Confidence:** 0.98 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The argument identifies national-security fear as the primary cause of containment, alliances, and limited wars while recognizing other influences. |
+| Contextualization | 1 | Postwar demobilization and the collapsed Soviet wartime partnership accurately frame the Cold War shift. |
+| Evidence | 2 | Kennan, the Truman Doctrine, Berlin Airlift, NSC-68, Korea, Philippine bases, and Japan treaties are specifically and effectively connected to policy change. |
+| Analysis Reasoning | 2 | The essay sustains causation across Europe and Asia, weighs economic and ideological alternatives, and qualifies security's influence. |
+
+**Evidence spans**
+
+- **Thesis:** “fear of communist expansion pushed the United States from temporary wartime alliance into long-term containment, overseas alliances, and limited wars”
+- **Contextualization:** “That desire for domestic calm collided almost immediately with a new rivalry against the Soviet Union”
+- **Evidence:** “George Kennan's containment idea and the Truman Doctrine framed aid to threatened nations as essential to U.S. security”; “When war broke out in Korea, U.S. troops fought under the banner of stopping communist advance”
+- **Analysis Reasoning:** “security fears were not the only driver of policy”
+
+---
+
+## 7. `v4-cb-2024-leq2-set1-sampleB-t2-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/adjudication_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the relative importance of the causes of conflict among Europeans and Native Americans from 1500 to 1763.
+
+### Essay
+
+> Conflict among Europeans and Native Americans from 1500 to 1763 happened mainly because Europeans wanted land and resources and Native peoples tried to protect their communities, so competition over territory was more important than religion alone.
+>
+> The most important cause was the European drive to claim land for farming, mining, and settlement, which pushed Native nations off hunting grounds and villages and made violent resistance more likely. A second cause was cultural misunderstanding and the belief that European ways should replace Native ones, which created tension even when trade existed. Disease and unequal military technology made those conflicts deadlier, but they were effects that intensified land disputes rather than separate root causes.
+>
+> Comparing the causes, land hunger outweighed missionary goals because even when conversion was preached, settlers still expanded farms and towns. Over time the pattern stayed similar from early contact through the mid-1700s: Europeans advanced, Native groups resisted or relocated, and fighting followed. Therefore land and resource competition was the leading cause of conflict in this period.
+
+### Consensus Grade
+
+**Total:** 3/6 · **Confidence:** 0.89 · **Grader:** `adjudicator:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response makes a defensible relative-importance claim that competition for land and resources mattered more than religion. |
+| Contextualization | 0 | The response immediately addresses causes of European-Native conflict and does not describe broader historical circumstances that frame those conflicts. |
+| Evidence | 0 | Land, farming, mining, missions, disease, and military technology remain general categories; the response provides fewer than two specific historical examples required for an evidence point. |
+| Analysis Reasoning | 2 | The essay sustains a sophisticated causal comparison by ranking territorial competition above missionary goals, distinguishing root causes from intensifying factors, and tracing continuity across the period. |
+
+**Evidence spans**
+
+- **Thesis:** “Conflict among Europeans and Native Americans from 1500 to 1763 happened mainly because Europeans wanted land and resources and Native peoples tried to protect their communities, so competition over territory was more important than religion alone.”
+- **Contextualization:** “Conflict among Europeans and Native Americans from 1500 to 1763 happened mainly because Europeans wanted land and resources and Native peoples tried to protect their communities, so competition over territory was more important than religion alone.”
+- **Evidence:** “The most important cause was the European drive to claim land for farming, mining, and settlement, which pushed Native nations off hunting grounds and villages and made violent resistance more likely.”
+- **Analysis Reasoning:** “Disease and unequal military technology made those conflicts deadlier, but they were effects that intensified land disputes rather than separate root causes.”; “Comparing the causes, land hunger outweighed missionary goals because even when conversion was preached, settlers still expanded farms and towns.”; “Over time the pattern stayed similar from early contact through the mid-1700s: Europeans advanced, Native groups resisted or relocated, and fighting followed.”
+
+---
+
+## 8. `v4-cb-2025-leq3-set1-sampleB-t4-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how different reform movements in the United States responded to industrialization from 1820 to 1900.
+
+### Essay
+
+> Different reform movements responded to industrialization from 1820 to 1900 by attacking the social problems that factories, cities, and market growth created, especially drinking, slavery, and the limited rights of women.
+>
+> The Second Great Awakening stirred moral energy that reformers carried into everyday life during the antebellum years. Temperance advocates founded the American Temperance Society in 1826 because they blamed alcohol for poverty and disorder in growing towns and among wage workers. Later the Women's Christian Temperance Union kept the campaign alive after the Civil War and into the late nineteenth century. That response treated industrial society's vices as spiritual failures that voluntary associations could fix through pledges and pressure on saloons.
+>
+> Abolitionists also reacted to an economy tied to cotton exports and northern wage labor. William Lloyd Garrison and the American Antislavery Society demanded immediate emancipation without paying owners. Frederick Douglass and activists like Harriet Tubman linked slavery to national hypocrisy and helped fugitives. Colonization schemes such as the Monrovia settlement in Liberia moved only about twelve thousand people while the enslaved population kept rising by millions, so radical abolition grew stronger. Women's rights reformers at Seneca Falls in 1848 issued the Declaration of Sentiments after many had worked in temperance and antislavery, showing how industrial-era reform networks overlapped. Transcendentalists and utopian experiments like Brook Farm also criticized competitive market values.
+>
+> These movements used persuasion, politics, and new organizations to answer industrial change. Causation runs from social disruption in factories and cities to organized reform. They did not all succeed equally before 1900. But they show reformers tried to moralize and democratize a society being remade by factories and markets across the century.
+
+### Consensus Grade
+
+**Total:** 6/6 · **Confidence:** 0.97 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response claims reformers attacked industrial society's drinking, slavery, and women's-rights problems, establishing an organized line of reasoning. |
+| Contextualization | 1 | The Second Great Awakening accurately explains the moral energy behind antebellum reform. |
+| Evidence | 2 | The American Temperance Society, WCTU, Garrison, Douglass, Tubman, Seneca Falls, and Brook Farm are used to explain distinct reform responses. |
+| Analysis Reasoning | 2 | The essay connects industrial disruption causally to overlapping reform networks and compares tactics, goals, and uneven success across the century. |
+
+**Evidence spans**
+
+- **Thesis:** “attacking the social problems that factories, cities, and market growth created”
+- **Contextualization:** “The Second Great Awakening stirred moral energy that reformers carried into everyday life”
+- **Evidence:** “Temperance advocates founded the American Temperance Society in 1826”; “Women's rights reformers at Seneca Falls in 1848 issued the Declaration of Sentiments”
+- **Analysis Reasoning:** “showing how industrial-era reform networks overlapped”
+
+---
+
+## 9. `v4-cb-2023-leq3-set2-sampleC-t6-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which changes in debates over the role of the federal government contributed to the growth of political parties from 1800 to 1854.
+
+### Essay
+
+> In the 1780s the United States struggled under the Articles of Confederation with weak central authority, foreign problems, and poor attendance at meetings like Annapolis, which pushed leaders toward the Constitution drafted in 1787. Debates over how strong the federal government should be then continued into the new republic after ratification. Changes in debates over the role of the federal government contributed to the growth of political parties from 1800 to 1854 to a great extent, because fights over banks, taxes, civil liberties, and national power repeatedly split politicians into organized rival camps that sought voters' loyalty.
+>
+> Early conflicts under Washington and Adams created the first party habits that carried past 1800. Hamilton's financial program and the excise on whiskey produced the Whiskey Rebellion, and critics saw a dangerous national government while supporters saw necessary authority to fund the state. The Alien and Sedition Acts, which let the president detain dangerous aliens and punished editors who criticized Congress or the president, convinced Democratic-Republicans that Federalists would crush liberty, and after the election of 1800 those acts expired or were repealed as party control shifted. The Naturalization Act's longer wait for citizenship also showed Federalists using federal power against immigrant voters who favored their rivals, so policy disputes and party identity reinforced each other election after election.
+>
+> Throughout the early nineteenth century, arguments about tariffs, internal improvements, and the scope of federal authority kept party lines alive even as names changed from Federalists and Democratic-Republicans toward Democrats and Whigs. Supporters of a broader national commercial role favored regulation of interstate commerce and protective duties, while opponents warned that such power threatened states and farmers. Judicial structures from the Judiciary Act of 1789 and later court decisions gave federal institutions staying power that parties then fought to control through appointments and platforms. Although personalities and sectional interests also shaped parties, the recurring question of how far Washington should reach into economic and political life was the engine that organized voters and leaders into durable coalitions by the 1850s.
+>
+> In short, party growth was not accidental; it was the political method Americans used to continue the founding argument over federal power, and each major policy crisis from sedition laws to economic nationalism widened that partisan divide across the first half of the nineteenth century.
+
+### Consensus Grade
+
+**Total:** 6/6 · **Confidence:** 0.97 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The claim links fights over banks, taxes, liberties, and national power to organized rival parties and voters. |
+| Contextualization | 1 | Articles-era weakness, Annapolis, and the Constitution accurately frame the inherited federal-power dispute. |
+| Evidence | 2 | Hamilton's program, Whiskey Rebellion, Alien and Sedition Acts, Naturalization Act, tariffs, and internal improvements are effectively tied to partisan organization. |
+| Analysis Reasoning | 2 | The essay sustains causation across changing party systems and qualifies federal-power debates with personality and sectional interests. |
+
+**Evidence spans**
+
+- **Thesis:** “fights over banks, taxes, civil liberties, and national power repeatedly split politicians into organized rival camps”
+- **Contextualization:** “the United States struggled under the Articles of Confederation with weak central authority”
+- **Evidence:** “The Alien and Sedition Acts”; “arguments about tariffs, internal improvements, and the scope of federal authority kept party lines alive”
+- **Analysis Reasoning:** “Although personalities and sectional interests also shaped parties”
+
+---
+
+## 10. `v4-cb-2025-leq3-set2-sampleC-t5-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how sectional tensions shaped United States society from 1800 to 1848.
+
+### Essay
+
+> Americans in 1826 celebrated fifty years of independence with pride in the Revolution, yet regional loyalty was already competing with national feeling and would later help produce civil war in the early 1860s. Sectional tensions shaped United States society from 1800 to 1848 mainly by dividing the country into a free-labor industrial North and a slave-based cotton South, and that division altered migration, cities, politics, and political identity long before secession.
+>
+> Cotton and slavery defined the South after the cotton gin made short-staple cotton profitable. The cotton boom multiplied the enslaved population after 1800, and rebellions like Nat Turner's in 1831 made white Southerners more defensive about the peculiar institution and planter control. Britain depended on Southern fiber for its mills, which encouraged the South to stay agricultural and export-oriented.
+>
+> Northern society looked different as urban population climbed from about five percent toward fifteen percent by mid-century and factories spread beyond textiles into shoes, clocks, and farm tools by the 1830s, while immigrants arrived in larger waves after the early 1830s. Those contrasts mattered because they taught people to see policy through a regional lens. Northern cities and immigrant neighborhoods created new social tensions, nativism, and early labor organizing, including an early labor party in Philadelphia and the Commonwealth v. Hunt decision supporting unions. Southern leaders instead protected slavery and cotton exports. The Old Northwest's free-state admissions under patterns dating to the Northwest Ordinance added another free-labor bloc that usually aligned against slavery's expansion.
+>
+> However, sectionalism was not total separation, since trade linked Southern cotton to Northern industry and Western farms, so Americans still shared markets even while distrusting each other. Some border areas also remained less extreme than Deep South planters or New England reformers. Even with that nuance, the dominant pattern from 1800 to 1848 was that sectional tensions remade society by hardening two incompatible social systems and making compromise feel like surrender whenever new territory or federal policy came up.
+
+### Consensus Grade
+
+**Total:** 6/6 · **Confidence:** 0.97 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response argues that sectional tension divided a free-labor industrial North from a slave cotton South and identifies multiple social consequences. |
+| Contextualization | 1 | The Revolution's fiftieth anniversary and emerging regional loyalty frame sectionalism before the later Civil War. |
+| Evidence | 2 | Cotton, Turner, immigration, factories, labor organization, Commonwealth v. Hunt, and the Old Northwest are accurately used to support regional divergence. |
+| Analysis Reasoning | 2 | The argument compares economic and social systems, explains political effects, and qualifies separation with shared markets and border-area variation. |
+
+**Evidence spans**
+
+- **Thesis:** “dividing the country into a free-labor industrial North and a slave-based cotton South”
+- **Contextualization:** “Americans in 1826 celebrated fifty years of independence with pride in the Revolution”
+- **Evidence:** “Nat Turner's in 1831 made white Southerners more defensive”; “Commonwealth v. Hunt decision supporting unions”
+- **Analysis Reasoning:** “sectionalism was not total separation, since trade linked Southern cotton to Northern industry and Western farms”
+
+---
+
+## 11. `v4-cb-2025-leq4-set2-sampleB-t5-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how United States society responded to economic changes from 1960 to 2000.
+
+### Essay
+
+> After Eisenhower's presidency the 1960 election brought John Kennedy into office promising energy and reform while Democrats already controlled Congress, and Americans were anxious about the Cold War, the so-called missile gap, and domestic fairness at the same time. United States society responded to economic changes from 1960 to 2000 by demanding that government cushion inequality and insecurity, even though prosperity and recession hit different groups unevenly across the decades and people did not always agree on solutions.
+>
+> In the 1960s growth coexisted with visible poverty, and Michael Harrington's The Other America helped push a War on Poverty mindset inside Johnson's Great Society. Congress passed the Equal Pay Act and major civil rights laws in 1964 and 1965, and Medicare and Medicaid expanded the social safety net for the elderly and poor. Ralph Nader's Unsafe at Any Speed also spurred auto-safety regulation, showing consumers wanted protection from corporate harm in a mass-production economy. Students for a Democratic Society and other activists criticized what they saw as an unfair system, and urban unrest such as the Watts riot revealed anger when legal gains did not match economic opportunity in black neighborhoods.
+>
+> Those responses show society turning to federal programs, protest, and regulation when markets left people behind. Causation links economic anxiety and inequality to political mobilization for rights and welfare. Yet responses were not only liberal expansion, because later decades also brought skepticism toward big government, fights over taxes and inflation, and debates about deindustrialization and global competition that do not fit a simple story of ever-growing welfare. Women pushed the Equal Rights Amendment in the 1970s while many workers faced new job insecurity, so social movements and economic restructuring happened together rather than in a neat sequence.
+>
+> Overall, from Kennedy's New Frontier mood through the century's end, Americans answered economic change with reform laws, rights campaigns, consumer protections, and contested ideas about government's role, and the mix of activism and backlash proves the response was deep but never one-directional across forty years.
+
+### Consensus Grade
+
+**Total:** 6/6 · **Confidence:** 0.96 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The essay argues society demanded government protection from inequality and insecurity while recognizing uneven prosperity and disagreement. |
+| Contextualization | 1 | Eisenhower, the 1960 election, and Cold War anxiety frame the economic and political setting entering the period. |
+| Evidence | 2 | Harrington, the War on Poverty, Equal Pay Act, Medicare, Medicaid, Nader, and Watts are effectively tied to social responses. |
+| Analysis Reasoning | 2 | The response sustains causation, integrates reform and backlash, and qualifies a simple welfare-growth narrative with later tax, inflation, and globalization debates. |
+
+**Evidence spans**
+
+- **Thesis:** “demanding that government cushion inequality and insecurity, even though prosperity and recession hit different groups unevenly”
+- **Contextualization:** “After Eisenhower's presidency the 1960 election brought John Kennedy into office”
+- **Evidence:** “Michael Harrington's The Other America helped push a War on Poverty mindset”; “Medicare and Medicaid expanded the social safety net”
+- **Analysis Reasoning:** “responses were not only liberal expansion”
+
+---
+
+## 12. `v4-cb-2023-leq2-set1-sampleB-t3-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which the growth of transatlantic trade changed British North American colonial society from 1607 to 1776.
+
+### Essay
+
+> After England defeated the Spanish Armada in 1588 it became a stronger Atlantic power, and beginning with Jamestown in 1607 English colonies spread along the coast under royal charters. The growth of transatlantic trade changed British North American colonial society from 1607 to 1776 to a large extent because commerce pulled colonists into an empire of exports, imports, and labor demand that reshaped daily life.
+>
+> Trade caused social change by making colonial wealth depend on overseas markets and by encouraging systems of bound labor to produce staples. Over time coastal towns and plantation regions became more tightly tied to British demand than inland subsistence communities were. Comparing early fragile settlements with later commercial colonies shows how much Atlantic exchange transformed what success meant.
+>
+> Without listing every law or voyage, the main point is that transatlantic commerce was the engine that turned scattered outposts into a society organized around imperial markets.
+
+### Consensus Grade
+
+**Total:** 3/6 · **Confidence:** 0.94 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response claims commerce reorganized colonies around exports, imports, and labor demand, establishing a defensible causal line. |
+| Contextualization | 1 | The Spanish Armada and early English coastal settlement accurately frame the rise of an Atlantic colonial system. |
+| Evidence | 0 | Overseas markets, bound labor, coastal towns, and plantations remain broad categories rather than two specific examples. |
+| Analysis Reasoning | 1 | The essay uses causation and a comparison between early settlements and later colonies, but the argument remains undeveloped. |
+
+**Evidence spans**
+
+- **Thesis:** “commerce pulled colonists into an empire of exports, imports, and labor demand that reshaped daily life”
+- **Contextualization:** “After England defeated the Spanish Armada in 1588”
+- **Evidence:** “systems of bound labor to produce staples”
+- **Analysis Reasoning:** “Comparing early fragile settlements with later commercial colonies”
+
+---
+
+## 13. `v4-cb-2025-leq2-set1-sampleA-t2-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/adjudication_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how Native American societies adapted to the presence of European colonists in North America from 1500 to 1754.
+
+### Essay
+
+> Long before Columbus, peoples had lived in the Americas for thousands of years, and powerful societies such as the Aztecs built empires in Mexico while many North American groups adapted to local environments from forests to plains. Native American societies adapted to the presence of European colonists in North America from 1500 to 1754 in many different ways depending on region and circumstance.
+>
+> Some groups traded furs and food and formed alliances with the French or English when it helped them against rivals. Others fought invasions or moved farther inland when settlers and missions pressed on their land. Horses later helped some Plains peoples hunt buffalo more easily after animals spread from European contact. Mission systems in places like New Mexico and later California also pressured Native communities to change labor and religion. Adaptation was complicated and not the same everywhere. Europeans just showed up with new goods and diseases and things shifted for Native peoples in general across the continent during those centuries.
+
+### Consensus Grade
+
+**Total:** 4/6 · **Confidence:** 0.84 · **Grader:** `adjudicator:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 0 | The statement that Native societies adapted in many ways depending on circumstance is descriptive and does not establish a specific line of reasoning. |
+| Contextualization | 1 | The discussion of long-standing Indigenous societies, the Aztec Empire, and precontact environmental adaptation accurately establishes broader context. |
+| Evidence | 2 | French or English alliances, inland movement, Plains horse culture, and New Mexico missions are relevant adaptations, and the response uses them to support the claim that Native strategies varied by circumstance; the reference to later California missions falls outside the period and is not credited. |
+| Analysis Reasoning | 1 | The essay uses comparison to organize different strategies such as alliance, resistance, migration, horse adoption, and accommodation to missions, but the comparison remains general rather than complex. |
+
+**Evidence spans**
+
+- **Thesis:** “Native American societies adapted to the presence of European colonists in North America from 1500 to 1754 in many different ways depending on region and circumstance.”
+- **Contextualization:** “Long before Columbus, peoples had lived in the Americas for thousands of years, and powerful societies such as the Aztecs built empires in Mexico while many North American groups adapted to local environments from forests to plains.”
+- **Evidence:** “Some groups traded furs and food and formed alliances with the French or English when it helped them against rivals.”; “Others fought invasions or moved farther inland when settlers and missions pressed on their land.”; “Horses later helped some Plains peoples hunt buffalo more easily after animals spread from European contact.”; “Mission systems in places like New Mexico and later California also pressured Native communities to change labor and religion.”
+- **Analysis Reasoning:** “Some groups traded furs and food and formed alliances with the French or English when it helped them against rivals.”; “Others fought invasions or moved farther inland when settlers and missions pressed on their land.”
+
+---
+
+## 14. `v4-cb-2024-leq4-set1-sampleC-t6-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the relative importance of the effects of movements for social change from 1945 to 1980.
+
+### Essay
+
+> After World War II many Americans hoped wartime talk about democracy would finally apply at home, and returning veterans and a booming economy created both opportunity and frustration for groups still facing discrimination in jobs, schools, and public life. Movements for social change from 1945 to 1980 mattered most because they forced legal and cultural shifts that earlier generations had blocked, and civil rights activism was the most important of those movements even though women's rights, student protest, and other campaigns also reshaped the nation.
+>
+> The African American freedom struggle produced the clearest national effects. Organized boycotts, sit-ins, and marches pressured presidents and Congress to support landmark measures such as the Civil Rights Act and Voting Rights Act, which attacked Jim Crow in public accommodations and at the ballot box. Court decisions and federal enforcement followed activist initiative more often than they led it, so the relative importance of the movement lies in converting moral protest into state power. Without that sustained pressure, segregationist local control would have lasted longer into the late twentieth century.
+>
+> Women's activism and related campaigns also changed workplaces, education, and family expectations, and student and antiwar movements challenged authority and foreign-policy assumptions on campuses and in the streets. Those efforts were significant, yet they often borrowed tactics and language from the Black freedom struggle and depended on the same postwar climate of rights talk. At the same time, backlash and incomplete enforcement show that social movements did not transform every institution equally, so their effects were powerful but contested and sometimes reversed in local practice.
+>
+> Compared with quieter forms of change such as suburban growth alone, organized movements were more decisive in rewriting law and public norms between 1945 and 1980. Therefore the most important effects of social-change movements were legal equality gains and a broader culture of protest, with civil rights leading and other movements extending that challenge into gender, campus life, and national politics.
+
+### Consensus Grade
+
+**Total:** 6/6 · **Confidence:** 0.97 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The essay ranks civil rights as the most important movement while identifying legal, cultural, women's, and student effects. |
+| Contextualization | 1 | World War II democracy, returning veterans, and postwar discrimination accurately frame the movements. |
+| Evidence | 2 | Boycotts, sit-ins, Civil Rights and Voting Rights Acts, women's activism, and antiwar campaigns are used to explain legal and cultural change. |
+| Analysis Reasoning | 2 | The response explicitly weighs relative importance, traces borrowed tactics, and qualifies gains with backlash and incomplete enforcement. |
+
+**Evidence spans**
+
+- **Thesis:** “civil rights activism was the most important of those movements even though women's rights, student protest, and other campaigns also reshaped the nation”
+- **Contextualization:** “After World War II many Americans hoped wartime talk about democracy would finally apply at home”
+- **Evidence:** “Civil Rights Act and Voting Rights Act”; “Women's activism and related campaigns also changed workplaces, education, and family expectations”
+- **Analysis Reasoning:** “backlash and incomplete enforcement show that social movements did not transform every institution equally”
+
+---
+
+## 15. `v4-cb-2025-leq3-set2-sampleB-t5-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how sectional tensions shaped United States society from 1800 to 1848.
+
+### Essay
+
+> By the 1820s Americans could celebrate fifty years of independence, but sectional loyalty was already rising and would later help cause civil war between North and South. Sectional tensions shaped United States society from 1800 to 1848 by splitting the nation into a slave South and a free-labor North whose economies and social structures pulled apart in daily life and politics.
+>
+> King Cotton after the cotton gin locked the South into plantation slavery, and the enslaved population climbed from about one million in 1800 toward four million later in the century as cotton spread west. Nat Turner's 1831 rebellion and Denmark Vesey's earlier plot led to tighter slave codes and deeper Southern defensiveness about the peculiar institution. Planter elites dominated politics and culture there while free Black communities remained small and restricted. Britain needed Southern cotton for its mills, which reinforced the export plantation model.
+>
+> In the North, the urban share of population rose and factories by the 1830s made many goods beyond textiles, from farm implements to shoes. Irish and German immigration increased after the early 1830s, and cities such as Buffalo, Cleveland, Detroit, and Cincinnati expanded with lakes and river commerce. Early labor organizing and the Commonwealth v. Hunt ruling showed a wage-earning society forming. Old Northwest states entered as free-labor farm regions that usually opposed slavery's spread into new territories.
+>
+> These differences caused Americans to vote and argue as sections rather than as one people. Slavery debates and economic needs reinforced each other whenever Congress faced tariffs or western land questions. Sectional tensions therefore remade society long before 1861 by creating two rival social worlds inside one country.
+
+### Consensus Grade
+
+**Total:** 6/6 · **Confidence:** 0.97 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response establishes competing slave and free-labor systems as the mechanism connecting sectional tension to daily life and politics. |
+| Contextualization | 1 | Postindependence national celebration and the later Civil War frame the sectional development in a broader national arc. |
+| Evidence | 2 | Cotton, Turner, Vesey, slave codes, immigration, northern cities, Commonwealth v. Hunt, and free Old Northwest states are effectively deployed. |
+| Analysis Reasoning | 2 | The essay compares economic, labor, social, and political structures and traces how they reinforced sectional voting and argument. |
+
+**Evidence spans**
+
+- **Thesis:** “splitting the nation into a slave South and a free-labor North whose economies and social structures pulled apart”
+- **Contextualization:** “Americans could celebrate fifty years of independence”
+- **Evidence:** “Nat Turner's 1831 rebellion and Denmark Vesey's earlier plot led to tighter slave codes”; “Commonwealth v. Hunt ruling showed a wage-earning society forming”
+- **Analysis Reasoning:** “Slavery debates and economic needs reinforced each other”
+
+---
+
+## 16. `v4-cb-2025-leq4-set1-sampleA-t4-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how United States foreign policy responded to changes in the world from 1890 to 1930.
+
+### Essay
+
+> United States foreign policy responded to changes in the world from 1890 to 1930 by turning toward overseas expansion and intervention when industrial power and global rivalry increased and older continental habits no longer seemed enough.
+>
+> Alfred Thayer Mahan argued that sea power was essential for national strength, and that idea encouraged naval buildup and interest in coaling stations and bases. After the USS Maine exploded in Havana harbor, the Spanish-American War brought quick victory and the Treaty of Paris of 1898 transferred overseas territories including the Philippines, Puerto Rico, and Guam, which then led to the Philippine-American War when Filipino nationalists resisted U.S. rule. The Open Door Policy sought equal trading rights in China as other empires carved spheres of influence. In Latin America the Roosevelt Corollary claimed a U.S. police power so Europeans would not intervene in debt crises, and the Panama Canal project, made possible after the Hay-Pauncefote Treaty ended older shared British control plans, showed strategic and commercial motives working together. The Platt Amendment also limited Cuban independence after the war even though the Teller Amendment had promised respect for Cuban sovereignty.
+>
+> These steps were caused by a changing world of empires, revolutions, and markets that older continental expansion could not manage alone. Comparing 1890s war and early-1900s Caribbean interventions shows a pattern of using force and diplomacy to protect U.S. interests abroad. Misspellings aside, the response was active engagement rather than isolation through 1930 as the United States acted like a new world power.
+
+### Consensus Grade
+
+**Total:** 5/6 · **Confidence:** 0.96 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The claim identifies overseas expansion and intervention as responses to industrial power and global rivalry. |
+| Contextualization | 0 | The opening refers generally to older continental habits but does not describe a broader historical context. |
+| Evidence | 2 | Mahan, the Maine, Treaty of Paris, Open Door, Roosevelt Corollary, Panama Canal, and Platt Amendment are effectively tied to strategic and commercial aims. |
+| Analysis Reasoning | 2 | The essay sustains causation and comparison across war, diplomacy, markets, and Caribbean-Pacific intervention with extensive effective evidence. |
+
+**Evidence spans**
+
+- **Thesis:** “turning toward overseas expansion and intervention when industrial power and global rivalry increased”
+- **Contextualization:** “older continental habits no longer seemed enough”
+- **Evidence:** “The Open Door Policy sought equal trading rights in China”; “the Roosevelt Corollary claimed a U.S. police power”
+- **Analysis Reasoning:** “showed strategic and commercial motives working together”
+
+---
+
+## 17. `v4-cb-2023-leq4-set1-sampleB-t3-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which growing concerns about national security contributed to changes in United States foreign policy from 1945 to 1991.
+
+### Essay
+
+> After World War II Americans wanted normal life, jobs, and housing, but rivalry with the Soviet Union created the Cold War and spoiled that peacetime mood for many families. Growing concerns about national security contributed to changes in United States foreign policy from 1945 to 1991 because leaders kept focusing on stopping communism overseas.
+>
+> There was the Truman Doctrine promising aid to threatened nations. The Berlin Airlift supplied a western city under pressure. The Korean War was fought and a cease-fire was signed near the 38th parallel in 1953. The U.S. kept bases in the Philippines after independence and made security treaties with Japan in 1951. NSC-68 talked about building up the military for a long struggle. People also worried about spies at home like in the Hiss and Rosenberg cases.
+>
+> National security just stayed important the whole time and policy changed because of it in Asia and Europe alike.
+
+### Consensus Grade
+
+**Total:** 5/6 · **Confidence:** 0.95 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The essay makes a defensible claim that leaders continually changed policy to stop communism overseas. |
+| Contextualization | 1 | Postwar hopes for jobs, housing, and normal life accurately frame the abrupt Cold War shift. |
+| Evidence | 2 | The Truman Doctrine, Berlin Airlift, Korea, Philippine bases, Japan treaty, and NSC-68 are specific and relevant to containment. |
+| Analysis Reasoning | 1 | The response explains that national security stayed important and policy changed in Asia and Europe, but it does not develop complexity. |
+
+**Evidence spans**
+
+- **Thesis:** “leaders kept focusing on stopping communism overseas”
+- **Contextualization:** “After World War II Americans wanted normal life, jobs, and housing”
+- **Evidence:** “The Berlin Airlift supplied a western city under pressure”; “NSC-68 talked about building up the military”
+- **Analysis Reasoning:** “policy changed because of it in Asia and Europe alike”
+
+---
+
+## 18. `v4-cb-2023-leq2-set1-sampleA-t6-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which the growth of transatlantic trade changed British North American colonial society from 1607 to 1776.
+
+### Essay
+
+> England's victory over the Spanish Armada in 1588 strengthened its Atlantic ambitions, and from Jamestown in 1607 through Georgia in 1733 thirteen English colonies took shape under charters from the crown along the North American coast. The growth of transatlantic trade changed British North American colonial society from 1607 to 1776 to a very great extent, because commerce reorganized labor, law, and community life around producing staples for export and consuming British manufactured goods, even though religion and local politics also shaped the colonies in lasting ways.
+>
+> In Virginia, tobacco profits after the early struggles at Jamestown pulled the colony into Atlantic markets, and laws such as the 1661 rule that children inherited the mother's enslaved status, and Maryland's later declaration that baptism did not free an enslaved person, show how trade in people and crops hardened racial slavery to secure a permanent labor force. The House of Burgesses and other assemblies governed societies increasingly defined by export agriculture and unequal wealth. New England entered the same Atlantic world differently through shipping, shipbuilding, provisioning the Caribbean, and commerce regulated by mercantilist Navigation Acts between 1650 and 1673, which required colonial trade to serve English interests and pushed merchants into both legal commerce and smuggling when rules felt too tight.
+>
+> Triangular trade routes linked Africa, the Caribbean, and the mainland, so port cities and slave-based plantations became central social institutions rather than side activities of settlement. Pennsylvania's Frame of Government and Charter of Liberties encouraged immigration and commerce under proprietary rule, while Puritan migrations under John Winthrop and later breakaways like Roger Williams and Anne Hutchinson show religious motives that still operated inside an empire of trade. Over time, even colonies founded for faith or philanthropy, including Georgia at Savannah under Oglethorpe, were drawn toward Atlantic staple economies and imperial markets. The Halfway Covenant and other church adjustments also hint that commercial growth strained older communal ideals.
+>
+> Trade did not erase every older pattern, and some inland communities remained less commercial than the coast, so change was extensive but not total. Compared with 1607's fragile outposts, however, colonial society by the Revolutionary era was wealthier, more enslaved, more urban along the seaboard, and more entangled with British credit and markets. Therefore transatlantic trade was the primary force transforming British North American society across the period, converting settlement experiments into an imperial commercial order that would eventually quarrel with Britain itself over taxes and control.
+
+### Consensus Grade
+
+**Total:** 6/6 · **Confidence:** 0.98 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The claim identifies trade-driven change in labor, law, consumption, and community while acknowledging religion and local politics. |
+| Contextualization | 1 | The Spanish Armada and expansion from Jamestown through Georgia accurately frame English Atlantic colonization. |
+| Evidence | 2 | Tobacco, slavery statutes, Navigation Acts, triangular trade, Pennsylvania government, and Georgia are extensively and effectively connected to social change. |
+| Analysis Reasoning | 2 | The essay compares regions and periods, explains causation, and qualifies commercial transformation with religion, local politics, and inland variation. |
+
+**Evidence spans**
+
+- **Thesis:** “commerce reorganized labor, law, and community life around producing staples for export and consuming British manufactured goods”
+- **Contextualization:** “England's victory over the Spanish Armada in 1588 strengthened its Atlantic ambitions”
+- **Evidence:** “laws such as the 1661 rule that children inherited the mother's enslaved status”; “mercantilist Navigation Acts between 1650 and 1673”
+- **Analysis Reasoning:** “Trade did not erase every older pattern”
+
+---
+
+## 19. `v4-cb-2023-leq2-set1-sampleC-t5-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which the growth of transatlantic trade changed British North American colonial society from 1607 to 1776.
+
+### Essay
+
+> After the Armada victory England became a major naval power and could support overseas colonization more confidently than before. Chartered colonies then spread from Jamestown in 1607 to Georgia in 1733 under authority from the English monarch. The growth of transatlantic trade changed British North American colonial society from 1607 to 1776 to a large extent. Commerce remade labor systems and tied colonists to imperial markets in ways early settlers could not fully predict.
+>
+> Mercantilism and the Navigation Acts tried to channel colonial trade through England and limit foreign shipping. Tobacco and other staples created demand for bound labor, including indentured servants and then enslaved Africans. Virginia inheritance laws and Maryland rules about baptism and slavery show how legal codes protected that labor supply for planters. Triangular trade connected Africa, the Caribbean, and mainland ports. Coastal towns grew around shipping, credit, and imported manufactures from Britain.
+>
+> Those facts matter because they reveal causation from Atlantic demand to social structure on the ground. Plantation regions became slave societies with sharp racial hierarchies. Commercial New England oriented toward ships, fish, and credit while still keeping town churches. Change over time is clear from early survival colonies to export-driven provinces that argued with Parliament by the 1760s and 1770s about taxes and control.
+>
+> Still, trade was not the only force shaping colonial life. Religion shaped New England towns and proprietary experiments like Pennsylvania's liberties for worship and immigration. Some colonists resisted imperial rules through smuggling or local politics. So the transformation was deep but incomplete across regions. Overall transatlantic trade was the main engine of social change even if faith and local politics still counted in daily community decisions before independence.
+
+### Consensus Grade
+
+**Total:** 6/6 · **Confidence:** 0.98 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The essay argues Atlantic commerce primarily remade labor and imperial market ties while previewing a qualified extent. |
+| Contextualization | 1 | English naval strength after the Armada and chartered settlement accurately establish the background to colonial trade. |
+| Evidence | 2 | Navigation Acts, tobacco, slavery laws, triangular trade, and port commerce are specifically used to explain hierarchy and regional economies. |
+| Analysis Reasoning | 2 | The response sustains causation and change over time, compares regions, and qualifies trade's importance with religion, politics, and smuggling. |
+
+**Evidence spans**
+
+- **Thesis:** “Commerce remade labor systems and tied colonists to imperial markets”
+- **Contextualization:** “After the Armada victory England became a major naval power”
+- **Evidence:** “Virginia inheritance laws and Maryland rules about baptism and slavery”; “Triangular trade connected Africa, the Caribbean, and mainland ports”
+- **Analysis Reasoning:** “trade was not the only force shaping colonial life”
+
+---
+
+## 20. `v4-cb-2024-leq4-set2-sampleB-t3-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which migration influenced United States society from 1932 to 2000.
+
+### Essay
+
+> Migration influenced United States society from 1932 to 2000 to a great extent because people moved for work and survival and that reshaped cities, regions, and politics.
+>
+> In the early 1930s Dust Bowl families left the plains for California looking for farm jobs after drought and foreclosure. The Bonus March brought unemployed World War I veterans to Washington demanding early bonus pay promised for later. New Deal programs like the CCC and WPA put people to work and sometimes relocated labor to projects far from home. The Wagner Act strengthened unions in industrial cities that migrants entered for factory jobs. Social Security and banking reforms such as Glass-Steagall and the FDIC changed security for families who had moved or lost farms after the 1929 crash and high Hawley-Smoot tariffs. The Indian Reorganization Act also shifted federal policy toward Native communities during the same crisis years.
+>
+> Later in the century people kept moving to suburbs and to the Sunbelt for jobs and warmer climates. African Americans continued leaving the South for northern and western cities in large numbers. New immigration after mid-century also altered neighborhoods and labor markets in major metros.
+>
+> Migration just kept changing where Americans lived and worked across the whole period from depression to the year 2000.
+
+### Consensus Grade
+
+**Total:** 4/6 · **Confidence:** 0.91 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response claims migration for work and survival reshaped cities, regions, and politics, creating a defensible line. |
+| Contextualization | 0 | The essay begins with the Dust Bowl inside the period and supplies no broader historical framing. |
+| Evidence | 2 | Dust Bowl movement, the continuing Great Migration, suburbanization, Sunbelt growth, and later immigration support migration's societal influence; several New Deal details are irrelevant. |
+| Analysis Reasoning | 1 | The response explains that migration kept changing where Americans lived and worked, but does not weigh effects or develop sophistication. |
+
+**Evidence spans**
+
+- **Thesis:** “people moved for work and survival and that reshaped cities, regions, and politics”
+- **Contextualization:** “In the early 1930s Dust Bowl families left the plains for California”
+- **Evidence:** “African Americans continued leaving the South for northern and western cities”; “people kept moving to suburbs and to the Sunbelt”
+- **Analysis Reasoning:** “Migration just kept changing where Americans lived and worked”
+
+---
+
+## 21. `v4-cb-2024-leq2-set2-sampleC-t0-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which settler expansion influenced North America from 1754 to 1800.
+
+### Essay
+
+> Settler expansion influenced North America a lot because countries wanted land and people kept moving around for a long time and it was important for everyone somehow. The Puritans were the most influential group and their sermons explain almost everything about America according to what I remember. Jamestown had tobacco and Virginia almost collapsed even though that was way earlier than 1754. Navigation Acts controlled trade between 1650 and 1673 and Roger Williams got banished and started Providence and Maryland had rules about baptism and slavery that lasted. Spain and France and Britain all wanted territory and Native Americans were there too so conflicts and settlements happened. Expansion was just when people took land and society changed somehow because of charters and kings and stuff like that overall without a clear argument about 1754 to 1800 specifically.
+
+### Consensus Grade
+
+**Total:** 0/6 · **Confidence:** 0.99 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 0 | The statement that expansion influenced North America a lot merely restates the task without a defensible argument about 1754 to 1800. |
+| Contextualization | 0 | Puritans, Jamestown, Navigation Acts, Williams, and Maryland are disconnected earlier facts rather than meaningful framing. |
+| Evidence | 0 | The response offers no specific evidence from 1754 to 1800 showing settler expansion's influence. |
+| Analysis Reasoning | 0 | Saying conflicts and settlements happened provides no causation, comparison, or change-over-time structure. |
+
+**Evidence spans**
+
+- **Thesis:** “Settler expansion influenced North America a lot”
+- **Contextualization:** “Jamestown had tobacco and Virginia almost collapsed even though that was way earlier than 1754”
+- **Evidence:** “Spain and France and Britain all wanted territory”
+- **Analysis Reasoning:** “conflicts and settlements happened”
+
+---
+
+## 22. `v4-cb-2023-leq2-set1-sampleB-t2-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/adjudication_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which the growth of transatlantic trade changed British North American colonial society from 1607 to 1776.
+
+### Essay
+
+> The growth of transatlantic trade changed British North American colonial society from 1607 to 1776 to a significant extent because overseas commerce made colonies depend on export crops and imported goods instead of only local survival.
+>
+> Trade caused social change by rewarding regions that could supply what Atlantic markets wanted, whether tobacco, rice, fish, or shipping services. Over time coastal areas became more commercial while some inland places stayed simpler and less tied to Britain. Comparing early settlement struggles with later colonial life shows how much exchange altered everyday priorities about land, labor, and status.
+>
+> Specific laws and voyages are hard to remember clearly in order, and dates get mixed up between the 1600s and 1700s. The main pattern is still that Atlantic trade pulled colonial society into an imperial economy and that mattered more than local isolation by the time of the Revolution.
+
+### Consensus Grade
+
+**Total:** 4/6 · **Confidence:** 0.82 · **Grader:** `adjudicator:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The opening makes a defensible extent claim that Atlantic commerce shifted colonial society from local survival toward export production and imported consumption. |
+| Contextualization | 0 | The response does not develop broader circumstances before or around the growth of transatlantic trade; it begins directly with the change named in the prompt. |
+| Evidence | 2 | Tobacco, rice, fish, and shipping are specific colonial economic activities, and the essay uses them to explain regional specialization and increased coastal commercialization within the Atlantic economy. |
+| Analysis Reasoning | 1 | The response uses change over time and coastal-inland comparison to structure its argument, but it offers no sustained qualification or complex treatment of continuity and change. |
+
+**Evidence spans**
+
+- **Thesis:** “The growth of transatlantic trade changed British North American colonial society from 1607 to 1776 to a significant extent because overseas commerce made colonies depend on export crops and imported goods instead of only local survival.”
+- **Contextualization:** “Specific laws and voyages are hard to remember clearly in order, and dates get mixed up between the 1600s and 1700s.”
+- **Evidence:** “Trade caused social change by rewarding regions that could supply what Atlantic markets wanted, whether tobacco, rice, fish, or shipping services.”; “Over time coastal areas became more commercial while some inland places stayed simpler and less tied to Britain.”
+- **Analysis Reasoning:** “Comparing early settlement struggles with later colonial life shows how much exchange altered everyday priorities about land, labor, and status.”
+
+---
+
+## 23. `v4-cb-2025-leq4-set1-sampleB-t4-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/adjudication_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how United States foreign policy responded to changes in the world from 1890 to 1930.
+
+### Essay
+
+> Since the early republic, U.S. foreign policy had focused on continental expansion and limiting European influence in the Americas, but after the Civil War industrial growth prepared a shift toward world power with overseas interests. United States foreign policy responded to changes in the world from 1890 to 1930 by intervening more often overseas to protect markets and strategic interests.
+>
+> The Spanish-American War followed the USS Maine crisis and produced the Treaty of Paris of 1898 with new territories. The Roosevelt Corollary and Panama Canal projects showed a new willingness to police the Caribbean. The Open Door Policy addressed competition in China among empires.
+>
+> Those actions were caused by global rivalry and economic ambition after industrialization. Change over time moved the nation from relative isolation toward imperial involvement in both the Caribbean and the Pacific. Alfred Thayer Mahan's ideas about sea power also floated around in that era and encouraged naval thinking. Overall the response was expansionist engagement with a changing world, even if some details of treaties get mixed up.
+
+### Consensus Grade
+
+**Total:** 5/6 · **Confidence:** 0.93 · **Grader:** `adjudicator:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response argues that the United States answered global change through more frequent overseas intervention to protect markets and strategic interests. |
+| Contextualization | 1 | Continental expansion, the early policy of limiting European influence, and post-Civil War industrial growth accurately frame the later shift toward global power. |
+| Evidence | 2 | The Spanish-American War and Treaty of Paris, Roosevelt Corollary, Panama Canal, Open Door Policy, and Mahan are specific and are used to support expansionist engagement in the Caribbean and Pacific. |
+| Analysis Reasoning | 1 | The response uses causation and change over time to link industrial growth and imperial rivalry to expansionist policy, but it does not qualify the argument or develop multiple perspectives sufficiently for complexity. |
+
+**Evidence spans**
+
+- **Thesis:** “United States foreign policy responded to changes in the world from 1890 to 1930 by intervening more often overseas to protect markets and strategic interests.”
+- **Contextualization:** “Since the early republic, U.S. foreign policy had focused on continental expansion and limiting European influence in the Americas, but after the Civil War industrial growth prepared a shift toward world power with overseas interests.”
+- **Evidence:** “The Spanish-American War followed the USS Maine crisis and produced the Treaty of Paris of 1898 with new territories.”; “The Roosevelt Corollary and Panama Canal projects showed a new willingness to police the Caribbean.”; “The Open Door Policy addressed competition in China among empires.”
+- **Analysis Reasoning:** “Those actions were caused by global rivalry and economic ambition after industrialization.”; “Change over time moved the nation from relative isolation toward imperial involvement in both the Caribbean and the Pacific.”
+
+---
+
+## 24. `v4-cb-2024-leq3-set1-sampleB-t4-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the relative importance of the causes of the growth of a national culture in the United States from 1800 to 1848.
+
+### Essay
+
+> After the War of 1812 the so-called Era of Good Feelings under Monroe suggested political unity, even if it did not last past the Panic of 1819 when hard times returned. National culture grew from 1800 to 1848 mainly because of economic nationalism and shared institutions that tied regions together.
+>
+> Henry Clay's American System pushed a national bank, protective tariffs, and internal improvements. The Tariff of 1816 protected new factories that had grown during the embargo and war years. Eli Whitney's interchangeable parts idea spread during the war years and helped manufacturing. The Missouri Compromise of 1820 tried to keep sectional balance as the West grew. Gibbons v. Ogden supported federal power over interstate commerce. The Monroe Doctrine claimed a diplomatic identity for the nation in the Western Hemisphere. The Adams-Onis or Florida Purchase Treaty of 1819 also expanded U.S. territory.
+>
+> Transportation and markets also spread common goods and news across state lines. National culture just grew from those political and economic things people shared.
+
+### Consensus Grade
+
+**Total:** 5/6 · **Confidence:** 0.92 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response identifies economic nationalism and shared institutions as the main causes of national culture. |
+| Contextualization | 1 | The War of 1812, Era of Good Feelings, and Panic of 1819 accurately frame the period's nationalizing impulse. |
+| Evidence | 2 | The American System, Tariff of 1816, Missouri Compromise, Gibbons, Monroe Doctrine, and Adams-Onis Treaty are specific and relevant. |
+| Analysis Reasoning | 1 | The essay uses a causal structure but mostly lists evidence and does not truly compare economic nationalism against alternative causes. |
+
+**Evidence spans**
+
+- **Thesis:** “mainly because of economic nationalism and shared institutions that tied regions together”
+- **Contextualization:** “After the War of 1812 the so-called Era of Good Feelings under Monroe suggested political unity”
+- **Evidence:** “Henry Clay's American System pushed a national bank, protective tariffs, and internal improvements”; “The Monroe Doctrine claimed a diplomatic identity for the nation”
+- **Analysis Reasoning:** “Transportation and markets also spread common goods and news across state lines”
+
+---
+
+## 25. `v4-cb-2025-leq2-set1-sampleA-t4-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how Native American societies adapted to the presence of European colonists in North America from 1500 to 1754.
+
+### Essay
+
+> Native American societies adapted to European colonists from 1500 to 1754 mainly by forming alliances, adopting new goods, and resisting when pressure grew too strong.
+>
+> The Iroquois Confederacy stayed powerful by battling rival tribes and also dealing with Europeans for trade and military support. When the French built Quebec under Samuel de Champlain in 1608, nearby Native groups traded furs and sometimes fought as French allies against English-backed rivals. In the Southwest, after Santa Fe became the Spanish capital in 1610, Pueblo peoples lived under the encomienda system and Catholic missions, then adapted by blending some Spanish practices while still defending their own communities.
+>
+> Over time, horses from the Columbian Exchange also changed Plains life, and groups like the Lakota used them to hunt buffalo more widely. Even when Bartolome de Las Casas pushed the New Laws of 1542 and the Valladolid Debate questioned Spanish treatment of Indians, many Native societies still had to adapt day to day through trade, warfare, and selective cultural borrowing rather than disappearing.
+
+### Consensus Grade
+
+**Total:** 5/6 · **Confidence:** 0.92 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response identifies alliances, adopted goods, and resistance as distinct Native adaptations. |
+| Contextualization | 0 | Native American societies adapted to European colonists from 1500 to 1754, but the essay gives no broader setting. |
+| Evidence | 2 | Iroquois diplomacy, French alliances, Pueblo mission pressure, and Lakota horse use are specifically and effectively connected to adaptation. |
+| Analysis Reasoning | 2 | The response compares regional strategies, traces change over time, and uses at least four pieces of evidence effectively. |
+
+**Evidence spans**
+
+- **Thesis:** “forming alliances, adopting new goods, and resisting when pressure grew too strong”
+- **Contextualization:** “Native American societies adapted to European colonists from 1500 to 1754”
+- **Evidence:** “nearby Native groups traded furs and sometimes fought as French allies”; “groups like the Lakota used them to hunt buffalo more widely”
+- **Analysis Reasoning:** “through trade, warfare, and selective cultural borrowing rather than disappearing”
+
+---
+
+## 26. `v4-cb-2023-leq4-set1-sampleA-t1-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/adjudication_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which growing concerns about national security contributed to changes in United States foreign policy from 1945 to 1991.
+
+### Essay
+
+> National security was a big deal after World War II and it kind of changed how America acted toward other countries because people were scared of communism and also of another war starting and so leaders kept making new policies that were about stopping the Soviets and protecting the United States even when Americans just wanted to go home and find jobs and housing after 1945.
+>
+> There was the Taft-Hartley Act in 1947 which was about labor and businesses and then the Smith Act from earlier that made it illegal to advocate overthrowing the government and the Supreme Court upheld that later and also the Employment Act of 1946 which was supposed to help with jobs. The Philippines became independent in 1946 which was a change in the Pacific and people talked about the red scare and nuclear weapons and the domino effect a lot in class.
+>
+> I think foreign policy changed because of fear more than anything else and also because Truman had to deal with the Cold War starting while veterans were coming back and saving money from wartime shortages so the country was trying to be normal and also be strong at the same time which is confusing but that is what happened.
+
+### Consensus Grade
+
+**Total:** 3/6 · **Confidence:** 0.94 · **Grader:** `adjudicator:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The opening makes a defensible causal claim that fear of communism and renewed war drove anti-Soviet foreign-policy changes. |
+| Contextualization | 1 | The discussion of World War II demobilization, returning veterans, jobs, and housing provides a broader postwar setting for the emerging Cold War. |
+| Evidence | 0 | Taft-Hartley, the Smith Act, and the Employment Act are domestic measures, while Philippine independence is the only specific foreign-policy example; fewer than two relevant examples means no evidence point is earned. |
+| Analysis Reasoning | 1 | The essay uses basic causation by connecting national-security fear to anti-Soviet policy, but it cannot sustain or complicate that reasoning with relevant foreign-policy evidence. |
+
+**Evidence spans**
+
+- **Thesis:** “National security was a big deal after World War II and it kind of changed how America acted toward other countries because people were scared of communism and also of another war starting and so leaders kept making new policies that were about stopping the Soviets and protecting the United States even when Americans just wanted to go home and find jobs and housing after 1945.”
+- **Contextualization:** “even when Americans just wanted to go home and find jobs and housing after 1945”
+- **Evidence:** “The Philippines became independent in 1946 which was a change in the Pacific and people talked about the red scare and nuclear weapons and the domino effect a lot in class.”
+- **Analysis Reasoning:** “I think foreign policy changed because of fear more than anything else and also because Truman had to deal with the Cold War starting”
+
+---
+
+## 27. `v4-cb-2025-leq2-set2-sampleB-t0-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how British colonists in the Americas adapted to their environments from 1607 to 1754.
+
+### Essay
+
+> British colonists adapted to their environments from 1607 to 1754 in a vareity of ways and they did things differently depending on where they lived and also who was in charge of the colony and sometimes they got along with Native Americans and sometimes they didnt and the land was used for crops that could make money which was important for surviving in a new place far from England.
+>
+> Colonists tried farming and fishing and trading with whoever was nearby and they made rules for their towns when things got confusing and some people moved to new places when they didnt like the religious leaders and the weather and soil were not the same everywhere so people had to figure out what worked. In some areas they grew things to sell and in other areas they focused more on small farms and local trade and that made the colonies feel different from each other even though they were all connected to England somehow.
+>
+> I think adaptation was not just about weather or soil it was about everything mixed together like religion and money and neighbors and that is why the colonies ended up looking different by the middle of the 1700s and why it is hard to say there was only one way colonists adapted because every place had its own problems and solutions and people just did what they could with the time they had.
+
+### Consensus Grade
+
+**Total:** 2/6 · **Confidence:** 0.90 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response argues environment, authority, Native relations, religion, and markets produced different colonial adaptations. |
+| Contextualization | 0 | British colonists adapted from 1607 to 1754, but no broader historical development is described before that argument. |
+| Evidence | 0 | Farming, fishing, trade, small farms, and crops remain generic categories with no specific colonial examples. |
+| Analysis Reasoning | 1 | The comparison mixes religion, money, neighbors, weather, and soil, but without evidence it does not demonstrate complex understanding. |
+
+**Evidence spans**
+
+- **Thesis:** “they did things differently depending on where they lived and also who was in charge of the colony”
+- **Contextualization:** “British colonists adapted to their environments from 1607 to 1754”
+- **Evidence:** “In some areas they grew things to sell and in other areas they focused more on small farms”
+- **Analysis Reasoning:** “adaptation was not just about weather or soil it was about everything mixed together like religion and money and neighbors”
+
+---
+
+## 28. `v4-cb-2023-leq4-set2-sampleB-t2-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which the growth of civil rights activism contributed to changes in government action between 1940 and 1980.
+
+### Essay
+
+> Civil rights activism contributed a lot to government action between 1940 and 1980 because protests and organizers pushed leaders to pass laws and court decisions that they might not have done otherwise.
+>
+> There was the Lend-Lease Act and also the Neutrality Acts from the war years, and people in class mixed those up with later civil rights stuff. Brown v. Board of Education and the Civil Rights Act are the examples I remember for government responding to pressure. Marches in the South and sit-ins also happened and made the news.
+>
+> Activists kept pressure on Washington so government finally responded even if it was slow. Some presidents acted more than others. The growth of activism mattered because without it many of those changes would not have happened as fast or maybe at all. I think activism was the main reason government moved, even when leaders claimed they had their own plans.
+
+### Consensus Grade
+
+**Total:** 4/6 · **Confidence:** 0.94 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response claims activism caused government action by pressuring otherwise reluctant leaders. |
+| Contextualization | 0 | Lend-Lease and Neutrality Acts are irrelevant wartime details rather than broader context for civil-rights activism. |
+| Evidence | 2 | Brown v. Board and the Civil Rights Act are two specific government responses connected to activist pressure. |
+| Analysis Reasoning | 1 | The causal claim says that without activism many changes would not have happened as fast, but it adds no competing causes or complexity. |
+
+**Evidence spans**
+
+- **Thesis:** “protests and organizers pushed leaders to pass laws and court decisions”
+- **Contextualization:** “There was the Lend-Lease Act and also the Neutrality Acts”
+- **Evidence:** “Brown v. Board of Education and the Civil Rights Act”
+- **Analysis Reasoning:** “without it many of those changes would not have happened as fast or maybe at all”
+
+---
+
+## 29. `v4-cb-2024-leq4-set1-sampleB-t6-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the relative importance of the effects of movements for social change from 1945 to 1980.
+
+### Essay
+
+> After World War II, Americans hoped for peacetime prosperity, but the early Cold War and unfinished fights over equality made social movements especially important from 1945 to 1980. Returning veterans wanted jobs and normal life, yet segregation, limited rights for women, and later the Vietnam War created pressure for change. Of the movements in this period, the civil rights movement had the most important effects because it forced major federal action, while other movements mattered but often built on that breakthrough.
+>
+> The African American civil rights movement used boycotts, sit-ins, and marches to challenge Jim Crow. After Brown v. Board of Education declared segregated schools unconstitutional, activists still faced massive resistance, so organizations like the SCLC and SNCC kept organizing. The Montgomery Bus Boycott showed that local protest could last for months and win concrete gains. The March on Washington and televised violence in places like Birmingham and Selma helped push Congress to pass the Civil Rights Act of 1964 and the Voting Rights Act of 1965. Those laws banned discrimination in public accommodations and employment and protected Black voting, which changed daily life and politics across the South and the nation. Federal enforcement, including sending troops or marshals in crisis moments, also showed that protest could pull the national government into local conflicts that states had refused to fix on their own.
+>
+> The women's movement and antiwar protests also reshaped society, but their biggest gains often followed civil rights tactics and language. Feminists won the Equal Pay Act and later pushed for the ERA, and second-wave organizers challenged limits on jobs, education, and reproductive rights. Antiwar demonstrators challenged Johnson and Nixon over Vietnam and helped make public trust in government a central issue for a generation of young people. Still, without the civil rights breakthroughs that proved mass protest could move the federal government, later movements would have had a weaker model and fewer legal tools. Even though de facto inequality continued in housing, schools, and workplaces, the relative importance of civil rights effects stands out because they produced the clearest legal and political transformation of the era and opened space for other groups to demand change.
+
+### Consensus Grade
+
+**Total:** 6/6 · **Confidence:** 0.98 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The thesis ranks civil rights above other movements because it forced federal action and supplied a model for later activism. |
+| Contextualization | 1 | Postwar prosperity, Cold War pressure, and unfinished equality struggles accurately frame social movements. |
+| Evidence | 2 | Brown, SCLC, SNCC, Montgomery, Washington, Birmingham, Selma, Civil Rights Act, Voting Rights Act, Equal Pay Act, and ERA are effectively used. |
+| Analysis Reasoning | 2 | The essay explicitly weighs relative effects, explains causal links, compares movements, and qualifies legal gains with continuing inequality. |
+
+**Evidence spans**
+
+- **Thesis:** “the civil rights movement had the most important effects because it forced major federal action”
+- **Contextualization:** “After World War II, Americans hoped for peacetime prosperity”
+- **Evidence:** “The March on Washington and televised violence in places like Birmingham and Selma helped push Congress”; “Feminists won the Equal Pay Act and later pushed for the ERA”
+- **Analysis Reasoning:** “Even though de facto inequality continued in housing, schools, and workplaces”
+
+---
+
+## 30. `v4-cb-2023-leq2-set1-sampleA-t1-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which the growth of transatlantic trade changed British North American colonial society from 1607 to 1776.
+
+### Essay
+
+> Transatlantic trade changed colonial society a lot from 1607 to 1776 becuase colonies started making money from crops and shipping and they got tied to England and also to Africa through slavery and that made towns and plantations grow in different ways.
+>
+> The Navigation Acts between 1650 and 1673 were part of mercantilism and said trade should benefit England. Jamestown grew tobacco and Maryland made rules about enslaved people and baptism and Anne Hutchinson got banished to Portsmouth and Penn's Frame of Government had an assembly for landowners. Triangular trade moved goods and enslaved Africans and that affected who lived where and how rich some people got.
+>
+> I think trade changed society becuase it created richer merchants and planters and also more slavery and more connection to Britain even when colonists sometimes ignored the rules. Society was not the same as when Jamestown first started because commerce and labor systems became the center of colonial life.
+
+### Consensus Grade
+
+**Total:** 4/6 · **Confidence:** 0.93 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response claims trade tied colonies to England and Africa while producing divergent towns and plantations. |
+| Contextualization | 0 | Transatlantic trade from 1607 to 1776 begins the argument directly and supplies no broader framing. |
+| Evidence | 2 | Navigation Acts, Jamestown tobacco, slavery laws, and triangular trade are used to explain merchants, planters, slavery, and British ties. |
+| Analysis Reasoning | 1 | The essay uses causation and change over time, but its unrelated Hutchinson and Pennsylvania references do not create complexity. |
+
+**Evidence spans**
+
+- **Thesis:** “they got tied to England and also to Africa through slavery and that made towns and plantations grow in different ways”
+- **Contextualization:** “Transatlantic trade changed colonial society a lot from 1607 to 1776”
+- **Evidence:** “The Navigation Acts between 1650 and 1673 were part of mercantilism”; “Triangular trade moved goods and enslaved Africans”
+- **Analysis Reasoning:** “Society was not the same as when Jamestown first started”
+
+---
+
+## 31. `v4-cb-2025-leq3-set2-sampleC-t4-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/adjudication_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how sectional tensions shaped United States society from 1800 to 1848.
+
+### Essay
+
+> In the early 1800s the United States was still a young republic celebrating independence, but different regions were already developing separate economies and identities. Sectionalism, or loyalty to a region, grew as the North, South, and West followed different paths. From 1800 to 1848, sectional tensions shaped United States society mainly by dividing Americans over slavery and economic interests, which changed politics, migration, and daily life long before the Civil War.
+>
+> There was the cotton gin and King Cotton in the South, and also the peculiar institution and planter aristocrats. Nat Turner's rebellion and Denmark Vesey's plot are things that happened with slavery. In the North there was urbanization and Irish and German immigration and nativism. The Old Northwest had more farms in places like Ohio and Indiana. People also argued about tariffs and land and whether new states would allow slavery when settlers moved west.
+>
+> Because regions developed differently, sectional tensions caused Americans to identify more with their section than with the whole nation. That pattern shaped society from 1800 to 1848 by making regional conflict a normal part of politics and everyday assumptions. Families, churches, and newspapers often repeated sectional ideas even when people still celebrated shared independence holidays. Over time those tensions made compromise harder and prepared later crises, but already in this period society was organized around competing regional interests more than around one united culture.
+
+### Consensus Grade
+
+**Total:** 5/6 · **Confidence:** 0.87 · **Grader:** `adjudicator:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response makes a defensible claim that slavery and competing economic interests divided regions and shaped politics, migration, and daily life. |
+| Contextualization | 1 | The description of a young postindependence republic developing distinct regional economies and identities accurately frames sectional tensions. |
+| Evidence | 2 | The cotton gin and King Cotton, Turner and Vesey, northern immigration and urbanization, western farming, tariffs, and slavery expansion are relevant examples used to establish contrasting regional societies. |
+| Analysis Reasoning | 1 | The response uses comparison and causation to explain how regional development produced sectional identity, but the evidence is not analyzed with enough qualification or multiple perspectives for complexity. |
+
+**Evidence spans**
+
+- **Thesis:** “From 1800 to 1848, sectional tensions shaped United States society mainly by dividing Americans over slavery and economic interests, which changed politics, migration, and daily life long before the Civil War.”
+- **Contextualization:** “In the early 1800s the United States was still a young republic celebrating independence, but different regions were already developing separate economies and identities.”
+- **Evidence:** “There was the cotton gin and King Cotton in the South, and also the peculiar institution and planter aristocrats.”; “Nat Turner's rebellion and Denmark Vesey's plot are things that happened with slavery.”; “In the North there was urbanization and Irish and German immigration and nativism.”; “The Old Northwest had more farms in places like Ohio and Indiana.”
+- **Analysis Reasoning:** “Because regions developed differently, sectional tensions caused Americans to identify more with their section than with the whole nation.”
+
+---
+
+## 32. `v4-cb-2023-leq4-set2-sampleC-t2-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which the growth of civil rights activism contributed to changes in government action between 1940 and 1980.
+
+### Essay
+
+> Before the period of major civil rights laws, the United States had already faced questions about democracy and world conflict. After World War I, leaders talked about making the world safe for democracy, but the peace after Versailles was fragile, and in the 1930s Japan invaded Manchuria while the United States debated neutrality and how involved it should be overseas. That earlier struggle over what America stood for helps explain why later activists demanded that the government live up to democratic promises at home between 1940 and 1980.
+>
+> Civil rights activism contributed to a great extent to changes in government action because people organized and refused to accept segregation and discrimination as permanent. When enough citizens protested and voted and spoke out, Washington eventually had to respond with new policies and court decisions. The movement showed that government would not change on its own without pressure from below. Churches, students, and community groups kept the issue alive even when politicians preferred to wait. Ordinary people risked their jobs and safety to demand equal treatment, and that persistence made it harder for leaders to ignore injustice.
+>
+> Activism mattered more than quiet waiting. Leaders sometimes acted slowly, and not every demand succeeded right away, but the growth of organized civil rights efforts still pushed the federal government toward stronger action on equality. Some Americans resisted change and claimed states should decide everything, which slowed progress. In the end, activism was the main reason government policy shifted during these decades, even if older foreign-policy debates from the 1930s were a different issue and even if results remained incomplete for many communities.
+
+### Consensus Grade
+
+**Total:** 3/6 · **Confidence:** 0.94 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The claim that organized citizens forced reluctant government action establishes a defensible causal line. |
+| Contextualization | 1 | World War I democracy rhetoric and interwar foreign-policy debate provide broader context for later demands that America honor democracy at home. |
+| Evidence | 0 | Churches, students, protests, voting, and court decisions are generic; the essay names no two specific civil-rights examples. |
+| Analysis Reasoning | 1 | The response sustains basic causation and acknowledges resistance and incomplete outcomes, but lacks evidence needed for a developed argument. |
+
+**Evidence spans**
+
+- **Thesis:** “The movement showed that government would not change on its own without pressure from below”
+- **Contextualization:** “After World War I, leaders talked about making the world safe for democracy”
+- **Evidence:** “Churches, students, and community groups kept the issue alive”
+- **Analysis Reasoning:** “Some Americans resisted change and claimed states should decide everything”
+
+---
+
+## 33. `v4-cb-2024-leq2-set2-sampleB-t3-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which settler expansion influenced North America from 1754 to 1800.
+
+### Essay
+
+> Before 1754, English colonies had already spread along the Atlantic under royal charters, and Britain had become a stronger naval power after defeating the Spanish Armada. Those earlier settlements set up the push for more land that continued after the French and Indian War.
+>
+> Settler expansion influenced North America from 1754 to 1800 to a large extent because moving west changed who controlled territory and how Native nations and European empires competed. As settlers pushed inland, conflict and new borders followed, and the map of North America kept shifting through war, treaties, and migration. People wanted farmland and security, so they kept pressing beyond older coastal limits.
+>
+> In short, expansion mattered because it remade political control and daily life across the continent, not just along the coast. The desire for land that began in the colonial era continued to drive change through the late 1700s.
+
+### Consensus Grade
+
+**Total:** 3/6 · **Confidence:** 0.94 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response claims westward movement changed territorial control and intensified Native-imperial competition. |
+| Contextualization | 1 | Earlier Atlantic settlement and colonial expansion accurately establish the land pressure preceding 1754. |
+| Evidence | 0 | Wars, treaties, borders, and migration are broad categories; no two specific events from 1754 to 1800 are supplied. |
+| Analysis Reasoning | 1 | The essay uses basic causation and continuity from colonial land hunger, but cannot develop complexity without concrete evidence. |
+
+**Evidence spans**
+
+- **Thesis:** “moving west changed who controlled territory and how Native nations and European empires competed”
+- **Contextualization:** “English colonies had already spread along the Atlantic under royal charters”
+- **Evidence:** “war, treaties, and migration”
+- **Analysis Reasoning:** “The desire for land that began in the colonial era continued to drive change”
+
+---
+
+## 34. `v4-cb-2025-leq4-set2-sampleA-t5-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how United States society responded to economic changes from 1960 to 2000.
+
+### Essay
+
+> After the 1950s prosperity and the close election of 1960, Americans entered a period of rapid economic and social change. Kennedy talked about a New Frontier and a missile gap after Sputnik, and government began taking a larger role in the economy and welfare. From 1960 to 2000, United States society responded to economic changes by demanding government help for the poor and later by debating tax cuts and deregulation, and those responses often split along political lines.
+>
+> In the 1960s Johnson's Great Society and War on Poverty created Medicare and Medicaid and tried to reduce poverty while the Civil Rights Act of 1964 and Voting Rights Act of 1965 also reshaped opportunity, and Congress responded to Ralph Nader's Unsafe at Any Speed with auto safety rules. Later, when inflation and stagnation hit in the 1970s, many voters turned against big spending and supported Reagan-era tax cuts and less regulation in the 1980s, and by the 1990s people argued about free trade and a more global economy that seemed to create winners and losers at the same time.
+>
+> Society therefore responded first with liberal programs and protest for inclusion, then with conservative backlash favoring markets, so economic change produced both praise and resistance depending on who gained or lost across these decades.
+
+### Consensus Grade
+
+**Total:** 6/6 · **Confidence:** 0.97 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The essay establishes a shift from demands for antipoverty government to tax-cut and deregulation debates, divided politically. |
+| Contextualization | 1 | Post-1950s prosperity, the 1960 election, Kennedy, and Sputnik frame expectations about government and economic management. |
+| Evidence | 2 | Great Society, Medicare, Medicaid, civil-rights laws, Nader regulation, stagflation, Reagan tax cuts, and free trade are effectively connected to changing responses. |
+| Analysis Reasoning | 2 | The response compares liberal expansion with conservative backlash and traces change over time through multiple political-economic perspectives. |
+
+**Evidence spans**
+
+- **Thesis:** “demanding government help for the poor and later by debating tax cuts and deregulation”
+- **Contextualization:** “After the 1950s prosperity and the close election of 1960”
+- **Evidence:** “Johnson's Great Society and War on Poverty created Medicare and Medicaid”; “supported Reagan-era tax cuts and less regulation in the 1980s”
+- **Analysis Reasoning:** “responded first with liberal programs and protest for inclusion, then with conservative backlash favoring markets”
+
+---
+
+## 35. `v4-cb-2024-leq2-set2-sampleB-t1-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which settler expansion influenced North America from 1754 to 1800.
+
+### Essay
+
+> Settler expansion influenced North America from 1754 to 1800 in many ways because people kept moving and looking for land and that caused problems with Native Americans and also with other countries that wanted the same places.
+>
+> There were Navigation Acts and mercantilism and triangular trade from earlier times and Jamestown and the House of Burgesses and the Mayflower Compact and Maryland's Act of Toleration and also Georgia founded by Oglethorpe. Colonists wanted more farmland and fur trade routes and they moved past the Appalachians after wars with France.
+>
+> Expansion was important overall. It changed borders and settlements and made North America look different by 1800 than it did in the middle of the 1700s when fighting with the French was starting.
+
+### Consensus Grade
+
+**Total:** 2/6 · **Confidence:** 0.94 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response claims expansion caused Native and international conflict over land, a defensible causal line. |
+| Contextualization | 0 | Navigation Acts, Jamestown, Burgesses, the Mayflower Compact, toleration, and Georgia are an unfocused list rather than contextual framing. |
+| Evidence | 0 | Moving beyond the Appalachians is relevant but vague, while the named examples fall before 1754; two specific period examples are absent. |
+| Analysis Reasoning | 1 | The essay uses basic causation and change over time, but does not explain mechanisms or complexity. |
+
+**Evidence spans**
+
+- **Thesis:** “that caused problems with Native Americans and also with other countries that wanted the same places”
+- **Contextualization:** “There were Navigation Acts and mercantilism and triangular trade from earlier times”
+- **Evidence:** “they moved past the Appalachians after wars with France”
+- **Analysis Reasoning:** “made North America look different by 1800 than it did in the middle of the 1700s”
+
+---
+
+## 36. `v4-cb-2024-leq3-set2-sampleC-t4-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/adjudication_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which migration influenced the western United States from 1820 to 1898.
+
+### Essay
+
+> Migration influenced the western United States from 1820 to 1898 to a large extent because new settlers remade politics, land use, and conflict over slavery and Native lands.
+>
+> The Missouri Compromise of 1820 showed how western settlement forced national fights when Missouri wanted to enter as a slave state and Congress drew a line for future territory. The Adams-Onis Treaty gave the United States Florida and clearer southern borders, which encouraged more movement and national confidence during the Era of Good Feelings, even though the Panic of 1819 had already hurt western farmers. Henry Clay's American System and the Tariff of 1816 aimed to link western markets to eastern industry with roads and protection, so migration was tied to economic policy as well as land hunger.
+>
+> As more people crossed the Appalachians, western society became a mix of farms, boom towns, and pressure on Native nations. Migration did not just fill empty space; it decided whether new states would be free or slave and how strongly the federal government would support internal improvements. That is why migration shaped the West so deeply across the nineteenth century.
+
+### Consensus Grade
+
+**Total:** 5/6 · **Confidence:** 0.86 · **Grader:** `adjudicator:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The opening makes a defensible extent claim that migration remade western politics, land use, slavery conflict, and Native relations. |
+| Contextualization | 1 | The Era of Good Feelings and Panic of 1819 provide relevant broader political and economic circumstances at the start of the migration period. |
+| Evidence | 2 | The Missouri Compromise and American System are specific examples used to explain how western settlement affected slavery politics and market integration; Adams-Onis is less directly tied to the western United States but does not undermine the credited evidence. |
+| Analysis Reasoning | 1 | The response uses causation to connect migration with statehood, slavery disputes, internal improvements, and pressure on Native nations, but it focuses heavily on the early period and lacks sustained complexity. |
+
+**Evidence spans**
+
+- **Thesis:** “Migration influenced the western United States from 1820 to 1898 to a large extent because new settlers remade politics, land use, and conflict over slavery and Native lands.”
+- **Contextualization:** “The Adams-Onis Treaty gave the United States Florida and clearer southern borders, which encouraged more movement and national confidence during the Era of Good Feelings, even though the Panic of 1819 had already hurt western farmers.”
+- **Evidence:** “The Missouri Compromise of 1820 showed how western settlement forced national fights when Missouri wanted to enter as a slave state and Congress drew a line for future territory.”; “Henry Clay's American System and the Tariff of 1816 aimed to link western markets to eastern industry with roads and protection, so migration was tied to economic policy as well as land hunger.”
+- **Analysis Reasoning:** “Migration did not just fill empty space; it decided whether new states would be free or slave and how strongly the federal government would support internal improvements.”
+
+---
+
+## 37. `v4-cb-2024-leq2-set2-sampleA-t2-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which settler expansion influenced North America from 1754 to 1800.
+
+### Essay
+
+> Long before 1754, English colonization had already transformed the Atlantic coast. Starting with Jamestown in 1607 and ending with Georgia in 1733, thirteen colonies developed under charters from the English monarch. England's defeat of the Spanish Armada in 1588 had strengthened its naval power, and tobacco helped Virginia survive even when the colony nearly collapsed and became royal. Those earlier patterns of settlement, land hunger, and imperial rivalry set the stage for later expansion across North America.
+>
+> Settler expansion from 1754 to 1800 influenced the continent a lot. People wanted farms and trade. Wars and treaties moved borders. Native groups lost land. New states and territories appeared. Families kept moving west whenever they heard about cheaper land or better hunting and trading chances. Officials tried to manage frontiers, but settlers often went anyway.
+>
+> Navigation Acts and mercantilism shaped colonial economies. The House of Burgesses and assemblies gave settlers political habits. Triangular trade and slavery spread labor systems inland as settlement grew. Expansion kept going after the French and Indian War when colonists pushed west despite British limits. Some people talked about freedom and opportunity, but expansion also meant repeated conflict and displacement.
+>
+> So expansion mattered. It changed who lived where. It created conflict. It built the United States out of older colonial beginnings. Towns, farms, and claims spread farther from the coast each decade. The influence was everywhere by 1800, even when students mix up exact years and treaties. Settler movement was one of the biggest forces remaking North America in this period.
+
+### Consensus Grade
+
+**Total:** 2/6 · **Confidence:** 0.93 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 0 | Saying expansion influenced the continent a lot does not establish a defensible line of reasoning. |
+| Contextualization | 1 | Jamestown, Georgia, English naval power, tobacco, and earlier land hunger give substantial background to later expansion. |
+| Evidence | 0 | The French and Indian War and British limits are mentioned, but most details are generic or before 1754 and do not provide two developed examples. |
+| Analysis Reasoning | 1 | The response uses broad causation between settler movement, conflict, displacement, and territorial growth, but lacks developed evidence. |
+
+**Evidence spans**
+
+- **Thesis:** “Settler expansion from 1754 to 1800 influenced the continent a lot”
+- **Contextualization:** “Those earlier patterns of settlement, land hunger, and imperial rivalry set the stage for later expansion”
+- **Evidence:** “Expansion kept going after the French and Indian War when colonists pushed west despite British limits”
+- **Analysis Reasoning:** “expansion also meant repeated conflict and displacement”
+
+---
+
+## 38. `v4-cb-2023-leq3-set2-sampleA-t3-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/adjudication_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which changes in debates over the role of the federal government contributed to the growth of political parties from 1800 to 1854.
+
+### Essay
+
+> After the Revolution, Americans argued about how strong the national government should be. Under the Articles of Confederation the country was weak, foreign problems continued, and only a few states came to Annapolis, so leaders wrote a new Constitution in 1787. Debates over federal power in the 1790s then carried into the 1800s. From 1800 to 1854, changes in those debates contributed to a large extent to the growth of political parties because disagreements about banks, tariffs, and national authority kept splitting voters into organized sides.
+>
+> Hamilton's financial plan, the Whiskey Rebellion, and the Judiciary Act of 1789 showed early fights over federal strength. The Alien and Sedition Acts and the Naturalization Act made Democratic-Republicans accuse Federalists of tyranny. Later, people argued about the American System, tariffs, and internal improvements, and new parties formed around those issues. The Federalist Papers and Bill of Rights were part of the older ratification fight, but the same question of power never went away. Newspapers attacked opponents, and elections became contests between teams with different ideas about what Washington should do. Campaign rallies and partisan presses made those arguments familiar to ordinary voters.
+>
+> Parties grew because Americans needed organizations to win elections over the role of government. Federalists versus Democratic-Republicans. Then Democrats versus Whigs. Some voters cared most about banks. Others cared about tariffs or western land policy. Debates about how much the federal government should do were not just theory. They created lasting party organizations by the 1850s and trained citizens to see politics as a struggle between competing programs rather than temporary factions. By mid-century the party system was a normal part of public life because those constitutional arguments never really ended.
+
+### Consensus Grade
+
+**Total:** 6/6 · **Confidence:** 0.90 · **Grader:** `adjudicator:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response makes a defensible extent claim that recurring disputes over banks, tariffs, and national authority organized voters into durable political parties. |
+| Contextualization | 1 | Articles of Confederation weakness, Annapolis, the Constitution, and 1790s federal-power debates accurately establish the inherited political context. |
+| Evidence | 2 | Hamilton's financial program, the Whiskey Rebellion, Alien and Sedition Acts, American System, tariffs, and internal improvements are specific and are used to explain successive partisan alignments. |
+| Analysis Reasoning | 2 | The essay sustains a complex continuity-and-change argument across the Federalist-Republican and Democratic-Whig systems while connecting constitutional issues, different policy interests, elections, newspapers, and ordinary voters. |
+
+**Evidence spans**
+
+- **Thesis:** “From 1800 to 1854, changes in those debates contributed to a large extent to the growth of political parties because disagreements about banks, tariffs, and national authority kept splitting voters into organized sides.”
+- **Contextualization:** “Under the Articles of Confederation the country was weak, foreign problems continued, and only a few states came to Annapolis, so leaders wrote a new Constitution in 1787.”
+- **Evidence:** “The Alien and Sedition Acts and the Naturalization Act made Democratic-Republicans accuse Federalists of tyranny.”; “Later, people argued about the American System, tariffs, and internal improvements, and new parties formed around those issues.”
+- **Analysis Reasoning:** “Federalists versus Democratic-Republicans. Then Democrats versus Whigs.”; “Some voters cared most about banks. Others cared about tariffs or western land policy.”; “They created lasting party organizations by the 1850s and trained citizens to see politics as a struggle between competing programs rather than temporary factions.”
+
+---
+
+## 39. `v4-cb-2025-leq3-set2-sampleA-t4-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how sectional tensions shaped United States society from 1800 to 1848.
+
+### Essay
+
+> Sectional tensions shaped United States society from 1800 to 1848 by dividing regions around slavery, immigration, and economic life, and those divisions changed politics and culture even before civil war.
+>
+> King Cotton and the cotton gin made the South depend on the peculiar institution, and the enslaved population rose from about one million toward several million as cotton spread into new lands. Planter aristocrats held social power, while rebellions such as Denmark Vesey's in 1822 and Nat Turner's in 1831 led to tighter slave codes and deeper fear among white southerners who then defended slavery more aggressively. In the Northeast, urbanization grew from a small share of the population toward a much larger one by mid-century, factories expanded, and Irish and German immigration after the early 1830s produced nativism and Know-Nothing politics. The Old Northwest developed commercial agriculture in states like Ohio and Indiana, and western growth repeatedly raised the question of whether new areas would allow slavery. Markets linked regions through canals and trade, but those links also made differences more obvious when prices, labor systems, and values clashed in Congress and in local communities.
+>
+> Because of these differences, Americans increasingly identified with section more than with a single national culture. Northern free-labor ideals clashed with southern defense of slavery, and western settlement became a battleground for both systems over time. Churches, schools, and newspapers often reflected regional assumptions about work and race. Politicians bargained over representation while ordinary communities lived under very different rules about labor and citizenship. Sectional tensions therefore shaped society by organizing work, politics, and community life around competing regional systems throughout the first half of the nineteenth century. Even shared celebrations of independence could not hide how differently people lived in plantation districts, factory towns, and frontier farms.
+
+### Consensus Grade
+
+**Total:** 5/6 · **Confidence:** 0.96 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The claim identifies slavery, immigration, and economic life as sectional divisions affecting politics and culture. |
+| Contextualization | 0 | The response begins directly with sectional tensions and supplies no broader historical setting. |
+| Evidence | 2 | Cotton, Turner, Vesey, slave codes, immigration, Know-Nothing politics, Ohio, Indiana, canals, and trade effectively explain regional systems. |
+| Analysis Reasoning | 2 | The essay compares three regions and sustains connections among labor, race, migration, markets, politics, and community institutions. |
+
+**Evidence spans**
+
+- **Thesis:** “dividing regions around slavery, immigration, and economic life”
+- **Contextualization:** “Sectional tensions shaped United States society from 1800 to 1848”
+- **Evidence:** “Denmark Vesey's in 1822 and Nat Turner's in 1831 led to tighter slave codes”; “Irish and German immigration after the early 1830s produced nativism and Know-Nothing politics”
+- **Analysis Reasoning:** “Markets linked regions through canals and trade, but those links also made differences more obvious”
+
+---
+
+## 40. `v4-cb-2023-leq2-set2-sampleB-t4-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which changes in colonial societies in North America from 1700 to 1776 contributed to the growth of a revolutionary movement.
+
+### Essay
+
+> By the mid-1700s, colonial societies had developed stronger assemblies and a habit of resisting what they saw as unfair British control, especially after the Seven Years' War raised new taxes and restrictions. Those earlier changes help explain why a revolutionary movement grew by 1776.
+>
+> Changes in colonial society from 1700 to 1776 contributed to a large extent to the revolutionary movement because colonists became more united in defending local rights. The Intolerable Acts in 1774 pushed most colonies to send delegates to the First Continental Congress, and later the Second Continental Congress moved toward independence. Fighting at Lexington and Concord, the Declaration of Independence, and eventual victory after Saratoga and Yorktown showed how political organization and shared grievance turned into revolution. The Treaty of Paris in 1783 confirmed independence.
+>
+> Colonial society had changed enough that many people no longer accepted Parliament's authority without representation, so revolution followed from those social and political developments.
+
+### Consensus Grade
+
+**Total:** 5/6 · **Confidence:** 0.95 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response argues developing assemblies and shared defense of local rights substantially caused revolutionary organization. |
+| Contextualization | 1 | Colonial assemblies, Seven Years' War taxes, and British restrictions accurately frame the growth of resistance. |
+| Evidence | 2 | The Intolerable Acts, Continental Congresses, Lexington and Concord, Declaration, Saratoga, and Yorktown support movement from grievance to revolution. |
+| Analysis Reasoning | 1 | The essay explains how shared grievance turned into revolution, but it does not qualify or complicate that causal development. |
+
+**Evidence spans**
+
+- **Thesis:** “colonists became more united in defending local rights”
+- **Contextualization:** “especially after the Seven Years' War raised new taxes and restrictions”
+- **Evidence:** “The Intolerable Acts in 1774 pushed most colonies to send delegates to the First Continental Congress”; “Fighting at Lexington and Concord”
+- **Analysis Reasoning:** “shared grievance turned into revolution”
+
+---
+
+## 41. `v4-cb-2025-leq2-set1-sampleB-t1-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how Native American societies adapted to the presence of European colonists in North America from 1500 to 1754.
+
+### Essay
+
+> Native American societies adapted to European colonists from 1500 to 1754 by changing how they traded, fought, and lived when newcomers arrived.
+>
+> They had to deal with new religions and new goods. Some groups allied with the French or English. Others resisted Spanish control in places like the Southwest. Adaptation looked different in different regions and at different times, which makes the story hard to summarize in one way.
+>
+> Europeans wanted wealth and converts. Natives responded in many ways. Sometimes cooperation. Sometimes war. Sometimes moving farther inland. Leaders tried to protect their people while still getting useful tools and weapons. The presence of colonists forced Native societies to adjust again and again across those centuries. That is the main pattern of adaptation in this period, even if the details are fuzzy and the years are not always clear in my notes.
+
+### Consensus Grade
+
+**Total:** 2/6 · **Confidence:** 0.95 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response identifies trade, warfare, movement, and cultural change as Native adaptations to colonization. |
+| Contextualization | 0 | The essay begins directly with the assigned period and gives no broader Native or European setting. |
+| Evidence | 0 | French or English alliances and Southwest resistance are generic references, not two specific historical examples. |
+| Analysis Reasoning | 1 | The response compares cooperation, war, and migration across regions, but the reasoning remains broad and unsupported. |
+
+**Evidence spans**
+
+- **Thesis:** “changing how they traded, fought, and lived when newcomers arrived”
+- **Contextualization:** “Native American societies adapted to European colonists from 1500 to 1754”
+- **Evidence:** “Some groups allied with the French or English”; “Others resisted Spanish control in places like the Southwest”
+- **Analysis Reasoning:** “Sometimes cooperation. Sometimes war. Sometimes moving farther inland”
+
+---
+
+## 42. `v4-cb-2025-leq4-set2-sampleC-t5-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how United States society responded to economic changes from 1960 to 2000.
+
+### Essay
+
+> Before the 1960s, postwar growth and Cold War competition already made Americans expect government to manage prosperity and security. The election of 1960 and debates over a missile gap showed how economics and national power were linked in public argument. From 1960 to 2000, United States society responded to economic change by first supporting expanded federal programs and later shifting toward market-oriented policies, though not everyone agreed on which path worked.
+>
+> In the 1960s there was the Great Society and War on Poverty, and also Medicare and Medicaid, and the Civil Rights Act of 1964. Later there was inflation and then Reagan-era tax cuts and deregulation, and people argued about free trade in the 1990s. Ralph Nader and auto safety came up too in class notes about consumer protection during the same broad period of economic change.
+>
+> This response was not one-sided. Liberals defended the safety net as necessary fairness, while conservatives argued that markets created growth more effectively, so the same economic pressures produced opposite political answers. Women and workers also pushed for equal pay and workplace protections, showing that economic change sparked both protest and policy experiments. Some communities gained from new service and tech work. Others felt left behind when factories closed. Students and voters argued about whether government should stimulate demand or cut taxes. Overall, society answered economic shifts with competing visions of government's role rather than a single consensus from 1960 to 2000.
+
+### Consensus Grade
+
+**Total:** 6/6 · **Confidence:** 0.96 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The essay establishes a shift from federal social programs to market-oriented policy while recognizing disagreement. |
+| Contextualization | 1 | Postwar growth, Cold War competition, the 1960 election, and missile-gap debate frame expectations entering the period. |
+| Evidence | 2 | Great Society, Medicare, Medicaid, civil-rights law, Reagan tax cuts, deregulation, free trade, and consumer safety support changing responses. |
+| Analysis Reasoning | 2 | The response compares liberal and conservative visions and adds workers, women, deindustrialization, services, and technology as multiple perspectives. |
+
+**Evidence spans**
+
+- **Thesis:** “first supporting expanded federal programs and later shifting toward market-oriented policies”
+- **Contextualization:** “Before the 1960s, postwar growth and Cold War competition already made Americans expect government to manage prosperity”
+- **Evidence:** “there was the Great Society and War on Poverty, and also Medicare and Medicaid”; “Reagan-era tax cuts and deregulation”
+- **Analysis Reasoning:** “the same economic pressures produced opposite political answers”
+
+---
+
+## 43. `v4-cb-2023-leq3-set2-sampleB-t2-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which changes in debates over the role of the federal government contributed to the growth of political parties from 1800 to 1854.
+
+### Essay
+
+> Political parties grew in the early 1800s for a lot of reasons and debates about the federal government were part of it but also other things happened too.
+>
+> The Judiciary Act of 1789 set up the Supreme Court. Hamilton's financial plan created a national bank and assumption of state debts which made people argue about implied powers. The Whiskey Rebellion tested federal authority. The Alien and Sedition Acts and the Naturalization Act made Democratic-Republicans furious at Federalist use of national power. Jay Treaty divided people over foreign policy. The Commercial Compromise had already given Congress power over interstate and foreign commerce. Public Land Act procedures and new states like Vermont, Kentucky, and Tennessee changed the electorate. Later fights over tariffs and internal improvements kept the same argument alive between Democrats and Whigs. Newspapers printed angry essays about banks and taxes and who should control western land.
+>
+> People formed parties around these fights. Federalists liked stronger national power. Democratic-Republicans warned against it. Then new parties used the same issues in campaigns. So evidence shows government-power debates and party growth happening together even if the essay does not fully explain every connection in a clear structure.
+
+### Consensus Grade
+
+**Total:** 3/6 · **Confidence:** 0.92 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 0 | Saying federal-government debates were part of party growth among many reasons does not establish an extent or clear line of reasoning. |
+| Contextualization | 0 | Political parties grew in the early 1800s, but the response gives no broader historical framing before that topic. |
+| Evidence | 2 | Hamilton's bank, Whiskey Rebellion, Alien and Sedition Acts, Naturalization Act, tariffs, and internal improvements are relevant and connected to party disputes. |
+| Analysis Reasoning | 1 | The essay uses basic causation between policy conflict and party formation, but admits that it does not clearly explain every connection. |
+
+**Evidence spans**
+
+- **Thesis:** “debates about the federal government were part of it but also other things happened too”
+- **Contextualization:** “Political parties grew in the early 1800s”
+- **Evidence:** “Hamilton's financial plan created a national bank and assumption of state debts”; “Later fights over tariffs and internal improvements kept the same argument alive between Democrats and Whigs”
+- **Analysis Reasoning:** “People formed parties around these fights”
+
+---
+
+## 44. `v4-cb-2023-leq2-set1-sampleA-t4-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which the growth of transatlantic trade changed British North American colonial society from 1607 to 1776.
+
+### Essay
+
+> Before 1607, England had become a stronger Atlantic power after defeating the Spanish Armada, and charters soon authorized colonies along the coast from Jamestown to Georgia. Those beginnings made overseas commerce central to colonial survival and growth.
+>
+> Transatlantic trade changed British North American society from 1607 to 1776 to a large extent. Mercantilism and the Navigation Acts directed colonial shipping toward English benefit, while triangular trade linked the colonies to Africa and the Caribbean. Tobacco and other export crops enriched planters, and laws in places like Maryland hardened racial slavery as labor for Atlantic markets. Port towns grew around merchants who depended on that commerce, and social ranks became more tied to trade success and credit.
+>
+> Because trade reshaped wealth, labor, and ties to Britain, colonial society in 1776 looked far different from the fragile early settlements of the 1600s.
+
+### Consensus Grade
+
+**Total:** 5/6 · **Confidence:** 0.95 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response claims Atlantic trade substantially changed colonial wealth, labor, and imperial ties. |
+| Contextualization | 1 | The Spanish Armada and chartered settlement from Jamestown to Georgia accurately frame England's Atlantic expansion. |
+| Evidence | 2 | Navigation Acts, triangular trade, tobacco, Maryland slavery law, and merchant port towns specifically support social transformation. |
+| Analysis Reasoning | 1 | The conclusion uses causation and compares fragile early settlements with colonial society in 1776, but does not develop complexity. |
+
+**Evidence spans**
+
+- **Thesis:** “Transatlantic trade changed British North American society from 1607 to 1776 to a large extent”
+- **Contextualization:** “England had become a stronger Atlantic power after defeating the Spanish Armada”
+- **Evidence:** “Mercantilism and the Navigation Acts directed colonial shipping toward English benefit”; “laws in places like Maryland hardened racial slavery”
+- **Analysis Reasoning:** “Because trade reshaped wealth, labor, and ties to Britain”
+
+---
+
+## 45. `v4-cb-2024-leq4-set1-sampleA-t4-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/adjudication_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the relative importance of the effects of movements for social change from 1945 to 1980.
+
+### Essay
+
+> In the years before 1945, Americans had already debated how far the nation should act for democracy abroad, from World War I ideals to 1930s neutrality fights and then total war after Pearl Harbor. That experience left a generation expecting both security and fairness at home after victory. From 1945 to 1980, movements for social change were highly important because they forced the government and public to confront inequality, even though results were uneven and resistance remained strong.
+>
+> The civil rights movement was especially significant. Activists challenged segregation through boycotts, court cases, and marches, and their pressure helped produce major legislation that improved legal rights for African Americans. Local campaigns made national news and embarrassed leaders who claimed the United States defended freedom overseas. Women's rights organizing also grew, demanding equal pay and wider opportunities in schools and workplaces, and antiwar protest questioned government authority during Vietnam. Students, churches, and community groups carried these efforts beyond a few famous leaders.
+>
+> These movements mattered because they changed laws and public expectations about who belonged fully in American life. De facto barriers remained in housing and employment, and not every reform succeeded. Still, the effects of social movements reshaped politics and society across the period by making equality a central national issue and by teaching later activists how to organize.
+
+### Consensus Grade
+
+**Total:** 4/6 · **Confidence:** 0.83 · **Grader:** `adjudicator:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The essay argues that social movements' most important effect was forcing government and the public to confront inequality, while recognizing uneven outcomes and resistance; the body further identifies civil rights as especially significant. |
+| Contextualization | 1 | World War I democratic ideals, interwar neutrality, Pearl Harbor, and wartime expectations of security and fairness establish relevant pre-1945 context. |
+| Evidence | 0 | Boycotts, court cases, marches, legislation, equal-pay demands, and antiwar protest are broad categories rather than at least two specific historical examples, so no evidence point is earned. |
+| Analysis Reasoning | 2 | The response compares civil rights, women's rights, and antiwar movements, ranks civil rights as especially significant, and qualifies legal change by recognizing de facto barriers, resistance, and incomplete reform. |
+
+**Evidence spans**
+
+- **Thesis:** “From 1945 to 1980, movements for social change were highly important because they forced the government and public to confront inequality, even though results were uneven and resistance remained strong.”; “The civil rights movement was especially significant.”
+- **Contextualization:** “In the years before 1945, Americans had already debated how far the nation should act for democracy abroad, from World War I ideals to 1930s neutrality fights and then total war after Pearl Harbor.”
+- **Evidence:** “Activists challenged segregation through boycotts, court cases, and marches, and their pressure helped produce major legislation that improved legal rights for African Americans.”; “Women's rights organizing also grew, demanding equal pay and wider opportunities in schools and workplaces, and antiwar protest questioned government authority during Vietnam.”
+- **Analysis Reasoning:** “The civil rights movement was especially significant.”; “De facto barriers remained in housing and employment, and not every reform succeeded.”; “Still, the effects of social movements reshaped politics and society across the period by making equality a central national issue and by teaching later activists how to organize.”
+
+---
+
+## 46. `v4-cb-2025-leq3-set1-sampleC-t3-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/adjudication_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate how different reform movements in the United States responded to industrialization from 1820 to 1900.
+
+### Essay
+
+> During the antebellum period before the Civil War, the Second Great Awakening encouraged moral reform and belief that society could be improved. Industrialization and market growth in the 1800s then created new social problems in cities and factories. From 1820 to 1900, different reform movements responded to industrialization by attacking what they saw as related moral and social damages, including drinking, slavery, and unequal education.
+>
+> The American Temperance Society, founded in 1826, tried to reduce alcohol use that reformers linked to disorder in industrializing communities. Abolitionists such as William Lloyd Garrison founded the American Antislavery Society in 1833 and fought the expansion of slavery in a nation whose economy was changing. Education reformers and new colleges, including opportunities for women at places like Mount Holyoke and Oberlin, expanded schooling. The American Colonization Society and later political antislavery efforts, including the Liberty Party's campaigns with James Birney, also belonged to this reform world. Speakers and pamphlets spread these ideas into towns that were growing with mills and immigrant labor.
+>
+> Reformers responded in many directions at once. They did not all agree on methods or goals, but they shared a belief that industrial and social change required organized moral action across the nineteenth century.
+
+### Consensus Grade
+
+**Total:** 5/6 · **Confidence:** 0.91 · **Grader:** `adjudicator:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response makes a defensible claim that reform movements attacked moral and social harms associated with industrial and market change through temperance, abolition, and education. |
+| Contextualization | 1 | The Second Great Awakening and antebellum belief that society could be improved accurately frame the growth of organized reform. |
+| Evidence | 2 | The American Temperance Society, Garrison and the American Antislavery Society, Mount Holyoke, Oberlin, the Liberty Party, and Birney are specific examples; temperance and abolition are explicitly connected to industrializing communities and a changing economy. |
+| Analysis Reasoning | 1 | The response uses causation and comparison across reform movements, but it mostly lists organizations and merely asserts that methods and goals differed rather than developing a nuanced comparison. |
+
+**Evidence spans**
+
+- **Thesis:** “From 1820 to 1900, different reform movements responded to industrialization by attacking what they saw as related moral and social damages, including drinking, slavery, and unequal education.”
+- **Contextualization:** “During the antebellum period before the Civil War, the Second Great Awakening encouraged moral reform and belief that society could be improved.”
+- **Evidence:** “The American Temperance Society, founded in 1826, tried to reduce alcohol use that reformers linked to disorder in industrializing communities.”; “Abolitionists such as William Lloyd Garrison founded the American Antislavery Society in 1833 and fought the expansion of slavery in a nation whose economy was changing.”; “Education reformers and new colleges, including opportunities for women at places like Mount Holyoke and Oberlin, expanded schooling.”
+- **Analysis Reasoning:** “They did not all agree on methods or goals, but they shared a belief that industrial and social change required organized moral action across the nineteenth century.”
+
+---
+
+## 47. `v4-cb-2023-leq4-set1-sampleC-t4-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/grading_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the extent to which growing concerns about national security contributed to changes in United States foreign policy from 1945 to 1991.
+
+### Essay
+
+> After 1945, Americans wanted to return to peacetime jobs and consumer life, but the emerging Cold War with the Soviet Union quickly raised fears about national security. That tension shaped foreign policy for decades.
+>
+> Growing concerns about national security contributed to a large extent to changes in United States foreign policy from 1945 to 1991. Containment ideas associated with George Kennan led to the Truman Doctrine and aid to resist communism. The Berlin Airlift and the Korean War showed willingness to use power in crises, and NSC-68 called for a major military buildup. Domestic security fears appeared in cases like Alger Hiss and the Rosenbergs, while alliances such as U.S.-Japanese security treaties extended American commitments in Asia.
+>
+> Because leaders treated communism as an ongoing threat, foreign policy shifted from wartime alliance to long-term global containment through the Cold War era.
+
+### Consensus Grade
+
+**Total:** 5/6 · **Confidence:** 0.96 · **Grader:** `reader_b:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 1 | The response claims security concerns substantially shifted policy toward long-term global containment. |
+| Contextualization | 1 | Postwar consumer hopes and the emerging Soviet rivalry accurately frame the Cold War turn. |
+| Evidence | 2 | Kennan, Truman Doctrine, Berlin Airlift, Korea, NSC-68, and Japanese treaties are specific and relevant to foreign-policy change. |
+| Analysis Reasoning | 1 | The essay uses a clear causal structure from perceived communist threat to containment, but does not qualify or complicate it. |
+
+**Evidence spans**
+
+- **Thesis:** “Growing concerns about national security contributed to a large extent to changes in United States foreign policy”
+- **Contextualization:** “Americans wanted to return to peacetime jobs and consumer life”
+- **Evidence:** “Containment ideas associated with George Kennan led to the Truman Doctrine”; “The Berlin Airlift and the Korean War showed willingness to use power”
+- **Analysis Reasoning:** “Because leaders treated communism as an ongoing threat”
+
+---
+
+## 48. `v4-cb-2024-leq4-set1-sampleA-t3-n000`
+
+**Status:** accepted
+
+**Essay source:** `artifacts/data/v4/judging/adjudication_packets_shard_1.jsonl`
+
+### Prompt
+
+Evaluate the relative importance of the effects of movements for social change from 1945 to 1980.
+
+### Essay
+
+> Before 1945 the United States had already been pulled into a huge world conflict. After Pearl Harbor, factories ran day and night and the Selective Service Act filled the army with young men from every state. People at home bought war bonds, followed ration books, and watched women take jobs that men used to hold in shipyards and plants. The Lend-Lease program had already tied American production to Allied victory, so when the war finally ended the country was used to big government campaigns and sudden social shifts. That wartime mood did not just disappear in 1945.
+>
+> Movements for social change from 1945 to 1980. There were lots of groups asking for better treatment in those years. Things changed in different ways for different people across the country. Society looked different than it had before the war. Everyone seemed to want something from Washington or from local leaders. Progress happened and then sometimes it stalled. People talked about rights a lot.
+>
+> One major development was the push against segregation in schools and public places. Brown v. Board of Education said separate schools for Black and white students were not equal under the law. Later marches, boycotts, and sit-ins showed up on television news in living rooms. Congress eventually passed the Civil Rights Act and the Voting Rights Act. Those laws mattered for African Americans who had been kept out of restaurants, hotels, and voting booths in many states. That is an effect of a movement for social change in this period.
+>
+> Another development was the women's movement after the war years. More women stayed in or returned to paid work even when magazines praised suburban homemaking. Activists talked about equal pay, job listings that did not say "men only," and control over family decisions. Title IX and related rules opened school sports and some professional paths. Protests and magazine articles made ordinary people notice the issue. That also shows an effect of social change movements between 1945 and 1980.
+>
+> People always want fairness in America. Movements are important whenever times are hard. The country kept changing through the sixties and seventies. Effects of activism were everywhere you looked. Not everything got fixed though. Still a lot going on by 1980.
+
+### Consensus Grade
+
+**Total:** 3/6 · **Confidence:** 0.92 · **Grader:** `adjudicator:offline`
+
+| Criterion | Score | Feedback |
+|---|---:|---|
+| Thesis | 0 | The response never establishes a defensible relative-importance claim; statements that many groups wanted better treatment and that progress sometimes stalled remain vague and descriptive. |
+| Contextualization | 1 | World War II mobilization, Selective Service, war bonds, rationing, women's wartime work, and Lend-Lease extensively establish the pre-1945 context for postwar social change. |
+| Evidence | 2 | Brown v. Board, the Civil Rights Act, Voting Rights Act, and Title IX are specific examples used to explain legal and social effects on African Americans and women. |
+| Analysis Reasoning | 0 | The response describes two movements in parallel but does not use comparison to evaluate their relative effects or otherwise structure a defensible argument; noting that not everything was fixed is undeveloped. |
+
+**Evidence spans**
+
+- **Thesis:** “There were lots of groups asking for better treatment in those years. Things changed in different ways for different people across the country.”
+- **Contextualization:** “After Pearl Harbor, factories ran day and night and the Selective Service Act filled the army with young men from every state.”; “People at home bought war bonds, followed ration books, and watched women take jobs that men used to hold in shipyards and plants.”; “The Lend-Lease program had already tied American production to Allied victory, so when the war finally ended the country was used to big government campaigns and sudden social shifts.”
+- **Evidence:** “Brown v. Board of Education said separate schools for Black and white students were not equal under the law.”; “Congress eventually passed the Civil Rights Act and the Voting Rights Act.”; “Title IX and related rules opened school sports and some professional paths.”
+- **Analysis Reasoning:** “That also shows an effect of social change movements between 1945 and 1980.”; “Not everything got fixed though.”
+
+---
