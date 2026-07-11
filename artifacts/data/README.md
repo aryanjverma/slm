@@ -25,6 +25,39 @@ and must pass the quality gate (`filters.passes_quality_gate`: valid JSON, in-ra
 scores, `total == sum`, feedback grounded in the essay, no rewrites, no fabricated
 quotes) before it is used.
 
+## v4 status (current)
+
+v4 rebuilds training data around **AMSCO historical knowledge** + **College Board golden-set
+seeds**. Every training essay is synthetic, but each one is planned from a CB seed profile
+(prompt family, score band, length/style cues). Writers draw facts from
+`artifacts/knowledge/amsco_2016_kb.jsonl` (31 AMSCO 2016 chapters). Student and grader system
+prompts both embed the full 6-point LEQ rubric (`prompts_v4.py`).
+
+Rebuild:
+
+```powershell
+python scripts/extract_amsco_kb.py
+python scripts/build_v4_seed_profiles.py
+python scripts/plan_v4_tasks.py
+python scripts/export_v4_generation_packets.py
+# write essays into artifacts/data/v4/raw_essays/batch_XX.jsonl (or compose_v4_essays.py)
+python scripts/grade_v4_essays.py
+python scripts/assemble_v4_dataset.py
+```
+
+Outputs under `artifacts/data/v4/`:
+
+| File | Rows | What |
+|------|------|------|
+| `train_cases_v4.jsonl` | 250 | Synthetic `FRQCase` records (AMSCO + CB-seeded) |
+| `train_chat_v4.jsonl` | 250 | SFT rows with full-rubric grader system prompt |
+| `synth_tasks_v4.jsonl` | 250 | Generation worklist |
+| `cb_seed_profiles.jsonl` | 53 | CB structure/score/style seeds (not training prose) |
+| `grades_v4.jsonl` | 250 | Target-profile scores + essay-grounded feedback |
+| `dataset_manifest_v4.json` / `dataset_audit_v4.json` | — | Build metadata + audit |
+
+Hard invariant unchanged: real CB essays stay eval-only.
+
 ## v2 status
 
 The files documented below describe the legacy v1 pipeline. The implemented v2 pipeline now:

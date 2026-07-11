@@ -634,8 +634,53 @@ def dedup_against_eval(
     case: FRQCase,
     eval_cases: Sequence[FRQCase],
 ) -> list[str]:
-    """Return reject reasons if the essay duplicates held-out eval material."""
+    """Reject only real leakage: same-prompt near-duplicates or long verbatim spans.
+
+    The generic ``is_duplicate_essay`` cross-prompt branch flags shared APUSH
+    vocabulary (federal, society, labor, …) as duplicates; that is too aggressive
+    for AMSCO-grounded synthetic essays on related topics.
+
+    Verbatim checks also ignore spans that mostly restate the LEQ prompt (students
+    routinely echo the prompt's date range and topic in a thesis sentence).
+    """
+    from apush_frq_grader_slm.ingest.dedup import _word_spans, normalize_essay
+
     reasons: list[str] = []
-    if is_duplicate_essay(case.student_response, list(eval_cases), prompt=case.prompt):
-        reasons.append("duplicate_of_eval")
+    same_prompt = [
+        eval_case
+        for eval_case in eval_cases
+        if normalize_essay(eval_case.prompt) == normalize_essay(case.prompt)
+    ]
+    if same_prompt and is_duplicate_essay(
+        case.student_response, same_prompt, prompt=case.prompt, jaccard_threshold=0.82
+    ):
+        reasons.append("duplicate_of_eval_same_prompt")
+
+    # Prompt-echo filter: drop essay spans that heavily overlap the prompt itself.
+    prompt_spans = _word_spans(case.prompt, 8)
+    essay_spans = _word_spans(case.student_response, 14)
+    essay_spans -= _word_spans(case.prompt, 14)
+    filtered: set[str] = set()
+    prompt_words = set(normalize_essay(case.prompt).split())
+    for span in essay_spans:
+        span_words = span.split()
+        overlap = sum(1 for word in span_words if word in prompt_words)
+        if overlap / max(len(span_words), 1) >= 0.65:
+            continue
+        # Also drop if an 8-gram of the span sits inside the prompt.
+        grams = {
+            " ".join(span_words[i : i + 8])
+            for i in range(max(0, len(span_words) - 7))
+        }
+        if grams & prompt_spans:
+            continue
+        filtered.add(span)
+    leaked = False
+    if filtered:
+        for eval_case in eval_cases:
+            if filtered & _word_spans(eval_case.student_response, 14):
+                leaked = True
+                break
+    if leaked:
+        reasons.append("verbatim_span_of_eval")
     return reasons

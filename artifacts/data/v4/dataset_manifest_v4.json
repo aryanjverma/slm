@@ -1,0 +1,24 @@
+{
+  "accepted": 250,
+  "generator_name": "v4_amsco_cb_seeded",
+  "paths": {
+    "audit": "artifacts/data/v4/dataset_audit_v4.json",
+    "essays": "artifacts/data/v4/raw_essays_v4.jsonl",
+    "grades": "artifacts/data/v4/grades_v4.jsonl",
+    "rejects": "artifacts/data/v4/rejects_v4.jsonl",
+    "tasks": "artifacts/data/v4/synth_tasks_v4.jsonl",
+    "train_cases": "artifacts/data/v4/train_cases_v4.jsonl",
+    "train_chat": "artifacts/data/v4/train_chat_v4.jsonl"
+  },
+  "rejected": 0,
+  "task_count": 250,
+  "totals": {
+    "0": 15,
+    "1": 25,
+    "2": 40,
+    "3": 35,
+    "4": 50,
+    "5": 35,
+    "6": 50
+  }
+}

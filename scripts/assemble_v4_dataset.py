@@ -191,7 +191,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--eval-cb",
         type=Path,
-        default=Path("artifacts/data/v4/eval_cb_cases.jsonl"),
+        default=Path("artifacts/data/eval_cb_cases.jsonl"),
         help="Held-out CB eval cases for dedup (optional if missing).",
     )
     parser.add_argument(

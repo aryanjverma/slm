@@ -1,0 +1,57 @@
+{
+  "accepted": 250,
+  "clean": true,
+  "errors": [],
+  "max_word_count": 617,
+  "median_word_count": 221,
+  "min_word_count": 120,
+  "persona_coverage": {
+    "knowledge_levels": [
+      "weak",
+      "uneven",
+      "competent",
+      "strong"
+    ],
+    "mechanics": [
+      "clean",
+      "ordinary_errors",
+      "run_ons",
+      "fragments",
+      "misspellings",
+      "uneven_paragraphs"
+    ],
+    "misconceptions": [
+      "none",
+      "vague_chronology",
+      "wrong_period_evidence",
+      "factual_mix_up",
+      "unsupported_generalization"
+    ],
+    "planning_styles": [
+      "no_outline",
+      "rushed_thesis",
+      "evidence_first",
+      "organized_argument"
+    ],
+    "time_budgets": [
+      20,
+      25,
+      30,
+      35,
+      40
+    ]
+  },
+  "rejected": {},
+  "rejected_count": 0,
+  "total": 250,
+  "totals": {
+    "0": 15,
+    "1": 25,
+    "2": 40,
+    "3": 35,
+    "4": 50,
+    "5": 35,
+    "6": 50
+  },
+  "warnings": []
+}
