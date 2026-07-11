@@ -172,6 +172,65 @@ class JudgeV5Tests(unittest.TestCase):
         judged = judge_essay(PROMPT, bad, task_id="v5-anachron")
         self.assertFalse(judged["fact_check"]["passed"])
 
+    def test_mattering_stub_fails_authenticity_majority(self) -> None:
+        essay = """
+i think markets remade daily life because canals and factories pulled households in.
+Before that, local exchange was still common after the Revolution. The Erie Canal
+linked farms to eastern buyers and this shows commercial ties growing. Lowell mills
+hired young women for wages. Alger Hiss mattering in class notes somehow got mixed
+into my outline even though the prompt is about 1800 to 1848. Slavery deepened in
+the south while northern cities grew. Kinda uneven overall and hard under the clock.
+""".strip()
+        judged = judge_essay(PROMPT, essay, task_id="v5-auth-mattering")
+        decisions = [
+            bool(r["student_like"]) and bool(r["timed_ap_consistent"])
+            for r in judged["authenticity_reviews"]
+        ]
+        self.assertTrue(all(not r["student_like"] for r in judged["authenticity_reviews"]))
+        self.assertLessEqual(sum(decisions), len(decisions) // 2)
+
+    def test_informal_student_essay_can_pass_authenticity(self) -> None:
+        essay = """
+i think the market revolution changed American society a lot between 1800 and 1848
+because canals and factories pulled people into bigger markets. Before that, families
+wasnt as tied into national trade after the Revolutionary period, so earlier local
+exchange set the stage.
+
+The Erie Canal helped western farms sell crops east and this shows how shipping costs
+dropped. Lowell mills hired young women and kinda remade family economies. Expanding
+suffrage for white men and fights over slavery also shifted politics.
+
+These things caused uneven outcomes. Northern cities grew while southern plantation
+slavery got worse. Although roads and canals continued older westward moves, the scale
+of wage labor changed society. Not everything was neat under the clock but the claim
+still holds.
+""".strip()
+        judged = judge_essay(PROMPT, essay, task_id="v5-auth-informal")
+        decisions = [
+            bool(r["student_like"]) and bool(r["timed_ap_consistent"])
+            for r in judged["authenticity_reviews"]
+        ]
+        self.assertGreaterEqual(sum(decisions), 2)
+
+    def test_repeated_prompt_clause_paste_fails_authenticity(self) -> None:
+        clause = (
+            "the market revolution changed American society from 1800 to 1848 "
+            "in lasting commercial ways"
+        )
+        essay = (
+            f"{clause.capitalize()}. Also, {clause}. Finally, {clause}. "
+            "Canals and mills show some change but the repeated prompt wording "
+            "makes this feel pasted rather than argued under timed conditions. "
+            "i wasnt sure what else to add about Lowell or the Erie Canal here."
+        )
+        judged = judge_essay(PROMPT, essay, task_id="v5-auth-repeat")
+        self.assertTrue(all(not r["student_like"] for r in judged["authenticity_reviews"]))
+        decisions = [
+            bool(r["student_like"]) and bool(r["timed_ap_consistent"])
+            for r in judged["authenticity_reviews"]
+        ]
+        self.assertLessEqual(sum(decisions), len(decisions) // 2)
+
 
 if __name__ == "__main__":
     unittest.main()

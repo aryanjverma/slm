@@ -78,6 +78,21 @@ _DATE_RANGE = re.compile(
     re.I,
 )
 _NONSENSE = re.compile(r"[aeiou]", re.I)
+# Generator stubs / pad clusters from compose_v5 (not natural timed student prose).
+_MATTERING_STUB = re.compile(r"\bmattering\b", re.I)
+_FILLER_HARD_TO_FINISH = re.compile(r"Hard to finish in time", re.I)
+_FILLER_TEACHERS_SAY = re.compile(r"Teachers say", re.I)
+_FILLER_CLASSMATES_ARGUED = re.compile(r"classmates argued", re.I)
+_GENERATOR_FILLER_MARKERS = (
+    _FILLER_HARD_TO_FINISH,
+    _FILLER_TEACHERS_SAY,
+    _FILLER_CLASSMATES_ARGUED,
+    re.compile(r"My outline was short", re.I),
+    re.compile(r"lost a little time", re.I),
+)
+_REPEATED_SPAN_MIN_WORDS = 10
+_REPEATED_SPAN_MIN_COUNT = 3
+_DENSE_FILLER_WORD_CAP = 360
 
 
 @dataclass(frozen=True)
@@ -96,11 +111,45 @@ class EssayFeatures:
     has_instruction_leakage: bool
     unique_ratio: float
     years: tuple[int, ...]
+    has_mattering_stub: bool
+    has_repeated_long_span: bool
+    has_dense_generator_filler: bool
 
 
 def _sentences(text: str) -> list[str]:
     parts = re.split(r"(?<=[.!?])\s+|\n+", text.strip())
     return [part.strip() for part in parts if part.strip()]
+
+
+def _has_repeated_long_span(
+    text: str,
+    *,
+    min_words: int = _REPEATED_SPAN_MIN_WORDS,
+    min_count: int = _REPEATED_SPAN_MIN_COUNT,
+) -> bool:
+    """True when the same 10+ word span appears 3+ times (prompt-clause paste)."""
+    words = [w.lower() for w in text.split()]
+    if len(words) < min_words * min_count:
+        return False
+    counts: dict[tuple[str, ...], int] = {}
+    for i in range(len(words) - min_words + 1):
+        gram = tuple(words[i : i + min_words])
+        counts[gram] = counts.get(gram, 0) + 1
+        if counts[gram] >= min_count:
+            return True
+    return False
+
+
+def _has_dense_generator_filler(text: str, word_count: int) -> bool:
+    """Fail short essays that pack multiple known compose_v5 pad phrases."""
+    hard = bool(_FILLER_HARD_TO_FINISH.search(text))
+    teachers = bool(_FILLER_TEACHERS_SAY.search(text))
+    classmates = bool(_FILLER_CLASSMATES_ARGUED.search(text))
+    # Classic generator cluster in one short essay.
+    if hard and teachers and classmates and word_count <= _DENSE_FILLER_WORD_CAP:
+        return True
+    hits = sum(1 for pat in _GENERATOR_FILLER_MARKERS if pat.search(text))
+    return hits >= 3 and word_count <= _DENSE_FILLER_WORD_CAP
 
 
 def _prompt_date_range(prompt: str) -> tuple[int, int] | None:
@@ -171,8 +220,9 @@ def extract_essay_features(prompt: str, essay: str) -> EssayFeatures:
 
     unique = {w.lower() for w in words}
     unique_ratio = len(unique) / max(len(words), 1)
+    word_count = len(words)
     return EssayFeatures(
-        word_count=len(words),
+        word_count=word_count,
         paragraph_count=len(paragraphs),
         sentence_count=len(sentences),
         thesis_signal=thesis_signal,
@@ -186,6 +236,9 @@ def extract_essay_features(prompt: str, essay: str) -> EssayFeatures:
         has_instruction_leakage=contains_generation_leakage(text),
         unique_ratio=unique_ratio,
         years=years,
+        has_mattering_stub=bool(_MATTERING_STUB.search(text)),
+        has_repeated_long_span=_has_repeated_long_span(text),
+        has_dense_generator_filler=_has_dense_generator_filler(text, word_count),
     )
 
 
@@ -291,6 +344,15 @@ def _authenticity_review(features: EssayFeatures, reviewer_id: str, rng: Random)
         timed = False
     if features.has_instruction_leakage:
         timed = False
+
+    # Generator artifacts override reviewer leniency (still allow natural informal timed prose).
+    generator_artifact = (
+        features.has_mattering_stub
+        or features.has_repeated_long_span
+        or features.has_dense_generator_filler
+    )
+    if generator_artifact:
+        student_like = False
 
     return {
         "reviewer_id": reviewer_id,
