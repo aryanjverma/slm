@@ -9,11 +9,13 @@ from pathlib import Path
 
 from apush_frq_grader_slm.dataset_v5 import (
     V5_CANDIDATE_COUNT,
+    OverlapIndex,
     V5GenerationTask,
     annotate_distribution_match,
     candidate_gate_reasons,
     normalize_external_candidate,
 )
+from apush_frq_grader_slm.compose_v5 import COMPOSER_STOCK_EXEMPTIONS
 from apush_frq_grader_slm.fact_cards_v5 import (
     default_allowed_overlap_phrases,
     load_allowed_phrases_file,
@@ -59,6 +61,8 @@ def collect_allowed_phrases(args: argparse.Namespace) -> list[str]:
                 kb_path=kb_path,
             )
         )
+    # Residual short composer fragments (<8 words preferred) after template diversification.
+    groups.append(list(COMPOSER_STOCK_EXEMPTIONS))
     return merge_allowed_phrases(*groups)
 
 
@@ -98,19 +102,19 @@ def main() -> None:
         golden_cases = [FRQCase.model_validate(row) for row in read_jsonl(args.golden_cases)]
     accepted: list[dict] = []
     rejected: dict[str, list[str]] = {}
-    seen_texts = list(overlap_texts)
+    index = OverlapIndex.build(overlap_texts, allowed_phrases=allowed_phrases)
     for task_id in sorted(set(returned) & set(tasks)):
         row = normalize_external_candidate(tasks[task_id], returned[task_id])
         if golden_cases:
             row = annotate_distribution_match([row], golden_cases)[0]
         reasons = candidate_gate_reasons(
-            row, source_texts=seen_texts, allowed_phrases=allowed_phrases
+            row, allowed_phrases=allowed_phrases, overlap_index=index
         )
         if reasons:
             rejected[task_id] = sorted(set(reasons))
             continue
         accepted.append(row)
-        seen_texts.append(str(row.get("student_response") or row.get("essay") or ""))
+        index.add(str(row.get("student_response") or row.get("essay") or ""))
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     write_jsonl(args.output, accepted)

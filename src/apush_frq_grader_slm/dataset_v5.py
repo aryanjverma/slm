@@ -220,18 +220,101 @@ def _word_ngrams(words: Sequence[str], n: int = 8) -> set[tuple[str, ...]]:
     return {tuple(words[i : i + n]) for i in range(max(0, len(words) - n + 1))}
 
 
+_SCRUB_CACHE: dict[tuple[str, ...], re.Pattern[str]] = {}
+
+
+def _scrub_pattern(phrases: Sequence[str]) -> re.Pattern[str] | None:
+    norms = tuple(
+        sorted(
+            {normalize_essay(phrase) for phrase in phrases if str(phrase).strip()},
+            key=len,
+            reverse=True,
+        )
+    )
+    if not norms:
+        return None
+    if norms not in _SCRUB_CACHE:
+        # Word-boundary-ish replace via alternation; longest-first already sorted.
+        escaped = [re.escape(item) for item in norms if item]
+        _SCRUB_CACHE[norms] = re.compile(r"(?:%s)" % "|".join(escaped))
+    return _SCRUB_CACHE[norms]
+
+
 def _scrub_allowed_phrases(text: str, phrases: Sequence[str]) -> str:
     """Remove unavoidable names/dates/terms before eight-gram overlap checks."""
     cleaned = normalize_essay(text)
-    scrubbers = sorted(
-        (normalize_essay(phrase) for phrase in phrases if str(phrase).strip()),
-        key=len,
-        reverse=True,
-    )
-    for phrase in scrubbers:
-        if phrase:
-            cleaned = cleaned.replace(phrase, " ")
+    pattern = _scrub_pattern(phrases)
+    if pattern is not None:
+        cleaned = pattern.sub(" ", cleaned)
     return re.sub(r"\s+", " ", cleaned).strip()
+
+
+
+@dataclass
+class OverlapIndex:
+    """Precomputed overlap structures for O(1)-ish duplicate checks at scale."""
+
+    norms: list[str]
+    word_sets: list[set[str]]
+    gram_to_ids: dict[tuple[str, ...], set[int]]
+    allowed_list: tuple[str, ...]
+    allowed_grams: set[tuple[str, ...]]
+
+    @classmethod
+    def build(
+        cls,
+        source_texts: Iterable[str],
+        *,
+        allowed_phrases: Iterable[str] = (),
+    ) -> "OverlapIndex":
+        allowed_list = tuple(str(item).strip() for item in allowed_phrases if str(item).strip())
+        long_allowed = [item for item in allowed_list if len(normalize_essay(item).split()) >= 8]
+        allowed_grams = (
+            set().union(*(_ngrams(item) for item in long_allowed)) if long_allowed else set()
+        )
+        norms: list[str] = []
+        word_sets: list[set[str]] = []
+        gram_to_ids: dict[tuple[str, ...], set[int]] = defaultdict(set)
+        for source in source_texts:
+            norm = normalize_essay(source)
+            if len(norm) < 80:
+                continue
+            idx = len(norms)
+            norms.append(norm)
+            word_sets.append(set(norm.split()))
+            scrubbed = _scrub_allowed_phrases(source, allowed_list)
+            for gram in _word_ngrams(scrubbed.split()) - allowed_grams:
+                gram_to_ids[gram].add(idx)
+        return cls(norms, word_sets, gram_to_ids, allowed_list, allowed_grams)
+
+    def reasons_for(self, essay: str) -> list[str]:
+        norm = normalize_essay(essay)
+        if len(norm) < 80:
+            return ["essay_too_short_for_overlap_audit"]
+        if norm in self.norms:
+            return ["exact_duplicate"]
+        essay_words = set(norm.split())
+        for source_words in self.word_sets:
+            union = essay_words | source_words
+            if union and len(essay_words & source_words) / len(union) >= 0.82:
+                return ["near_duplicate"]
+        scrubbed = _scrub_allowed_phrases(essay, self.allowed_list)
+        essay_grams = _word_ngrams(scrubbed.split()) - self.allowed_grams
+        for gram in essay_grams:
+            if gram in self.gram_to_ids:
+                return ["verbatim_eight_word_overlap"]
+        return []
+
+    def add(self, essay: str) -> None:
+        norm = normalize_essay(essay)
+        if len(norm) < 80:
+            return
+        idx = len(self.norms)
+        self.norms.append(norm)
+        self.word_sets.append(set(norm.split()))
+        scrubbed = _scrub_allowed_phrases(essay, self.allowed_list)
+        for gram in _word_ngrams(scrubbed.split()) - self.allowed_grams:
+            self.gram_to_ids[gram].add(idx)
 
 
 def overlap_reasons(
@@ -270,12 +353,19 @@ def overlap_reasons(
 
 
 def candidate_gate_reasons(
-    row: Mapping[str, Any], *, source_texts: Iterable[str] = (), allowed_phrases: Iterable[str] = ()
+    row: Mapping[str, Any],
+    *,
+    source_texts: Iterable[str] = (),
+    allowed_phrases: Iterable[str] = (),
+    overlap_index: OverlapIndex | None = None,
 ) -> list[str]:
     """Apply blind authenticity, rubric-consensus, fact, and copying gates."""
     reasons: list[str] = []
     essay = str(row.get("student_response") or row.get("essay") or "").strip()
-    reasons.extend(overlap_reasons(essay, source_texts, allowed_phrases=allowed_phrases))
+    if overlap_index is not None:
+        reasons.extend(overlap_index.reasons_for(essay))
+    else:
+        reasons.extend(overlap_reasons(essay, source_texts, allowed_phrases=allowed_phrases))
 
     auth = list(row.get("authenticity_reviews") or [])
     if len(auth) < 2:

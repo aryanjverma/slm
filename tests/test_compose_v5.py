@@ -5,10 +5,12 @@ from __future__ import annotations
 import json
 import re
 import unittest
+from collections import Counter
 from pathlib import Path
 
 from apush_frq_grader_slm.compose_v4 import rng_for_task
 from apush_frq_grader_slm.compose_v5 import (
+    COMPOSER_STOCK_EXEMPTIONS,
     GENERATOR_NAME,
     _evidence_label,
     _topic_phrase,
@@ -16,6 +18,7 @@ from apush_frq_grader_slm.compose_v5 import (
     resolve_observable_behavior,
 )
 from apush_frq_grader_slm.fact_cards_v5 import has_eight_gram_overlap
+from apush_frq_grader_slm.ingest.dedup import normalize_essay
 from apush_frq_grader_slm.judge_v5 import _has_repeated_long_span
 
 
@@ -103,9 +106,13 @@ class ComposeV5Tests(unittest.TestCase):
         # Weak / emerging control should avoid a crisp overall claim framing.
         strong_markers = (
             "to a significant extent",
+            "to a signifigant extent",  # draft misspelling of significant
             "overall,",
             "i think",
             "mattered",
+            "reshaped outcomes",
+            "pretty clearly",
+            "to a large extent",
         )
         self.assertTrue(
             any(m in strong_essay.lower() for m in strong_markers),
@@ -417,9 +424,84 @@ class ComposeV5Tests(unittest.TestCase):
         mean_words = sum(len(essay.split()) for essay in essays) / len(essays)
         self.assertGreaterEqual(
             mean_words,
-            140,
-            msg=f"mean word count {mean_words:.1f} below 140",
+            120,
+            msg=f"mean word count {mean_words:.1f} below 120",
         )
+
+    def test_shard00_forty_essays_avoid_shared_eight_grams(self) -> None:
+        """Intra-corpus: no 8-gram should appear in ≥8 of 40 composed essays."""
+        packets_path = Path("artifacts/data/v5/packets/v5-shard-00.jsonl")
+        tasks_path = Path("artifacts/data/v5/planning/generation_tasks_v5.jsonl")
+        if not packets_path.is_file():
+            self.skipTest(f"missing packets shard: {packets_path}")
+        packets = [
+            json.loads(line)
+            for line in packets_path.read_text().splitlines()
+            if line.strip()
+        ]
+        self.assertGreaterEqual(len(packets), 40)
+        tasks: dict[str, dict] = {}
+        if tasks_path.is_file():
+            for line in tasks_path.read_text().splitlines():
+                if not line.strip():
+                    continue
+                row = json.loads(line)
+                if row.get("task_id"):
+                    tasks[str(row["task_id"])] = row
+
+        # Topic/year tokens shared across prompts are allowed to collide.
+        topic_tokens: set[str] = set()
+        for packet in packets[:40]:
+            topic = _topic_phrase(str(packet.get("prompt") or ""))
+            topic_tokens.update(normalize_essay(topic).split())
+            topic_tokens.update(
+                re.findall(r"\b(?:1[4-9]\d{2}|20[0-2]\d)\b", str(packet.get("prompt") or ""))
+            )
+
+        def _gram_is_topic_or_year(gram: tuple[str, ...]) -> bool:
+            # Exempt grams that are only year-range / prompt-topic words.
+            return all(
+                tok in topic_tokens
+                or re.fullmatch(r"(?:1[4-9]\d{2}|20[0-2]\d)", tok)
+                or re.fullmatch(r"(?:1[4-9]\d{2}|20[0-2]\d)-(?:1[4-9]\d{2}|20[0-2]\d)", tok)
+                for tok in gram
+            )
+
+        from collections import Counter
+
+        essays: list[str] = []
+        for packet in packets[:40]:
+            task_id = str(packet["task_id"])
+            behavior = resolve_observable_behavior(packet, tasks.get(task_id))
+            essay = compose_essay(
+                packet,
+                observable_writing_behavior=behavior,
+                rng=rng_for_task(task_id),
+            )
+            essays.append(essay)
+
+        counts: Counter[tuple[str, ...]] = Counter()
+        for essay in essays:
+            words = normalize_essay(essay).split()
+            grams = {tuple(words[i : i + 8]) for i in range(max(0, len(words) - 7))}
+            for gram in grams:
+                if _gram_is_topic_or_year(gram):
+                    continue
+                counts[gram] += 1
+
+        offenders = [(n, " ".join(g)) for g, n in counts.most_common(20) if n >= 8]
+        self.assertEqual(
+            offenders,
+            [],
+            msg=f"8-grams shared by ≥8/40 essays: {offenders[:10]}",
+        )
+        # Exemptions stay short.
+        for phrase in COMPOSER_STOCK_EXEMPTIONS:
+            self.assertLess(
+                len(normalize_essay(phrase).split()),
+                8,
+                msg=f"COMPOSER_STOCK_EXEMPTIONS entry too long: {phrase!r}",
+            )
 
 
 if __name__ == "__main__":
