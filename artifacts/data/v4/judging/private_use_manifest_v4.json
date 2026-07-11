@@ -1,0 +1,34 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1302742,
+      "path": "artifacts/data/v4/judging/train_cases_v4_judged_reviewed.jsonl",
+      "rows": 226,
+      "sha256": "6782145bf3f317ac69f1b598f1dc96cae9c64c3b67dc1dd2fda3363a377fe0b4"
+    },
+    {
+      "bytes": 1000779,
+      "path": "artifacts/data/v4/judging/train_chat_v4_judged_reviewed.jsonl",
+      "rows": 226,
+      "sha256": "84fc5b1d8f9a074ebae3959596625103519d4aa0b63477a2cf93413a33a6728f"
+    },
+    {
+      "bytes": 12396,
+      "path": "artifacts/data/v4/judging/training_audit_v4_reviewed.json",
+      "rows": null,
+      "sha256": "ab2ac8b6430a227a72bb6a4c16b2ad5993af2b5f78fc3106a1d081313c02d76a"
+    },
+    {
+      "bytes": 27730,
+      "path": "artifacts/data/v4/judging/judging_summary_v4.json",
+      "rows": null,
+      "sha256": "c2c672dd50191b3bbc58d1af2a63162af945c7ec5569a3955e60438a9c4f22ba"
+    }
+  ],
+  "case_count": 226,
+  "human_reviewed_count": 23,
+  "redistribution_authorized": false,
+  "technical_audit_clean": true,
+  "usage_scope": "private_noncommercial_assignment_no_redistribution",
+  "version": "v4-judged-private"
+}

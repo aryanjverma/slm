@@ -1,0 +1,110 @@
+{
+  "accepted_rows": 239,
+  "distributions": {
+    "prompt_family": {
+      "cb_british_colonists_americas_adapted_their_environments_1607_1754": 14,
+      "cb_civil_rights_activism_contributed_government_action": 10,
+      "cb_colonial_societies_contributed_revolutionary_movement_1700_1776": 14,
+      "cb_conflict_among_europeans_native_americans_1500_1763": 13,
+      "cb_debates_over_role_federal_government_contributed_1800_1854": 15,
+      "cb_different_reform_movements_responded_industrialization_1820_1900": 14,
+      "cb_foreign_policy_contributed_territorial_1840_1898": 12,
+      "cb_foreign_policy_responded_world_1890_1930": 14,
+      "cb_growing_concerns_about_national_security_contributed_1945_1991": 13,
+      "cb_migration_influenced_society_1932_2000": 9,
+      "cb_migration_influenced_western_1820_1898": 12,
+      "cb_movements_social_1945_1980": 15,
+      "cb_national_culture_1800_1848": 15,
+      "cb_native_societies_adapted_presence_european_colonists_1500_1754": 14,
+      "cb_sectional_tensions_shaped_society_1800_1848": 15,
+      "cb_settler_expansion_influenced_1754_1800": 15,
+      "cb_society_responded_economic_1960_2000": 12,
+      "cb_transatlantic_trade_changed_british_colonial_society_1607_1776": 13
+    },
+    "target_total": {
+      "0": 15,
+      "1": 25,
+      "2": 40,
+      "3": 32,
+      "4": 48,
+      "5": 33,
+      "6": 46
+    },
+    "time_budget": {
+      "20": 49,
+      "25": 46,
+      "30": 49,
+      "35": 48,
+      "40": 47
+    }
+  },
+  "rejected": [
+    {
+      "reasons": [
+        "length_out_of_band"
+      ],
+      "task_id": "v4-cb-2023-leq4-set1-sampleB-t5-n000"
+    },
+    {
+      "reasons": [
+        "near_duplicate_of:v4-cb-2024-leq4-set1-sampleB-t6-n000"
+      ],
+      "task_id": "v4-cb-2023-leq4-set2-sampleC-t6-n000"
+    },
+    {
+      "reasons": [
+        "near_duplicate_of:v4-cb-2025-leq2-set1-sampleA-t2-n000"
+      ],
+      "task_id": "v4-cb-2024-leq2-set1-sampleA-t6-n000"
+    },
+    {
+      "reasons": [
+        "near_duplicate_of:v4-cb-2024-leq4-set1-sampleB-t6-n000"
+      ],
+      "task_id": "v4-cb-2023-leq4-set2-sampleB-t6-n000"
+    },
+    {
+      "reasons": [
+        "near_duplicate_of:v4-cb-2024-leq3-set1-sampleB-t6-n000"
+      ],
+      "task_id": "v4-cb-2024-leq3-set2-sampleA-t3-n000"
+    },
+    {
+      "reasons": [
+        "near_duplicate_of:v4-cb-2024-leq4-set1-sampleB-t6-n000"
+      ],
+      "task_id": "v4-cb-2025-leq4-set2-sampleA-t6-n000"
+    },
+    {
+      "reasons": [
+        "near_duplicate_of:v4-cb-2024-leq4-set1-sampleB-t6-n000"
+      ],
+      "task_id": "v4-cb-2023-leq4-set2-sampleA-t4-n000"
+    },
+    {
+      "reasons": [
+        "near_duplicate_of:v4-cb-2025-leq2-set1-sampleA-t2-n000"
+      ],
+      "task_id": "v4-cb-2024-leq2-set1-sampleC-t3-n000"
+    },
+    {
+      "reasons": [
+        "near_duplicate_of:v4-cb-2024-leq4-set1-sampleB-t6-n000"
+      ],
+      "task_id": "v4-cb-2025-leq4-set2-sampleC-t4-n000"
+    },
+    {
+      "reasons": [
+        "near_duplicate_of:v4-cb-2024-leq3-set1-sampleB-t6-n000"
+      ],
+      "task_id": "v4-cb-2024-leq3-set2-sampleC-t5-n000"
+    },
+    {
+      "reasons": [
+        "near_duplicate_of:v4-cb-2024-leq4-set1-sampleB-t6-n000"
+      ],
+      "task_id": "v4-cb-2025-leq4-set2-sampleC-t3-n000"
+    }
+  ],
+  "total_rows": 250
+}
