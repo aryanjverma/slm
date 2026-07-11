@@ -136,6 +136,83 @@ class AdaptedPromptsV5Tests(unittest.TestCase):
         self.assertEqual(seeds[0]["adapted_prompts"], family_row["adapted_prompts"])
 
 
+class AmscoChapterIdsV5Tests(unittest.TestCase):
+    def test_prompt_maps_to_one_to_three_chapter_ids(self) -> None:
+        from apush_frq_grader_slm.fact_cards_v5 import (
+            amsco_chapter_ids_for_prompt,
+            attach_amsco_chapter_ids_to_seeds,
+        )
+
+        kb = [
+            {
+                "id": "amsco_ch02",
+                "chapter": 2,
+                "period": 2,
+                "title": "The Thirteen Colonies and the British Empire",
+                "date_range": "1607-1754",
+                "topic_keywords": ["colonial", "trade", "British"],
+                "evidence_bank": ["mercantilism", "Navigation Acts"],
+                "key_facts": ["Trade shaped colonial society between 1607 and 1754."],
+                "context_hooks": [],
+                "misconceptions": [],
+            },
+            {
+                "id": "amsco_ch03",
+                "chapter": 3,
+                "period": 2,
+                "title": "Colonial Society in the 18th Century",
+                "date_range": "1700-1775",
+                "topic_keywords": ["colonial society", "Atlantic"],
+                "evidence_bank": ["Great Awakening"],
+                "key_facts": ["Colonial society changed through the 1700s."],
+                "context_hooks": [],
+                "misconceptions": [],
+            },
+            {
+                "id": "amsco_ch28",
+                "chapter": 28,
+                "period": 8,
+                "title": "Promise and Turmoil",
+                "date_range": "1960-1968",
+                "topic_keywords": ["civil rights"],
+                "evidence_bank": ["Great Society"],
+                "key_facts": ["The 1960s remade domestic politics."],
+                "context_hooks": [],
+                "misconceptions": [],
+            },
+        ]
+        prompt = (
+            "Evaluate the extent to which the growth of transatlantic trade changed "
+            "British North American colonial society from 1607 to 1776."
+        )
+        ids = amsco_chapter_ids_for_prompt(prompt, period=2, kb=kb)
+        self.assertGreaterEqual(len(ids), 1)
+        self.assertLessEqual(len(ids), 3)
+        self.assertTrue(all(item.startswith("amsco_ch") for item in ids))
+        self.assertIn("amsco_ch02", ids)
+
+        seeds = attach_amsco_chapter_ids_to_seeds(
+            [{"seed_id": "s1", "prompt": prompt, "period": 2}],
+            kb=kb,
+        )
+        self.assertEqual(seeds[0]["amsco_chapter_ids"], ids)
+
+    def test_existing_chapter_ids_are_preserved(self) -> None:
+        from apush_frq_grader_slm.fact_cards_v5 import attach_amsco_chapter_ids_to_seeds
+
+        seeds = attach_amsco_chapter_ids_to_seeds(
+            [
+                {
+                    "seed_id": "s1",
+                    "prompt": "Evaluate change from 1800 to 1848.",
+                    "amsco_chapter_ids": ["amsco_ch10", "amsco_ch11"],
+                }
+            ],
+            kb=[],
+        )
+        self.assertEqual(seeds[0]["amsco_chapter_ids"], ["amsco_ch10", "amsco_ch11"])
+
+
 class OverlapExemptionTests(unittest.TestCase):
     def test_allowed_phrases_suppress_name_date_false_positives(self) -> None:
         shared = (

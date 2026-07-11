@@ -10,6 +10,7 @@ from apush_frq_grader_slm.adapted_prompts_v5 import (
     attach_adapted_prompts_to_seeds,
     build_adapted_prompt_family_row,
 )
+from apush_frq_grader_slm.fact_cards_v5 import attach_amsco_chapter_ids_to_seeds
 from apush_frq_grader_slm.io import read_jsonl, write_jsonl
 
 
@@ -21,6 +22,7 @@ def main() -> None:
         build_adapted_prompt_family_row(family, count=args.count) for family in families
     ]
     adapted_seeds = attach_adapted_prompts_to_seeds(seeds, adapted_families)
+    adapted_seeds = attach_amsco_chapter_ids_to_seeds(adapted_seeds, kb_path=args.kb)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     families_path = args.output_dir / "prompt_families_v5.jsonl"
     seeds_path = args.output_dir / "cb_seed_profiles_v5.jsonl"
@@ -32,6 +34,13 @@ def main() -> None:
         "adapted_per_family": args.count,
         "seeds_with_adapted_prompts": sum(
             1 for row in adapted_seeds if row.get("adapted_prompts")
+        ),
+        "seeds_with_amsco_chapter_ids": sum(
+            1 for row in adapted_seeds if row.get("amsco_chapter_ids")
+        ),
+        "mean_amsco_chapters_per_seed": (
+            sum(len(row.get("amsco_chapter_ids") or ()) for row in adapted_seeds)
+            / max(1, len(adapted_seeds))
         ),
         "families_path": str(families_path),
         "seeds_path": str(seeds_path),
@@ -68,6 +77,12 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=3,
         help="Adapted prompts per family (2–3; default 3)",
+    )
+    parser.add_argument(
+        "--kb",
+        type=Path,
+        default=None,
+        help="Optional AMSCO KB JSONL path (default: artifacts/knowledge/amsco_2016_kb.jsonl)",
     )
     return parser.parse_args()
 

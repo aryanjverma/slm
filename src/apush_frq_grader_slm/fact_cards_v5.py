@@ -12,10 +12,15 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
 from apush_frq_grader_slm.ingest.dedup import normalize_essay
-from apush_frq_grader_slm.knowledge.amsco import load_kb
+from apush_frq_grader_slm.knowledge.amsco import (
+    facts_for_period,
+    facts_for_prompt,
+    load_kb,
+)
 
 CONCEPT_MAX_CHARS = 200
 SOURCE_KIND = "semantic_rewrite"
+MAX_SEED_CHAPTERS = 3
 
 _YEAR_RE = re.compile(
     r"\b((?:1[4-9]\d{2}|20[0-2]\d)(?:\s*[-–]\s*(?:1[4-9]\d{2}|20[0-2]\d))?)\b"
@@ -240,6 +245,97 @@ def build_semantic_fact_cards(
 ) -> list[dict[str, Any]]:
     """Load AMSCO KB from disk and emit semantic concept cards."""
     return kb_to_semantic_cards(load_kb(kb_path))
+
+
+def _chapter_id(chapter: Mapping[str, Any]) -> str:
+    return str(chapter.get("id") or chapter.get("chapter") or "").strip()
+
+
+def amsco_chapter_ids_for_prompt(
+    prompt: str,
+    *,
+    period: int | None = None,
+    kb: Sequence[Mapping[str, Any]] | None = None,
+    kb_path: str | Path | None = None,
+    max_chapters: int = MAX_SEED_CHAPTERS,
+) -> list[str]:
+    """Map an LEQ prompt (and optional APUSH period) to 1–3 AMSCO chapter IDs.
+
+    Ranking prefers ``facts_for_prompt`` keyword/date overlap, then fills gaps
+    with same-period chapters when a period is provided.
+    """
+    records: list[Mapping[str, Any]]
+    if kb is not None:
+        records = list(kb)
+    else:
+        records = load_kb(kb_path)
+    if not records:
+        return []
+    n = max(1, min(int(max_chapters), MAX_SEED_CHAPTERS))
+    # facts_for_prompt may truncate chapter_ids once key_facts hit max_facts;
+    # re-rank with a high fact ceiling so we still see the top overlapping chapters.
+    bundle = facts_for_prompt(list(records), str(prompt or ""), max_facts=10_000)
+    ranked_ids = [str(item).strip() for item in (bundle.get("chapter_ids") or ()) if str(item).strip()]
+    selected: list[str] = []
+    seen: set[str] = set()
+
+    def _take(candidate: str) -> None:
+        if not candidate or candidate in seen or len(selected) >= n:
+            return
+        seen.add(candidate)
+        selected.append(candidate)
+
+    if period is not None:
+        period_ids = {_chapter_id(ch) for ch in facts_for_period(list(records), int(period))}
+        for chapter_id in ranked_ids:
+            if chapter_id in period_ids:
+                _take(chapter_id)
+        for chapter_id in ranked_ids:
+            _take(chapter_id)
+        for chapter in facts_for_period(list(records), int(period)):
+            _take(_chapter_id(chapter))
+    else:
+        for chapter_id in ranked_ids:
+            _take(chapter_id)
+
+    if not selected:
+        # Absolute fallback: first KB chapters so packets never attach zero cards.
+        for chapter in records[:n]:
+            _take(_chapter_id(chapter))
+    return selected[:n]
+
+
+def attach_amsco_chapter_ids_to_seeds(
+    seeds: Sequence[Mapping[str, Any]],
+    *,
+    kb: Sequence[Mapping[str, Any]] | None = None,
+    kb_path: str | Path | None = None,
+    max_chapters: int = MAX_SEED_CHAPTERS,
+) -> list[dict[str, Any]]:
+    """Ensure each seed profile carries 1–3 ``amsco_chapter_ids`` for packet export."""
+    records = list(kb) if kb is not None else load_kb(kb_path)
+    updated: list[dict[str, Any]] = []
+    for seed in seeds:
+        row = dict(seed)
+        existing = [
+            str(item).strip()
+            for item in (row.get("amsco_chapter_ids") or row.get("chapter_ids") or ())
+            if str(item).strip()
+        ]
+        if existing:
+            row["amsco_chapter_ids"] = existing[: max(1, min(int(max_chapters), MAX_SEED_CHAPTERS))]
+        else:
+            period_raw = row.get("period")
+            period = int(period_raw) if period_raw is not None else None
+            prompt = str(row.get("prompt") or row.get("prompt_text") or "")
+            row["amsco_chapter_ids"] = amsco_chapter_ids_for_prompt(
+                prompt,
+                period=period,
+                kb=records,
+                max_chapters=max_chapters,
+            )
+        updated.append(row)
+    return updated
 
 
 def evidence_terms_from_kb(kb: Sequence[Mapping[str, Any]]) -> list[str]:
