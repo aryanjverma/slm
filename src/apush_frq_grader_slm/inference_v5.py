@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
+from apush_frq_grader_slm.baselines import ResponseAdapter
 from apush_frq_grader_slm.prompts_v5 import (
     V5_FEEDBACK_SYSTEM_PROMPT,
     V5_SCORER_SYSTEM_PROMPT,
@@ -13,8 +14,31 @@ from apush_frq_grader_slm.prompts_v5 import (
     format_v5_scorer_user_message,
 )
 from apush_frq_grader_slm.rubric import CRITERIA, SCORE_RANGES, compute_total
+from apush_frq_grader_slm.schemas import FRQCase
 from apush_frq_grader_slm.structured_output_v3 import extract_balanced_json_objects
 from apush_frq_grader_slm.training_v5 import resolve_manifest_path, sha256_tree
+
+
+def _load_bundle_prompt(
+    root: Path,
+    manifest: Mapping[str, Any],
+    key: str,
+    default: str,
+    *,
+    verify_hashes: bool,
+) -> str:
+    prompts = manifest.get("prompts")
+    if not isinstance(prompts, Mapping) or key not in prompts:
+        return default
+    entry = prompts[key]
+    if not isinstance(entry, Mapping) or "path" not in entry:
+        return default
+    path = resolve_manifest_path(root, entry)  # type: ignore[arg-type]
+    if not path.is_file():
+        return default
+    if verify_hashes and entry.get("sha256") and sha256_tree(path) != entry["sha256"]:
+        raise ValueError(f"V5 bundle hash mismatch for prompt {key}: {path}")
+    return path.read_text(encoding="utf-8").rstrip("\n")
 
 
 class V5BundleGrader:
@@ -34,6 +58,16 @@ class V5BundleGrader:
                 observed = sha256_tree(path)
                 if observed != manifest[key]["sha256"]:
                     raise ValueError(f"V5 bundle hash mismatch for {key}: {path}")
+        self.scorer_system_prompt = _load_bundle_prompt(
+            root, manifest, "scorer_system", V5_SCORER_SYSTEM_PROMPT, verify_hashes=verify_hashes
+        )
+        self.feedback_system_prompt = _load_bundle_prompt(
+            root,
+            manifest,
+            "feedback_system",
+            V5_FEEDBACK_SYSTEM_PROMPT,
+            verify_hashes=verify_hashes,
+        )
         try:
             import torch
             from peft import PeftModel
@@ -69,22 +103,56 @@ class V5BundleGrader:
         ).strip()
 
     def grade(self, prompt: str, essay: str) -> dict[str, Any]:
-        return grade_two_pass(prompt, essay, self._generate)
+        return grade_two_pass(
+            prompt,
+            essay,
+            self._generate,
+            scorer_system=self.scorer_system_prompt,
+            feedback_system=self.feedback_system_prompt,
+        )
+
+
+class V5BundleAdapter(ResponseAdapter):
+    """ResponseAdapter wrapper around ``V5BundleGrader`` for litmus/eval entrypoints."""
+
+    def __init__(
+        self,
+        bundle_root: Path | str,
+        *,
+        verify_hashes: bool = True,
+        name: str = "apush_frq_grader_v5",
+    ) -> None:
+        super().__init__(name=name)
+        self.bundle_root = Path(bundle_root)
+        self.verify_hashes = verify_hashes
+        self._grader: V5BundleGrader | None = None
+
+    def _get_grader(self) -> V5BundleGrader:
+        if self._grader is None:
+            self._grader = V5BundleGrader(self.bundle_root, verify_hashes=self.verify_hashes)
+        return self._grader
+
+    def respond(self, case: FRQCase) -> str:
+        prediction = self._get_grader().grade(case.prompt, case.student_response)
+        return json.dumps(prediction, ensure_ascii=True, separators=(",", ":"))
 
 
 def grade_two_pass(
     prompt: str,
     essay: str,
     generate: Callable[[str, list[dict[str, str]], int], str],
+    *,
+    scorer_system: str = V5_SCORER_SYSTEM_PROMPT,
+    feedback_system: str = V5_FEEDBACK_SYSTEM_PROMPT,
 ) -> dict[str, Any]:
     """Preserve the external scores/total/feedback contract across two model calls."""
     scorer_messages = [
-        {"role": "system", "content": V5_SCORER_SYSTEM_PROMPT},
+        {"role": "system", "content": scorer_system},
         {"role": "user", "content": format_v5_scorer_user_message(prompt, essay)},
     ]
     scores = parse_and_normalize_scores(generate("scorer", scorer_messages, 96))
     feedback_messages = [
-        {"role": "system", "content": V5_FEEDBACK_SYSTEM_PROMPT},
+        {"role": "system", "content": feedback_system},
         {"role": "user", "content": format_v5_feedback_user_message(prompt, essay, scores)},
     ]
     try:

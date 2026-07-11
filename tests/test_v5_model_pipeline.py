@@ -106,7 +106,7 @@ def test_two_pass_keeps_scores_when_feedback_fails_and_clamps_integer_scores() -
         )
 
 
-def test_bundle_manifest_hashes_and_resolves_artifacts(tmp_path) -> None:
+def test_bundle_manifest_hashes_prompts_and_resolves_artifacts(tmp_path) -> None:
     bundle = tmp_path / "bundle"
     base = bundle / "base"
     scorer = bundle / "scorer"
@@ -120,6 +120,12 @@ def test_bundle_manifest_hashes_and_resolves_artifacts(tmp_path) -> None:
     assert manifest["two_pass"] is True
     assert resolve_manifest_path(bundle, manifest["scorer"]) == scorer
     assert len(manifest["scorer"]["sha256"]) == 64
+    assert set(manifest["prompts"]) == {"scorer_system", "feedback_system", "rubric"}
+    scorer_prompt = (bundle / "prompts" / "scorer_system.txt").read_text(encoding="utf-8")
+    rubric = (bundle / "prompts" / "rubric.txt").read_text(encoding="utf-8")
+    assert "No fixed sentence count" in rubric
+    assert "Return exactly one JSON object" in scorer_prompt
+    assert len(manifest["prompts"]["rubric"]["sha256"]) == 64
 
 
 def test_v5_diagnostics_cover_confusion_distributions_calibration_and_ci() -> None:

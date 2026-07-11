@@ -9,6 +9,7 @@ from typing import Any, Iterable, Literal, Mapping
 
 from apush_frq_grader_slm.prompts_v5 import (
     V5_FEEDBACK_SYSTEM_PROMPT,
+    V5_RUBRIC_TEXT,
     V5_SCORER_SYSTEM_PROMPT,
     format_v5_feedback_user_message,
     format_v5_scorer_user_message,
@@ -22,6 +23,11 @@ from apush_frq_grader_slm.training_v3 import _extract_input_ids
 V5_MAX_SEQ_LENGTH = 4096
 V5_SCORE_TOKEN_WEIGHT = 4.0
 V5_BUNDLE_VERSION = 1
+V5_PROMPT_FILES = {
+    "scorer_system": "prompts/scorer_system.txt",
+    "feedback_system": "prompts/feedback_system.txt",
+    "rubric": "prompts/rubric.txt",
+}
 
 
 def build_v5_chat_row(case: FRQCase, task: Literal["scorer", "feedback"]) -> dict[str, Any]:
@@ -168,21 +174,46 @@ def sha256_tree(path: Path, *, exclude_names: Iterable[str] = ()) -> str:
     return digest.hexdigest()
 
 
+def write_bundle_prompts(bundle_root: Path) -> dict[str, dict[str, str]]:
+    """Write corrected v5 prompts into the bundle and return path/hash entries."""
+    root = bundle_root.resolve()
+    prompts_dir = root / "prompts"
+    prompts_dir.mkdir(parents=True, exist_ok=True)
+    contents = {
+        "scorer_system": V5_SCORER_SYSTEM_PROMPT,
+        "feedback_system": V5_FEEDBACK_SYSTEM_PROMPT,
+        "rubric": V5_RUBRIC_TEXT,
+    }
+    entries: dict[str, dict[str, str]] = {}
+    for key, relative in V5_PROMPT_FILES.items():
+        path = root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        text = contents[key]
+        if not text.endswith("\n"):
+            text = text + "\n"
+        path.write_text(text, encoding="utf-8")
+        entries[key] = _artifact_entry(root, path)
+    return entries
+
+
 def write_bundle_manifest(
     bundle_root: Path,
     *,
     inherited_base: Path | str,
     scorer_adapter: Path | str,
     feedback_adapter: Path | str,
+    write_prompts: bool = True,
 ) -> dict[str, Any]:
     root = bundle_root.resolve()
     root.mkdir(parents=True, exist_ok=True)
+    prompts = write_bundle_prompts(root) if write_prompts else {}
     manifest = {
         "format": "apush-frq-grader-v5",
         "format_version": V5_BUNDLE_VERSION,
         "inherited_base": _artifact_entry(root, inherited_base),
         "scorer": _artifact_entry(root, scorer_adapter),
         "feedback": _artifact_entry(root, feedback_adapter),
+        "prompts": prompts,
         "max_seq_length": V5_MAX_SEQ_LENGTH,
         "score_token_weight": V5_SCORE_TOKEN_WEIGHT,
         "two_pass": True,
@@ -206,3 +237,10 @@ def _artifact_entry(root: Path, value: Path | str) -> dict[str, str]:
 def resolve_manifest_path(bundle_root: Path, entry: Mapping[str, str]) -> Path:
     path = Path(entry["path"])
     return path if path.is_absolute() else bundle_root / path
+
+
+def export_v5_chat_rows(
+    cases: Iterable[FRQCase], task: Literal["scorer", "feedback"]
+) -> list[dict[str, Any]]:
+    """Build chat-template SFT rows for one v5 training task."""
+    return [build_v5_chat_row(case, task) for case in cases]
