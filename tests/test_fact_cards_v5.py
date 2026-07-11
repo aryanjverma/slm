@@ -17,10 +17,13 @@ from apush_frq_grader_slm.dataset_v5 import (
 )
 from apush_frq_grader_slm.fact_cards_v5 import (
     CONCEPT_MAX_CHARS,
+    MAX_CARDS_PER_CHAPTER,
     chapter_to_semantic_cards,
     default_allowed_overlap_phrases,
     has_eight_gram_overlap,
+    is_acceptable_card,
     kb_to_semantic_cards,
+    rewrite_evidence_term,
     rewrite_source_sentence,
 )
 from apush_frq_grader_slm.schemas import FRQCase, RubricFeedback, RubricScores
@@ -81,12 +84,14 @@ class FactCardsV5Tests(unittest.TestCase):
         chapter = _chapter()
         cards = chapter_to_semantic_cards(chapter)
         self.assertGreaterEqual(len(cards), 3)
+        self.assertLessEqual(len(cards), MAX_CARDS_PER_CHAPTER)
         sources = list(chapter["key_facts"]) + list(chapter["context_hooks"])
         for card in cards:
             self.assertEqual(card["chapter_id"], "amsco_ch01")
             self.assertEqual(card["period"], 1)
             self.assertEqual(card["source_kind"], "semantic_rewrite")
             self.assertLessEqual(len(card["concept"]), CONCEPT_MAX_CHARS)
+            self.assertTrue(is_acceptable_card(card["concept"]), msg=card["concept"])
             for source in sources:
                 self.assertFalse(
                     has_eight_gram_overlap(card["concept"], source),
@@ -95,11 +100,74 @@ class FactCardsV5Tests(unittest.TestCase):
             # Direct rewrite helper must also break long source spans.
             for source in chapter["key_facts"]:
                 rewritten = rewrite_source_sentence(source, period=1)
-                self.assertFalse(has_eight_gram_overlap(rewritten, source))
+                if rewritten:
+                    self.assertFalse(has_eight_gram_overlap(rewritten, source))
 
     def test_kb_cards_cover_multiple_chapters(self) -> None:
         cards = kb_to_semantic_cards([_chapter(), {**_chapter(), "id": "amsco_ch02", "chapter": 2}])
         self.assertEqual({card["chapter_id"] for card in cards}, {"amsco_ch01", "amsco_ch02"})
+
+    def test_garbage_reference_point_cards_are_rejected(self) -> None:
+        garbage = [
+            "Few is a remembered reference point in period 3 (1766).",
+            "By is a remembered reference point in period 1 (1784).",
+            "The is a remembered reference point in period 1 (1608).",
+            "This is a remembered reference point in period 1 (1453).",
+            "He is a remembered reference point in period 2 (1682).",
+            "Memory cue for period 1: Key development, 1494.",
+            "Prelude.",
+            "September.",
+            "Most people agreed.",
+        ]
+        for concept in garbage:
+            self.assertFalse(is_acceptable_card(concept), msg=concept)
+            # chapter pipeline must not emit these even if rewrite somehow produced them
+        chapter = {
+            "id": "amsco_ch99",
+            "period": 3,
+            "key_facts": [
+                "Few colonists remembered the Stamp Act crisis of 1765 clearly.",
+                "He signed something in 1766.",
+            ],
+            "context_hooks": ["This treaty mattered somehow."],
+            "evidence_bank": ["Treaty of Paris (1763)", "Stamp Act (1765)"],
+        }
+        cards = chapter_to_semantic_cards(chapter)
+        self.assertTrue(cards)
+        for card in cards:
+            self.assertTrue(is_acceptable_card(card["concept"]), msg=card["concept"])
+            self.assertNotIn("remembered reference point", card["concept"].lower())
+            self.assertFalse(card["concept"].startswith(("Few ", "Most ", "This ", "He ", "She ")))
+        # Evidence-bank entities should dominate usable cards.
+        joined = " ".join(c["concept"] for c in cards)
+        self.assertTrue(
+            "Treaty of Paris" in joined or "Stamp Act" in joined,
+            msg=joined,
+        )
+
+    def test_evidence_terms_become_entity_forward_sentences(self) -> None:
+        card = rewrite_evidence_term("Treaty of Tordesillas (1494)", period=1)
+        self.assertTrue(card)
+        self.assertIn("Treaty of Tordesillas", card)
+        self.assertIn("1494", card)
+        self.assertTrue(is_acceptable_card(card))
+        self.assertNotIn("remembered reference point", card.lower())
+        inline = rewrite_evidence_term("New Laws of 1542", period=1)
+        self.assertIn("New Laws of 1542", inline)
+        self.assertNotIn("of (1542)", inline)
+
+    def test_pronoun_led_facts_without_entities_are_skipped(self) -> None:
+        rewritten = rewrite_source_sentence("He persuaded the king to act soon.", period=1)
+        self.assertEqual(rewritten, "")
+        # Named entity still recoverable from a pronoun-led but entity-rich sentence.
+        rewritten = rewrite_source_sentence(
+            "He persuaded the king to institute the New Laws of 1542.",
+            period=1,
+        )
+        self.assertTrue(rewritten)
+        self.assertIn("New Laws", rewritten)
+        self.assertTrue(is_acceptable_card(rewritten))
+        self.assertFalse(rewritten.startswith("He "))
 
 
 class AdaptedPromptsV5Tests(unittest.TestCase):

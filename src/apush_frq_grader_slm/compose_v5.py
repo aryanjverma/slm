@@ -82,6 +82,72 @@ _GENERIC_EVIDENCE = (
     "reform campaigns",
 )
 
+_MONTH_NAMES = frozenset(
+    {
+        "january",
+        "february",
+        "march",
+        "april",
+        "may",
+        "june",
+        "july",
+        "august",
+        "september",
+        "october",
+        "november",
+        "december",
+    }
+)
+
+# Truncated / non-entity Proper-looking singles that must not stand alone.
+_BARE_REJECT_LABELS = frozenset(
+    {
+        "prelude",
+        "september",
+        "allies",
+        "cotton",
+        "few",
+        "the",
+        "by",
+        "in",
+        "on",
+        "at",
+        "of",
+        "to",
+        "for",
+        "from",
+        "state",
+        "north",
+        "south",
+        "west",
+        "east",
+        "congress",
+        "dominion",
+        "battle",
+        "treaty",
+        "war",
+        "act",
+        "party",
+        "system",
+        "movement",
+        "organized",
+        "originally",
+        "another",
+        "secretary",
+        "period",
+        "source",
+        "industrial",
+        "american",
+        "british",
+        "european",
+        "native",
+        "one",
+        "most",
+        "some",
+        "both",
+    }
+)
+
 # Leading tokens that look like Proper names but are not real entities.
 _BAD_ENTITY_TOKENS = frozenset(
     {
@@ -142,15 +208,44 @@ _BAD_ENTITY_TOKENS = frozenset(
         "are",
         "been",
         "being",
+        "few",
+        "prelude",
+        "september",
+        "allies",
+        "cotton",
+        "january",
+        "february",
+        "march",
+        "april",
+        "may",
+        "june",
+        "july",
+        "august",
+        "october",
+        "november",
+        "december",
     }
+)
+
+_ENTITY_CONNECTORS = frozenset({"of", "the", "and", "for", "in", "to", "a", "an", "on"})
+
+_TOPIC_SHORT_VARIANTS = (
+    "this period",
+    "these changes",
+    "that question",
+    "the prompt years",
+    "this era",
+    "that development",
+    "the same issue",
 )
 
 _TOPIC_VERBS = re.compile(
     r"\b(?:molded|shaped|remade|changed|transformed|affected|influenced|"
     r"impacted|altered|reoriented|drove|caused|created|produced|rebuilt|"
     r"redefined|structured|organized|challenged|reinforced|weakened|"
-    r"strengthened|expanded|limited|restricted|encouraged|"
-    r"contributed to|led to|resulted in|helped cause)\b",
+    r"strengthened|expanded|limited|restricted|encouraged|responded to|"
+    r"reacted to|adjusted to|adapted to|"
+    r"contributed to|led to|resulted in|helped cause|helped drive)\b",
     re.I,
 )
 
@@ -223,6 +318,7 @@ def compose_essay(
     organization = str(composition.get("organization") or "clear")
 
     topic = _topic_phrase(prompt)
+    topic_ref = _topic_referencer(topic, rng)
     remembered = _remembered_concepts(cards, knowledge, rng)
     cues = _style_cues(style_ref)
 
@@ -232,6 +328,7 @@ def compose_essay(
     paragraphs = _draft_paragraphs(
         prompt=prompt,
         topic=topic,
+        topic_ref=topic_ref,
         remembered=remembered,
         knowledge=knowledge,
         argument=argument,
@@ -245,9 +342,11 @@ def compose_essay(
 
     essay = _join_paragraphs(paragraphs, organization, rng)
     essay = _bake_mechanics_inplace(essay, mechanics, organization, rng)
-    essay = _fit_length(essay, lo, hi, topic, remembered, knowledge, rng)
+    essay = _fit_length(essay, lo, hi, topic_ref, remembered, knowledge, rng)
     essay = _scrub_eight_gram_copies(essay, cards, style_ref, rng)
-    essay = _cleanup_essay(essay, knowledge=knowledge, topic=topic, remembered=remembered, rng=rng)
+    essay = _cleanup_essay(
+        essay, knowledge=knowledge, topic_ref=topic_ref, remembered=remembered, rng=rng
+    )
     return essay.strip()
 
 
@@ -274,17 +373,17 @@ def _assert_score_blind(packet: Mapping[str, Any]) -> None:
 
 
 def _topic_phrase(prompt: str) -> str:
-    """Return a short topic noun phrase (about 8–12 words), not a near-full prompt."""
+    """Return a short topic noun phrase (≤10 words), not a near-full prompt."""
     raw = prompt.strip().rstrip(".!?")
     years = ""
     m_range = _YEAR_RANGE_RE.search(raw)
     if m_range:
-        years = f"{m_range.group(1)}–{m_range.group(2)}"
+        years = f"{m_range.group(1)}-{m_range.group(2)}"
         raw = (raw[: m_range.start()] + " " + raw[m_range.end() :]).strip()
     else:
         m_span = _YEAR_SPAN_RE.search(raw)
         if m_span:
-            years = f"{m_span.group(1)}–{m_span.group(2)}"
+            years = f"{m_span.group(1)}-{m_span.group(2)}"
             raw = (raw[: m_span.start()] + " " + raw[m_span.end() :]).strip()
 
     text = re.sub(
@@ -292,7 +391,7 @@ def _topic_phrase(prompt: str) -> str:
         r"Weigh|Rank|Trace|Discuss)\s+"
         r"(?:the extent to which|how far|how|why|whether|the degree to which|"
         r"the ways|the leading factors behind|the main causes of|the force of|"
-        r"whether|if)\s+",
+        r"the process by which|whether|if)\s+",
         "",
         raw,
         flags=re.I,
@@ -308,17 +407,20 @@ def _topic_phrase(prompt: str) -> str:
 
     focus = _compress_topic_focus(text)
     if years:
+        # Keep total ≤10 words including the compact year token.
+        max_focus = max(1, 9)  # years counts as one token (1800-1848)
+        focus = _trim_topic_np(focus, max_words=max_focus)
         phrase = f"{focus}, {years}" if focus else years
     else:
-        phrase = focus or "this historical development"
+        phrase = _trim_topic_np(focus, max_words=10) or "this historical development"
 
     words = phrase.split()
-    if len(words) > 12:
+    if len(words) > 10:
         if years and phrase.endswith(years):
-            head = " ".join(words[: max(1, 12 - len(years.split()))])
+            head = " ".join(words[: max(1, 10 - 1)])
             phrase = f"{head.rstrip(',;')}, {years}"
         else:
-            phrase = " ".join(words[:12])
+            phrase = " ".join(words[:10])
     phrase = phrase.strip(" ,;:")
     if not phrase:
         return "this historical development"
@@ -333,7 +435,7 @@ def _compress_topic_focus(text: str) -> str:
 
     parts = _TOPIC_VERBS.split(text, maxsplit=1)
     if len(parts) == 2:
-        left = _trim_topic_np(parts[0].strip(" ,;:"), max_words=5)
+        left = _trim_topic_np(parts[0].strip(" ,;:"), max_words=4)
         right = parts[1].strip(" ,;:")
         right = re.sub(
             r"^(?:the\s+)?(?:United States|American|British North American)\s+",
@@ -346,18 +448,18 @@ def _compress_topic_focus(text: str) -> str:
             joined = f"{left} and {right}"
         else:
             joined = left or right
-        return _trim_topic_np(joined, max_words=10)
+        return _trim_topic_np(joined, max_words=8)
 
     m = re.match(
         r"^(?:the\s+)?(?:expansion|growth|rise|role|impact|influence|force|"
-        r"development|effects?|consequences?)\s+of\s+(.+)$",
+        r"development|effects?|consequences?|process)\s+(?:of|by which)\s+(.+)$",
         text,
         flags=re.I,
     )
     if m:
-        return _trim_topic_np(m.group(1), max_words=8)
+        return _trim_topic_np(m.group(1), max_words=7)
 
-    return _trim_topic_np(text, max_words=10)
+    return _trim_topic_np(text, max_words=8)
 
 
 def _trim_topic_np(text: str, *, max_words: int) -> str:
@@ -367,6 +469,33 @@ def _trim_topic_np(text: str, *, max_words: int) -> str:
     if len(words) > max_words:
         words = words[:max_words]
     return " ".join(words).strip(" ,;:")
+
+
+def _topic_year_token(topic: str) -> str | None:
+    m = _YEAR_SPAN_RE.search(topic)
+    if m:
+        return f"{m.group(1)}-{m.group(2)}"
+    return None
+
+
+def _topic_referencer(topic: str, rng: Any):
+    """First mention uses the full short topic; later mentions use short variants."""
+    year = _topic_year_token(topic)
+    variants = list(_TOPIC_SHORT_VARIANTS)
+    if year:
+        variants = [year, *variants]
+    state = {"n": 0}
+
+    def ref(*, full: bool = False) -> str:
+        if full or state["n"] == 0:
+            state["n"] += 1
+            return topic
+        state["n"] += 1
+        return rng.choice(variants)
+
+    ref.topic = topic  # type: ignore[attr-defined]
+    ref.variant = lambda: rng.choice(variants)  # type: ignore[attr-defined]
+    return ref
 
 
 def _topic_slot(topic: str, *, article: str | None = None) -> str:
@@ -500,34 +629,157 @@ def _clean_entity_name(name: str) -> str:
         return ""
     if len(parts[0]) <= 2 or parts[0].lower() in _BAD_ENTITY_TOKENS:
         return ""
-    return " ".join(parts)
+    cleaned = " ".join(parts)
+    if not _is_usable_evidence_label(cleaned):
+        return ""
+    return cleaned
+
+
+def _is_usable_evidence_label(label: str) -> bool:
+    """Reject bare months / truncated singles; prefer 2–6 word historical names."""
+    text = re.sub(r"\s+", " ", (label or "").strip(" ,;:."))
+    if not text:
+        return False
+    # Allow trailing year in the label text for length checks.
+    year_free = re.sub(r"\b(?:1[4-9]\d{2}|20[0-2]\d)\b", "", text)
+    year_free = re.sub(r"\s+", " ", year_free).strip(" ,;:()")
+    words = year_free.split()
+    if not words or len(words) > 6:
+        return False
+    low = [w.lower().strip(".,;:'\"") for w in words]
+    if any(w in _MONTH_NAMES for w in low):
+        # Month alone is bad; "September 1939" style still fails without a real entity.
+        if len(words) == 1 or (len(words) == 2 and re.fullmatch(r"\d{4}", words[-1] or "")):
+            return False
+        if low[0] in _MONTH_NAMES and len(words) <= 2:
+            return False
+    if len(words) == 1:
+        return low[0] not in _BARE_REJECT_LABELS and low[0] not in _BAD_ENTITY_TOKENS and len(words[0]) > 3
+    # Multi-word: reject if every content token is a bare reject / connector.
+    content = [w for w in low if w not in _ENTITY_CONNECTORS]
+    if not content:
+        return False
+    if len(content) == 1 and content[0] in _BARE_REJECT_LABELS:
+        return False
+    return True
 
 
 def _extract_entity_names(concept: str) -> list[str]:
-    """Pull Proper-looking spans that survive entity hygiene."""
+    """Pull Proper-looking spans (allowing of/the connectors) that survive hygiene."""
     found: list[str] = []
-    for match in re.finditer(
-        r"\b([A-Z][A-Za-z0-9'’\-]+(?:\s+[A-Z][A-Za-z0-9'’\-]+){0,4})\b",
-        concept,
-    ):
+    pattern = re.compile(
+        r"\b("
+        r"[A-Z][A-Za-z0-9'’\-]+"
+        r"(?:(?:\s+(?:of|the|and|for|in|to|a|an|on)\s+[A-Z][A-Za-z0-9'’\-]+)"
+        r"|(?:\s+[A-Z][A-Za-z0-9'’\-]+)){0,5}"
+        r")\b"
+    )
+    for match in pattern.finditer(concept or ""):
         cleaned = _clean_entity_name(match.group(1))
         if cleaned and cleaned not in found:
             found.append(cleaned)
     return found
 
 
+def _evidence_label(concept: str, rng: Any | None = None) -> str:
+    """Extract a usable historical example phrase (2–6 words) from a paraphrased concept.
+
+    Prefers multi-word proper entities / acts / wars / treaties, optionally with a
+    year. Rejects bare months and truncated singles like Prelude/September/Allies.
+    Falls back to the generic evidence pool when extraction fails.
+    """
+    text = (concept or "").strip()
+    years = re.findall(r"\b(?:1[4-9]\d{2}|20[0-2]\d)\b", text)
+    year = years[0] if years else None
+
+    candidates: list[str] = []
+    for entity in _extract_entity_names(text):
+        words = entity.split()
+        if 2 <= len(words) <= 6 and _is_usable_evidence_label(entity):
+            candidates.append(entity)
+        elif len(words) == 1 and year and _is_usable_evidence_label(entity):
+            # Rare solid single name — only keep when paired with a year later.
+            candidates.append(entity)
+    # Also try the stripped memory body as a short noun phrase.
+    body = _strip_wrapper(text)
+    body_words = body.split()
+    if 2 <= len(body_words) <= 6 and _is_usable_evidence_label(body):
+        # Avoid clause-like bodies.
+        if not re.search(
+            r"\b(shaped|changed|coming|tied|pressures|shifted|loyalty|policy|"
+            r"example|showed|making|remember)\b",
+            body,
+            flags=re.I,
+        ):
+            candidates.insert(0, body)
+
+    label = ""
+    for cand in candidates:
+        if _is_usable_evidence_label(cand):
+            # Prefer multi-word.
+            if len(cand.split()) >= 2:
+                label = cand
+                break
+            if not label:
+                label = cand
+    if not label:
+        # Last try: multi-word capitalized span even if cleaning was strict.
+        m = re.search(
+            r"\b([A-Z][A-Za-z0-9'’\-]+(?:\s+(?:of|the|and)?\s*[A-Z][A-Za-z0-9'’\-]+){1,4})\b",
+            text,
+        )
+        if m:
+            trial = _clean_entity_name(m.group(1))
+            if trial and len(trial.split()) >= 2 and _is_usable_evidence_label(trial):
+                label = trial
+
+    if not label or not _is_usable_evidence_label(label):
+        pool = list(_GENERIC_EVIDENCE)
+        if rng is not None:
+            rng.shuffle(pool)
+            label = pool[0]
+        else:
+            label = pool[0]
+        return label
+
+    words = label.split()
+    if len(words) > 6:
+        label = " ".join(words[:6])
+    if year and year not in label:
+        # Prefer "Name in YYYY" when space allows.
+        if len(label.split()) <= 5:
+            label = f"{label} in {year}"
+    return label
+
+
+def _with_article(label: str) -> str:
+    """Prefix 'the' for acts/wars/treaties when missing."""
+    bare = re.sub(r"^(?:the|a|an)\s+", "", label.strip(), flags=re.I)
+    if re.match(
+        r"^(Treaty|War|Election|Revolution|Constitution|Compromise|"
+        r"Purchase|Doctrine|Act|Bank|System|Movement|Party|Proclamation|"
+        r"Battle|Congress)\b",
+        bare,
+        flags=re.I,
+    ) or re.search(r"\b(War|Treaty|Revolution|Compromise|Purchase|Act|Proclamation)\b", bare):
+        if not label.lower().startswith("the "):
+            return f"the {bare}"
+    return label
+
+
 def _memory_clause_for_entity(entity: str, year: str | None, rng: Any) -> str:
     """Full student clause — never 'X mattering' or 'around YEAR mattering'."""
-    needs_the = bool(
-        re.match(
-            r"^(Treaty|War|Election|Revolution|Constitution|Compromise|"
-            r"Purchase|Doctrine|Act|Bank|System|Movement|Party)\b",
-            entity,
-            flags=re.I,
-        )
-        or re.search(r"\b(War|Treaty|Revolution|Compromise|Purchase)\b", entity)
-    )
-    label = f"the {entity}" if needs_the and not entity.lower().startswith("the ") else entity
+    if not entity or not _is_usable_evidence_label(entity):
+        if year:
+            return rng.choice(
+                (
+                    f"i remember something from around {year} coming up in notes",
+                    f"class notes mentioned developments around {year}",
+                    f"notes mentioned pressure building around {year}",
+                )
+            )
+        return rng.choice(_GENERIC_EVIDENCE)
+    label = _with_article(entity)
     if year:
         options = (
             f"i remember {label} in {year} changing foreign policy",
@@ -619,6 +871,7 @@ def _draft_paragraphs(
     *,
     prompt: str,
     topic: str,
+    topic_ref: Any,
     remembered: list[str],
     knowledge: str,
     argument: str,
@@ -632,17 +885,19 @@ def _draft_paragraphs(
     paras: list[str] = []
 
     if intents["context"] == "prior":
-        paras.append(_context_prior(topic, remembered, mechanics, rng))
+        paras.append(_context_prior(topic_ref, remembered, mechanics, rng))
     elif intents["context"] == "light" and knowledge in {"competent", "strong"}:
         if rng.random() < 0.65:
-            paras.append(_context_prior(topic, remembered, mechanics, rng))
+            paras.append(_context_prior(topic_ref, remembered, mechanics, rng))
 
-    paras.append(_thesis_paragraph(prompt, topic, remembered, intents["thesis"], cues, mechanics, rng))
+    paras.append(
+        _thesis_paragraph(prompt, topic_ref, remembered, intents["thesis"], cues, mechanics, rng)
+    )
 
     evid = remembered[:]
     rng.shuffle(evid)
     body = _evidence_body(
-        topic=topic,
+        topic_ref=topic_ref,
         evid=evid,
         intent=intents["evidence"],
         analysis=intents["analysis"],
@@ -657,7 +912,7 @@ def _draft_paragraphs(
 
     if intents["thesis"] == "clear" and intents["analysis"] == "causal" and time_pressure != "severe":
         if rng.random() < 0.45:
-            paras.append(_closing(topic, mechanics, rng))
+            paras.append(_closing(topic_ref, mechanics, rng))
 
     if organization == "rough" and len(paras) > 2:
         # Drop a middle transition so structure feels unfinished.
@@ -677,7 +932,7 @@ def _student_clause(text: str, mechanics: str, rng: Any) -> str:
             ):
                 out = re.sub(re.escape(correct), wrong, out, count=1, flags=re.I)
                 break
-    if mechanics == "fragments_and_runons" and rng.random() < 0.18:
+    if mechanics == "fragments_and_runons" and rng.random() < 0.12:
         # Occasional time-pressure fragment — keep rare so it does not stamp every essay.
         frag = rng.choice(
             (
@@ -690,16 +945,17 @@ def _student_clause(text: str, mechanics: str, rng: Any) -> str:
     return out
 
 
-def _context_prior(topic: str, remembered: list[str], mechanics: str, rng: Any) -> str:
+def _context_prior(topic_ref: Any, remembered: list[str], mechanics: str, rng: Any) -> str:
+    t = topic_ref()
     openers = (
-        f"Before the main years in the prompt, earlier patterns already mattered for {topic}.",
-        f"Looking a little earlier helps, becuase older pressures shaped {topic}.",
+        f"Before the main years in the prompt, earlier patterns already mattered for {t}.",
+        f"Looking a little earlier helps, becuase older pressures shaped {t}.",
         f"Wider background: Atlantic connections and earlier conflicts were already in play "
-        f"around {_topic_slot(topic)}.",
+        f"around {_topic_slot(t)}.",
     )
     sent = rng.choice(openers)
     if remembered and rng.random() < 0.5:
-        cue = _insert_remembered(remembered[0])
+        cue = _evidence_label(remembered[0], rng)
         sent += " " + _student_clause(
             f"Even then, {cue} showed up in notes.",
             mechanics,
@@ -716,41 +972,44 @@ def _context_prior(topic: str, remembered: list[str], mechanics: str, rng: Any) 
 
 def _thesis_paragraph(
     prompt: str,
-    topic: str,
+    topic_ref: Any,
     remembered: list[str],
     intent: str,
     cues: dict[str, Any],
     mechanics: str,
     rng: Any,
 ) -> str:
-    evid_a = _short_label(remembered[0]) if remembered else "political pressure"
-    evid_b = _short_label(remembered[1]) if len(remembered) > 1 else "social conflict"
+    evid_a = _evidence_label(remembered[0], rng) if remembered else "political pressure"
+    evid_b = (
+        _evidence_label(remembered[1], rng) if len(remembered) > 1 else "social conflict"
+    )
+    t = topic_ref()
 
     if intent == "unsettle":
         options = [
-            f"This essay is mostly about {topic}. There were lots of factors and it is hard to pick one answer.",
-            f"The prompt asks about {topic}, and different parts of the story pull in different directions.",
-            f"People talk about {topic} in class but I am not sure there is one clear overall claim.",
+            f"This essay is mostly about {t}. There were lots of factors and it is hard to pick one answer.",
+            f"The prompt asks about {t}, and different parts of the story pull in different directions.",
+            f"People talk about {t} in class but I am not sure there is one clear overall claim.",
         ]
         text = rng.choice(options)
     elif intent == "weak":
         options = [
-            f"This essay is about {topic}.",
-            f"There were many things happening related to {topic} in this period.",
-            f"History changed in different ways when people dealt with {topic}.",
-            f"The question is basically about {topic}.",
+            f"This essay is about {t}.",
+            f"There were many things happening related to {t} in this period.",
+            f"History changed in different ways when people dealt with {t}.",
+            f"The question is basically about {t}.",
         ]
         text = rng.choice(options)
     else:
         extent = rng.choice(("a lot", "pretty clearly", "to a large extent", "in an important way"))
         options = [
-            f"Overall, {topic} mattered {extent}, mainly becuase of things like {evid_a} and {evid_b}.",
-            f"I think {topic} changed the period {extent}; {evid_a} pushed one way while {evid_b} reinforced it.",
-            f"To a significant extent, {topic} reshaped outcomes, and examples such as {evid_a} help show why.",
+            f"Overall, {t} mattered {extent}, mainly becuase of things like {evid_a} and {evid_b}.",
+            f"I think {t} changed the period {extent}; {evid_a} pushed one way while {evid_b} reinforced it.",
+            f"To a significant extent, {t} reshaped outcomes, and examples such as {evid_a} help show why.",
         ]
         if cues.get("uses_although") and rng.random() < 0.4:
             options.append(
-                f"Even though other forces mattered, {topic} still mattered {extent} through {evid_a}."
+                f"Even though other forces mattered, {t} still mattered {extent} through {evid_a}."
             )
         text = rng.choice(options)
         if cues.get("informal") and not text.lower().startswith("i "):
@@ -761,9 +1020,39 @@ def _thesis_paragraph(
     return _student_clause(text, mechanics, rng)
 
 
+def _evidence_sentence(label: str, topic_ref: Any, *, role: str, rng: Any) -> str:
+    """Timed-student evidence line using a short historical example label."""
+    example = _with_article(label)
+    ref = topic_ref.variant()
+    if role == "first":
+        return rng.choice(
+            (
+                f"{example[0].upper() + example[1:]} showed how pressure built around {ref}.",
+                f"I remember {example} making the stakes around {ref} feel urgent.",
+                f"One example is {example}, which came up whenever we talked about {ref}.",
+                f"Class notes tied {example} to the bigger claim about {ref}.",
+            )
+        )
+    if role == "second":
+        return rng.choice(
+            (
+                f"Another angle is {example}; leaders had to respond, so arguments about {ref} got louder.",
+                f"I also keep thinking about {example} and how it supports the claim on {ref}.",
+                f"{example[0].upper() + example[1:]} reinforced the same pattern for {ref}.",
+                f"Notes also had {example}, which made {ref} harder to brush aside.",
+            )
+        )
+    return rng.choice(
+        (
+            f"Additional support comes from {example}, which fits the same reading of {ref}.",
+            f"There was also {example} sitting next to that claim in my notes.",
+        )
+    )
+
+
 def _evidence_body(
     *,
-    topic: str,
+    topic_ref: Any,
     evid: list[str],
     intent: str,
     analysis: str,
@@ -776,27 +1065,38 @@ def _evidence_body(
 ) -> list[str]:
     paras: list[str] = []
     a = evid[0] if evid else rng.choice(_GENERIC_EVIDENCE)
-    b = evid[1] if len(evid) > 1 else rng.choice([x for x in _GENERIC_EVIDENCE if x != a] or _GENERIC_EVIDENCE)
+    b = evid[1] if len(evid) > 1 else rng.choice(
+        [x for x in _GENERIC_EVIDENCE if x != a] or list(_GENERIC_EVIDENCE)
+    )
     c = evid[2] if len(evid) > 2 else None
+    label_a = _evidence_label(a, rng)
+    label_b = _evidence_label(b, rng)
+    label_c = _evidence_label(c, rng) if c else None
 
     if intent in {"vague", "one_or_vague"}:
+        ref = topic_ref.variant()
         paras.append(
             _student_clause(
-                f"In this period people faced hard times around {topic}. Leaders made choices and "
+                f"In this period people faced hard times around {ref}. Leaders made choices and "
                 f"communities reacted, but it is hard to recall exact names. "
-                f"Mostly there were broad trends, and maybe {_insert_remembered(a)} if I remember right.",
+                f"Mostly there were broad trends, and maybe {label_a} if I remember right.",
                 mechanics,
                 rng,
             )
         )
     elif intent == "names_only":
-        bits = [_insert_remembered(a), _insert_remembered(b)]
-        if c and knowledge == "strong":
-            bits.append(_insert_remembered(c))
+        bits = [label_a, label_b]
+        if label_c and knowledge == "strong":
+            bits.append(label_c)
+        ref = topic_ref.variant()
+        listed = ". ".join(
+            f"There was {bit}" if i == 0 else f"There was also {bit}"
+            for i, bit in enumerate(bits)
+        )
         paras.append(
             _student_clause(
-                f"Turning to specifics, there was {bits[0]}. There was also {bits[1]}. "
-                f"Notes list these next to {topic} without always saying how they prove the claim.",
+                f"Turning to specifics, {listed[0].lower() + listed[1:]}. "
+                f"Notes list these next to {ref} without always saying how they prove the claim.",
                 mechanics,
                 rng,
             )
@@ -804,8 +1104,9 @@ def _evidence_body(
     elif intent == "two_uneven":
         paras.append(
             _student_clause(
-                f"One example is {_insert_remembered(a)}. Another is {_insert_remembered(b)}. "
-                f"I know both matter for {topic}, but the connection is a little uneven in my head.",
+                f"{_evidence_sentence(label_a, topic_ref, role='first', rng=rng)} "
+                f"{_evidence_sentence(label_b, topic_ref, role='second', rng=rng)} "
+                f"I know both matter for {topic_ref.variant()}, but the connection is a little uneven in my head.",
                 mechanics,
                 rng,
             )
@@ -813,34 +1114,39 @@ def _evidence_body(
         if organization == "repetitive":
             paras.append(
                 _student_clause(
-                    f"Again, {_insert_remembered(a)} and {_insert_remembered(b)} show up when people discuss {topic}.",
+                    f"Again, {label_a} and {label_b} show up when people discuss {topic_ref.variant()}.",
                     mechanics,
                     rng,
                 )
             )
     else:  # linked
-        link = rng.choice(("because", "so", "as a result", "this shows"))
         paras.append(
             _student_clause(
-                f"One part of the story is {_insert_remembered(a)}, {link} it changed who held power "
-                f"and how communities organized work around {topic}.",
+                _evidence_sentence(label_a, topic_ref, role="first", rng=rng)
+                + " "
+                + rng.choice(
+                    (
+                        f"That change affected who held power and how communities organized work around {topic_ref.variant()}.",
+                        f"Because of that, debates about {topic_ref.variant()} got sharper in my notes.",
+                    )
+                ),
                 mechanics,
                 rng,
             )
         )
         paras.append(
             _student_clause(
-                f"Another angle is {_insert_remembered(b)}. Leaders and ordinary people responded "
-                f"because that pressure made arguments about {topic} harder to ignore, therefore "
-                f"the example actually supports the claim rather than just sitting as a name.",
+                _evidence_sentence(label_b, topic_ref, role="second", rng=rng)
+                + " "
+                + "The example actually supports the claim rather than just sitting as a name.",
                 mechanics,
                 rng,
             )
         )
-        if c and knowledge == "strong" and time_pressure != "severe":
+        if label_c and knowledge == "strong" and time_pressure != "severe":
             paras.append(
                 _student_clause(
-                    f"Additional support comes from {_insert_remembered(c)}, which reinforces the same pattern.",
+                    _evidence_sentence(label_c, topic_ref, role="third", rng=rng),
                     mechanics,
                     rng,
                 )
@@ -849,7 +1155,8 @@ def _evidence_body(
     if analysis == "list":
         paras.append(
             _student_clause(
-                f"Also there were other developments, more changes, and more debates about {topic}. "
+                f"Also there were other developments, more changes, and more debates about "
+                f"{topic_ref.variant()}. "
                 f"They happened in order in my notes but I am mostly listing them.",
                 mechanics,
                 rng,
@@ -858,10 +1165,10 @@ def _evidence_body(
     elif analysis == "causal":
         skill_line = rng.choice(
             (
-                f"Through causation, {_short_label(a)} helped produce later outcomes tied to {topic}.",
-                f"By comparison, {_short_label(a)} differed from {_short_label(b)} in who benefited.",
-                f"In terms of continuity and change, {_short_label(a)} marked a shift while "
-                f"{_short_label(b)} shows what stayed familiar.",
+                f"Through causation, {label_a} helped produce later outcomes tied to {topic_ref.variant()}.",
+                f"By comparison, {label_a} differed from {label_b} in who benefited.",
+                f"In terms of continuity and change, {label_a} marked a shift while "
+                f"{label_b} shows what stayed familiar.",
             )
         )
         paras.append(_student_clause(skill_line, mechanics, rng))
@@ -869,7 +1176,7 @@ def _evidence_body(
             paras.append(
                 _student_clause(
                     f"Still, a counterpoint is that local conditions limited how far "
-                    f"{_short_label(a)} could reshape {topic}, so the change was uneven.",
+                    f"{label_a} could reshape {topic_ref.variant()}, so the change was uneven.",
                     mechanics,
                     rng,
                 )
@@ -877,7 +1184,7 @@ def _evidence_body(
     else:
         paras.append(
             _student_clause(
-                f"In short, things happened around {topic} and people noticed them.",
+                f"In short, things happened around {topic_ref.variant()} and people noticed them.",
                 mechanics,
                 rng,
             )
@@ -888,14 +1195,15 @@ def _evidence_body(
     return paras
 
 
-def _closing(topic: str, mechanics: str, rng: Any) -> str:
+def _closing(topic_ref: Any, mechanics: str, rng: Any) -> str:
+    t = topic_ref.variant()
     return _student_clause(
         rng.choice(
             (
-                f"Overall the examples keep the claim about {topic} tied to what actually happened.",
-                f"Taken together, that line of reasoning about {topic} still holds for me.",
-                f"So the evidence around {topic} still points the same direction in my view.",
-                f"I would stick with that reading of {topic} even if details are fuzzy.",
+                f"Overall the examples keep the claim about {t} tied to what actually happened.",
+                f"Taken together, that line of reasoning about {t} still holds for me.",
+                f"So the evidence around {t} still points the same direction in my view.",
+                f"I would stick with that reading of {t} even if details are fuzzy.",
             )
         ),
         mechanics,
@@ -911,44 +1219,13 @@ def _strip_wrapper(remembered: str) -> str:
     return text.rstrip(".")
 
 
-def _insert_remembered(remembered: str) -> str:
-    """Use a remembered concept in a sentence without awkward double memory wrappers."""
-    text = _strip_wrapper(remembered)
-    # Full memory clauses compress to a short label so we do not embed
-    # "Cotton shaped events" mid-sentence as if it were a noun phrase.
-    if len(text.split()) > 5 or re.search(
-        r"\b(shaped|changed|coming up|tied to|pressures|shifted|loyalty|"
-        r"foreign policy|key example)\b",
-        text,
-        flags=re.I,
-    ):
-        return _short_label(remembered)
-    return text
+def _insert_remembered(remembered: str, rng: Any | None = None) -> str:
+    """Use a remembered concept as a short evidence label in a sentence."""
+    return _evidence_label(remembered, rng)
 
 
-def _short_label(remembered: str) -> str:
-    text = _strip_wrapper(remembered)
-    entities = _extract_entity_names(text) or _extract_entity_names(remembered)
-    if entities:
-        # Prefer the entity whenever the stripped body is clause-like or long.
-        if len(text.split()) > 4 or re.search(
-            r"\b(shaped|changed|coming|tied|pressures|shifted|mattered|"
-            r"loyalty|policy|example)\b",
-            text,
-            flags=re.I,
-        ):
-            return entities[0]
-    words = text.split()
-    if len(words) <= 6:
-        return text
-    if entities:
-        return entities[0]
-    m = re.search(r"\b([A-Z][A-Za-z0-9'’\-]+(?:\s+[A-Z][A-Za-z0-9'’\-]+){0,3})\b", text)
-    if m:
-        cleaned = _clean_entity_name(m.group(1))
-        if cleaned:
-            return cleaned
-    return " ".join(words[:6]).rstrip(".,;:")
+def _short_label(remembered: str, rng: Any | None = None) -> str:
+    return _evidence_label(remembered, rng)
 
 
 def _join_paragraphs(paragraphs: list[str], organization: str, rng: Any) -> str:
@@ -1056,7 +1333,7 @@ def _fit_length(
     essay: str,
     lo: int,
     hi: int,
-    topic: str,
+    topic_ref: Any,
     remembered: list[str],
     knowledge: str,
     rng: Any,
@@ -1083,40 +1360,44 @@ def _fit_length(
                 break
         words = essay.split()
 
-    # Diversified pads — time-pressure / teacher / classmate lines only sometimes.
-    content_pads = [
-        f"I kept thinking about {topic} while writing and lost a little time.",
-        f"My outline was short so the paragraphs on {topic} wander a bit.",
-        f"Looking back, overlapping pressures around {topic} made one neat story hard.",
-        f"I am still connecting the examples back to {topic} as I write.",
-        f"Regional differences complicated any simple reading of {topic}.",
-        f"From memory the timeline around {topic} jumps more than I wanted.",
-    ]
-    if remembered:
-        content_pads.append(
-            f"I tried to bring back {_short_label(remembered[0])} without copying the worksheet."
-        )
-    if knowledge == "strong":
-        content_pads.append(
-            f"A second pass would tighten how {_short_label(remembered[0]) if remembered else 'the evidence'} "
-            f"supports the claim about {topic}."
-        )
+    # Pads always use short topic variants — never re-paste the full topic phrase.
+    # Build a fresh sentence each time so the same ≥10-word pad cannot repeat thrice.
+    def _next_pad() -> str:
+        ref = topic_ref.variant()
+        templates = [
+            f"Pressures around {ref} made one neat story hard.",
+            f"I am still connecting examples back to {ref}.",
+            f"Regional differences complicated readings of {ref}.",
+            f"The timeline around {ref} jumps in my memory.",
+            f"The claim about {ref} still feels right.",
+            f"I keep circling back to {ref} as I write.",
+        ]
+        if remembered:
+            templates.append(
+                f"I tried to bring back {_evidence_label(remembered[0], rng)} from memory."
+            )
+        if knowledge == "strong":
+            templates.append(
+                f"A second pass would tighten how "
+                f"{_evidence_label(remembered[0], rng) if remembered else 'the evidence'} "
+                f"supports {ref}."
+            )
+        if rng.random() < 0.08:
+            templates.append(
+                rng.choice(
+                    (
+                        "Teachers say to use specific evidence but under the clock it gets messy.",
+                        "Some classmates argued politics mattered more than social change here.",
+                        "Hard to finish in time once the examples piled up.",
+                    )
+                )
+            )
+        return rng.choice(templates)
 
-    rare_pads = [
-        "Teachers say to use specific evidence but under the clock it gets messy.",
-        "Some classmates argued politics mattered more than social change here.",
-        "Hard to finish in time once the examples piled up.",
-    ]
-    pads = list(content_pads)
-    if rng.random() < 0.3:
-        pads.append(rng.choice(rare_pads))
-    rng.shuffle(pads)
-    pi = 0
     guard = 0
     while len(words) < lo and guard < 60:
         guard += 1
-        essay = essay.rstrip() + " " + pads[pi % len(pads)]
-        pi += 1
+        essay = essay.rstrip() + " " + _next_pad()
         words = essay.split()
     if len(words) > hi:
         essay = " ".join(words[:hi])
@@ -1127,7 +1408,7 @@ def _cleanup_essay(
     essay: str,
     *,
     knowledge: str,
-    topic: str,
+    topic_ref: Any,
     remembered: list[str],
     rng: Any,
 ) -> str:
@@ -1150,9 +1431,9 @@ def _cleanup_essay(
     if len(sents) < 2:
         extra = rng.choice(
             (
-                f"That still leaves open questions about {topic}.",
+                f"That still leaves open questions about {topic_ref.variant()}.",
                 "I would add one more example if the clock allowed.",
-                f"The notes on {topic} were thinner than I wanted.",
+                f"The notes on {topic_ref.variant()} were thinner than I wanted.",
             )
         )
         text = text.rstrip() + " " + extra
@@ -1162,21 +1443,25 @@ def _cleanup_essay(
     if knowledge in {"competent", "strong"}:
         words = text.split()
         guard = 0
-        fillers = [
-            f"I am still tying the examples back to {topic}.",
-            f"Regional fights made {topic} harder to summarize cleanly.",
-            (
-                f"Even a quick mention of {_short_label(remembered[0])} helps anchor the claim."
-                if remembered
-                else f"Even a quick mention of debates in Congress helps anchor the claim about {topic}."
-            ),
-            f"Under the time limit the analysis of {topic} stays a little uneven.",
-        ]
-        fi = 0
         while len(words) < 100 and guard < 20:
             guard += 1
-            text = text.rstrip() + " " + fillers[fi % len(fillers)]
-            fi += 1
+            filler = rng.choice(
+                (
+                    f"I am still tying examples back to {topic_ref.variant()}.",
+                    f"Regional fights made {topic_ref.variant()} hard to summarize.",
+                    (
+                        f"Even a quick mention of {_evidence_label(remembered[0], rng)} "
+                        f"helps anchor the claim."
+                        if remembered
+                        else (
+                            f"Even a quick mention of debates in Congress helps "
+                            f"anchor {topic_ref.variant()}."
+                        )
+                    ),
+                    f"Under the clock the analysis of {topic_ref.variant()} stays uneven.",
+                )
+            )
+            text = text.rstrip() + " " + filler
             words = text.split()
 
     # One more article / mattering pass after padding.
