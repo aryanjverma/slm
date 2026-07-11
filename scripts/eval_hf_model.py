@@ -21,6 +21,8 @@ from apush_frq_grader_slm.eval import (
 )
 from apush_frq_grader_slm.eval_diagnostics import diagnose_rows
 from apush_frq_grader_slm.io import read_jsonl, write_jsonl
+from apush_frq_grader_slm.dataset_v4 import format_v4_user_message
+from apush_frq_grader_slm.prompts_v4 import V4_TRAIN_SYSTEM_PROMPT
 from apush_frq_grader_slm.rubric import rubric_version_for_year
 from apush_frq_grader_slm.schemas import EvalResult, FRQCase
 
@@ -111,13 +113,19 @@ def main() -> None:
     with results_path.open("a", encoding="utf-8", newline="\n") as results_file:
         progress = tqdm(pending_cases, desc=args.model_name, unit="case", dynamic_ncols=True)
         for index, case in enumerate(progress, start=1):
-            messages = [
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {
-                    "role": "user",
-                    "content": format_user_message(case.prompt, case.student_response),
-                },
-            ]
+            if args.prompt_version == "v4":
+                messages = [
+                    {"role": "system", "content": V4_TRAIN_SYSTEM_PROMPT},
+                    {"role": "user", "content": format_v4_user_message(case)},
+                ]
+            else:
+                messages = [
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {
+                        "role": "user",
+                        "content": format_user_message(case.prompt, case.student_response),
+                    },
+                ]
             prompt = tokenizer.apply_chat_template(
                 messages, tokenize=False, add_generation_prompt=True
             )
@@ -219,6 +227,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output-dir", type=Path, default=Path("artifacts/eval"))
     parser.add_argument("--max-new-tokens", type=int, default=512)
     parser.add_argument("--temperature", type=float, default=0.0)
+    parser.add_argument(
+        "--prompt-version",
+        choices=("legacy", "v4"),
+        default="legacy",
+        help="Prompt contract used for generation; v4 uses the full LEQ rubric.",
+    )
     parser.add_argument("--log-every", type=int, default=10)
     parser.add_argument("--resume", action=argparse.BooleanOptionalAction, default=True)
     return parser.parse_args()
