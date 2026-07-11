@@ -261,7 +261,7 @@ _YEAR_SPAN_RE = re.compile(
 
 _MEMORY_PREFIX_RE = re.compile(
     r"^(i remember(?: something like)?|i kind of remember|class notes had|"
-    r"notes mentioned|there was also|people talk about how|"
+    r"class notes mentioned|notes mentioned|there was also|people talk about how|"
     r"one thing that comes up is)\s+",
     re.I,
 )
@@ -700,32 +700,44 @@ def _evidence_label(concept: str, rng: Any | None = None) -> str:
         elif len(words) == 1 and year and _is_usable_evidence_label(entity):
             # Rare solid single name — only keep when paired with a year later.
             candidates.append(entity)
-    # Also try the stripped memory body as a short noun phrase.
+
+    # Prefer Proper spans; only then try a short stripped noun body.
     body = _strip_wrapper(text)
+    body = re.sub(
+        r"^(?:class notes mentioned|developments around|pressure building around|"
+        r"something from around)\s+",
+        "",
+        body,
+        flags=re.I,
+    ).strip(" ,;.")
     body_words = body.split()
     if 2 <= len(body_words) <= 6 and _is_usable_evidence_label(body):
         # Avoid clause-like bodies.
         if not re.search(
             r"\b(shaped|changed|coming|tied|pressures|shifted|loyalty|policy|"
-            r"example|showed|making|remember)\b",
+            r"example|showed|making|remember|mentioned|developments|notes|"
+            r"class|around|something)\b",
             body,
             flags=re.I,
         ):
-            candidates.insert(0, body)
+            if re.search(r"[A-Z]", body):
+                candidates.append(body)
 
     label = ""
     for cand in candidates:
-        if _is_usable_evidence_label(cand):
-            # Prefer multi-word.
-            if len(cand.split()) >= 2:
-                label = cand
-                break
-            if not label:
-                label = cand
+        if not _is_usable_evidence_label(cand):
+            continue
+        # Prefer multi-word Proper-looking labels.
+        if len(cand.split()) >= 2:
+            label = cand
+            break
+        if not label:
+            label = cand
+
     if not label:
-        # Last try: multi-word capitalized span even if cleaning was strict.
         m = re.search(
-            r"\b([A-Z][A-Za-z0-9'’\-]+(?:\s+(?:of|the|and)?\s*[A-Z][A-Za-z0-9'’\-]+){1,4})\b",
+            r"\b([A-Z][A-Za-z0-9'’\-]+(?:\s+(?:of|the|and)\s+[A-Z][A-Za-z0-9'’\-]+"
+            r"|\s+[A-Z][A-Za-z0-9'’\-]+){1,4})\b",
             text,
         )
         if m:
@@ -737,18 +749,13 @@ def _evidence_label(concept: str, rng: Any | None = None) -> str:
         pool = list(_GENERIC_EVIDENCE)
         if rng is not None:
             rng.shuffle(pool)
-            label = pool[0]
-        else:
-            label = pool[0]
-        return label
+        return pool[0]
 
     words = label.split()
     if len(words) > 6:
         label = " ".join(words[:6])
-    if year and year not in label:
-        # Prefer "Name in YYYY" when space allows.
-        if len(label.split()) <= 5:
-            label = f"{label} in {year}"
+    if year and year not in label and len(label.split()) <= 5:
+        label = f"{label} in {year}"
     return label
 
 

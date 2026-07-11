@@ -2,17 +2,21 @@
 
 from __future__ import annotations
 
+import json
 import re
 import unittest
+from pathlib import Path
 
 from apush_frq_grader_slm.compose_v4 import rng_for_task
 from apush_frq_grader_slm.compose_v5 import (
     GENERATOR_NAME,
+    _evidence_label,
     _topic_phrase,
     compose_essay,
     resolve_observable_behavior,
 )
 from apush_frq_grader_slm.fact_cards_v5 import has_eight_gram_overlap
+from apush_frq_grader_slm.judge_v5 import _has_repeated_long_span
 
 
 def _packet(**overrides: object) -> dict:
@@ -152,7 +156,16 @@ class ComposeV5Tests(unittest.TestCase):
         essay = compose_essay(packet, rng=rng_for_task("v5-test-cards"))
         lowered = essay.lower()
         # Expect paraphrased anchors drawn from card concepts (not AMSCO copy).
-        anchors = ("trade", "atlantic", "slavery", "plantation", "merchant", "ship", "colonial", "staple")
+        anchors = (
+            "trade",
+            "atlantic",
+            "slavery",
+            "plantation",
+            "merchant",
+            "ship",
+            "colonial",
+            "staple",
+        )
         hits = [a for a in anchors if a in lowered]
         self.assertGreaterEqual(
             len(hits),
@@ -244,10 +257,39 @@ class ComposeV5Tests(unittest.TestCase):
             "order from 1800 to 1848."
         )
         topic = _topic_phrase(prompt)
-        self.assertLessEqual(len(topic.split()), 14)
+        self.assertLessEqual(len(topic.split()), 10)
         self.assertNotRegex(topic.lower(), r"^(explain|evaluate|assess|analyze)\b")
         self.assertIn("sectional rivalries", topic.lower())
-        self.assertRegex(topic, r"1800\s*[–-]\s*1848")
+        self.assertRegex(topic, r"1800-1848")
+
+    def test_evidence_label_rejects_bare_truncated_names(self) -> None:
+        rng = rng_for_task("v5-test-evidence-label")
+        rejected = (
+            "Prelude is a remembered reference point in period 8 (1945).",
+            "September is a remembered reference point in period 8 (1939).",
+            "Cotton is a remembered reference point in period 4 (1830).",
+            "Allies is a remembered reference point in period 7 (1917).",
+            "Few is a remembered reference point in period 4 (1800).",
+        )
+        for concept in rejected:
+            label = _evidence_label(concept, rng)
+            self.assertNotRegex(
+                label,
+                r"^(Prelude|September|Cotton|Allies|Few)$",
+                msg=f"bare truncated label from {concept!r}: {label!r}",
+            )
+            self.assertTrue(2 <= len(label.split()) <= 8, msg=label)
+
+        good = _evidence_label(
+            "Emancipation Proclamation is a remembered reference point in period 5 (1863).",
+            rng,
+        )
+        self.assertIn("Emancipation Proclamation", good)
+        battle = _evidence_label(
+            "Battle of New Orleans is a remembered reference point in period 4 (1815).",
+            rng,
+        )
+        self.assertIn("Battle of New Orleans", battle)
 
     def test_quality_hygiene_across_random_seeds(self) -> None:
         prompts = [
@@ -287,7 +329,7 @@ class ComposeV5Tests(unittest.TestCase):
             topic = _topic_phrase(prompt)
             self.assertLessEqual(
                 len(topic.split()),
-                14,
+                10,
                 msg=f"topic too long for seed {seed}: {topic!r}",
             )
             packet = _packet(
@@ -330,6 +372,54 @@ class ComposeV5Tests(unittest.TestCase):
                         f"{span!r}\n{essay[:400]}"
                     ),
                 )
+
+    def test_real_packets_avoid_repeated_10grams(self) -> None:
+        packets_path = Path("artifacts/data/v5/packets/v5-shard-00.jsonl")
+        tasks_path = Path("artifacts/data/v5/planning/generation_tasks_v5.jsonl")
+        if not packets_path.is_file():
+            self.skipTest(f"missing packets shard: {packets_path}")
+        packets = [
+            json.loads(line)
+            for line in packets_path.read_text().splitlines()
+            if line.strip()
+        ]
+        self.assertGreaterEqual(len(packets), 30)
+        tasks: dict[str, dict] = {}
+        if tasks_path.is_file():
+            for line in tasks_path.read_text().splitlines():
+                if not line.strip():
+                    continue
+                row = json.loads(line)
+                if row.get("task_id"):
+                    tasks[str(row["task_id"])] = row
+
+        essays: list[str] = []
+        for packet in packets[:30]:
+            task_id = str(packet["task_id"])
+            behavior = resolve_observable_behavior(packet, tasks.get(task_id))
+            essay = compose_essay(
+                packet,
+                observable_writing_behavior=behavior,
+                rng=rng_for_task(task_id),
+            )
+            essays.append(essay)
+            self.assertIsNone(
+                re.search(r"\bmattering\b", essay, flags=re.I),
+                msg=f"mattering stub in {task_id}:\n{essay[:300]}",
+            )
+
+        repeated = sum(1 for essay in essays if _has_repeated_long_span(essay))
+        self.assertLess(
+            repeated / len(essays),
+            0.20,
+            msg=f"{repeated}/{len(essays)} essays had a 10-word span repeated ≥3 times",
+        )
+        mean_words = sum(len(essay.split()) for essay in essays) / len(essays)
+        self.assertGreaterEqual(
+            mean_words,
+            140,
+            msg=f"mean word count {mean_words:.1f} below 140",
+        )
 
 
 if __name__ == "__main__":
