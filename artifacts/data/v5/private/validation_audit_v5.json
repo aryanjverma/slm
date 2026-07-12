@@ -1,0 +1,19 @@
+{
+  "accepted": 1193,
+  "allowed_phrase_count": 2065,
+  "contains_private_rows": true,
+  "coverage": {
+    "boundary": 420,
+    "golden_matched": 773
+  },
+  "missing_task_ids": [],
+  "planned": 1500,
+  "redistribution_authorized": false,
+  "rejected": 307,
+  "rejection_reasons": {
+    "authenticity_gate_failed": 4,
+    "golden_distribution_match_not_verified": 283,
+    "historical_fact_check_failed": 27
+  },
+  "returned": 1500
+}

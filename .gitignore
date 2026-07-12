@@ -20,8 +20,5 @@ artifacts/eval/v1_eval_results.md
 # Written permission records may contain private correspondence or identifiers.
 config/college_board_permission.json
 
-# V5 private essays, style excerpts, labels, reviews, and packets — aggregate audits only.
-artifacts/data/v5/private/
-artifacts/data/v5/packets/
-artifacts/data/v5/planning/generation_tasks_v5.jsonl
-artifacts/data/v5/planning/generation_manifest_v5.json
+# V5 runtime logs only — essays/labels/packets may be committed in a private repo.
+artifacts/data/v5/private/logs/

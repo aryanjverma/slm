@@ -1,0 +1,72 @@
+[
+  {
+    "task_id": "v5-0044",
+    "shard": "00",
+    "student_like": false,
+    "timed_ap_consistent": false,
+    "reason": "Prompt clause is jammed into every sentence with nonsensical evidence stubs like \"By around 1850 mattering,\" plus stock meta asides that read as template assembly rather than a timed student LEQ."
+  },
+  {
+    "task_id": "v5-0738",
+    "shard": "00",
+    "student_like": false,
+    "timed_ap_consistent": false,
+    "reason": "Evidence tokens (\"The Election around 1944 mattering,\" \"Soon around 1883 mattering\") are period-wrong placeholders, and the same classmate/teacher filler lines appear as generator chrome."
+  },
+  {
+    "task_id": "v5-0119",
+    "shard": "07",
+    "student_like": false,
+    "timed_ap_consistent": false,
+    "reason": "Opening pastes the full prompt as a broken clause, then uses \"Alger Hiss mattering\" and bolted-on \"Hard to finish in time\" rather than organic unfinished writing."
+  },
+  {
+    "task_id": "v5-0989",
+    "shard": "07",
+    "student_like": false,
+    "timed_ap_consistent": false,
+    "reason": "Repeated \"Demographic around 1701 mattering\" / \"Navigation Acts mattering\" stubs and truncated prompt paste (\"North\u2026\") are composition artifacts, not exam prose."
+  },
+  {
+    "task_id": "v5-0053",
+    "shard": "14",
+    "student_like": false,
+    "timed_ap_consistent": false,
+    "reason": "Nearly empty body recycles the prompt verbatim three times with only \"From around 1775 mattering\" as fake evidence and identical worksheet/teacher stock lines."
+  },
+  {
+    "task_id": "v5-0780",
+    "shard": "14",
+    "student_like": false,
+    "timed_ap_consistent": false,
+    "reason": "Formulaic body paragraphs name events as \"X mattering\" while repeatedly embedding the full prompt phrase; evidence (Townshend/Quartering) sits outside the 1607\u20131754 frame in a non-student way."
+  },
+  {
+    "task_id": "v5-0080",
+    "shard": "21",
+    "student_like": false,
+    "timed_ap_consistent": false,
+    "reason": "\"Disputes With Japan Meanwhile around 1940 mattering\" and triple \"Hard to finish in time\" inserts are mechanical timing theater, not a real clock-pressure essay."
+  },
+  {
+    "task_id": "v5-0756",
+    "shard": "21",
+    "student_like": false,
+    "timed_ap_consistent": false,
+    "reason": "Uses Neutrality Acts (1930s) as \"mattering\" evidence on a 1945\u20131991 Cold War prompt and ends with the same cross-shard classmate/worksheet boilerplate."
+  },
+  {
+    "task_id": "v5-0010",
+    "shard": "28",
+    "student_like": false,
+    "timed_ap_consistent": false,
+    "reason": "Evidence set (First Continental Congress, Revenue Act 1764) is chronologically off for 1500\u20131763 Native/European conflict and is glued on via the shared \"X mattering\" template."
+  },
+  {
+    "task_id": "v5-0740",
+    "shard": "28",
+    "student_like": false,
+    "timed_ap_consistent": false,
+    "reason": "\"Amendment Jacqueline Kennedy Voting mattering\" is unreal nonsense; \"Hard to finish in time\" appears three times as pasted filler rather than authentic truncation."
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "approved": true,
+  "artifacts": {
+    "dev_cases_v5.jsonl": "68366771b24a9ecda520b8d80d64beafd0ef16c9095894ec143d6ff41c4d6e93",
+    "dev_chat_v5_feedback.jsonl": "a0176db2e5a6cc54a245cd07f587a0a4d1381c3643e57ca01e6d25347d9615ee",
+    "dev_chat_v5_scorer.jsonl": "20292ba7fa2898b8b3f28dd0f1d25df730cd0abf6c704f21347949ed6b311be6",
+    "replay_cases_v4_for_v5.jsonl": "117fe5799bde57c2326371c92901f68009675b67583f674e9e65f482e91dcb00",
+    "train_cases_v5.jsonl": "9c9253aaaedf36f90c2492da8ffec1672a177f5c37f7606efe0a8400bd4251af",
+    "train_chat_v5_feedback.jsonl": "7dedb3c1dde081c57f8fd51cd2537272e93b06aca541e94aac27b43f94c21dbf",
+    "train_chat_v5_scorer.jsonl": "b53afbf433d30c72752a2b73b585af5bd050a139f162e14a6c31187c80784690"
+  },
+  "golden_eval_rows_in_training": 0,
+  "new_dev": 60,
+  "new_train": 540,
+  "training_rows_total": 615,
+  "v4_replay": 75
+}

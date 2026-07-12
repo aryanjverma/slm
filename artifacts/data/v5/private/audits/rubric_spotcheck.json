@@ -1,0 +1,242 @@
+[
+  {
+    "task_id": "v5-0005",
+    "your_scores": {
+      "thesis": 0,
+      "contextualization": 0,
+      "evidence": 1,
+      "analysis_reasoning": 1
+    },
+    "resolved_scores": {
+      "thesis": 0,
+      "contextualization": 0,
+      "evidence": 1,
+      "analysis_reasoning": 2
+    },
+    "absolute_diffs_per_criterion": {
+      "thesis": 0,
+      "contextualization": 0,
+      "evidence": 0,
+      "analysis_reasoning": 1
+    },
+    "total_abs_diff": 1,
+    "agree_within_one_total": true,
+    "notes": "Opening restates the topic without a defensible claim about how reform movements reacted. No broader context. Two weak named fragments (Peculiar; The North ~1800) earn evidence 1 but are barely relevant. Causation language present for AR 1; resolved AR 2 is inflated\u2014no complexity, qualification, or four effective evidence uses."
+  },
+  {
+    "task_id": "v5-0128",
+    "your_scores": {
+      "thesis": 1,
+      "contextualization": 0,
+      "evidence": 2,
+      "analysis_reasoning": 1
+    },
+    "resolved_scores": {
+      "thesis": 1,
+      "contextualization": 0,
+      "evidence": 2,
+      "analysis_reasoning": 2
+    },
+    "absolute_diffs_per_criterion": {
+      "thesis": 0,
+      "contextualization": 0,
+      "evidence": 0,
+      "analysis_reasoning": 1
+    },
+    "total_abs_diff": 1,
+    "agree_within_one_total": true,
+    "notes": "Extent thesis with two-factor preview. No contextualization. Mayflower Compact (anachronistic) and Kentucky are named and linked to the claim \u2192 evidence 2. Comparison structures AR 1; resolved AR 2 over-awards\u2014classmate aside is not historical complexity."
+  },
+  {
+    "task_id": "v5-0254",
+    "your_scores": {
+      "thesis": 1,
+      "contextualization": 1,
+      "evidence": 2,
+      "analysis_reasoning": 1
+    },
+    "resolved_scores": {
+      "thesis": 1,
+      "contextualization": 1,
+      "evidence": 2,
+      "analysis_reasoning": 1
+    },
+    "absolute_diffs_per_criterion": {
+      "thesis": 0,
+      "contextualization": 0,
+      "evidence": 0,
+      "analysis_reasoning": 0
+    },
+    "total_abs_diff": 0,
+    "agree_within_one_total": true,
+    "notes": "Extent thesis with strike examples. Pre-period land/labor/authority framing earns contextualization under corrected rubric (no sentence-count rule). GRS 1877 and Homestead used to support \u2192 evidence 2. Comparison only \u2192 AR 1. Full agreement."
+  },
+  {
+    "task_id": "v5-0039",
+    "your_scores": {
+      "thesis": 0,
+      "contextualization": 0,
+      "evidence": 1,
+      "analysis_reasoning": 1
+    },
+    "resolved_scores": {
+      "thesis": 0,
+      "contextualization": 0,
+      "evidence": 1,
+      "analysis_reasoning": 1
+    },
+    "absolute_diffs_per_criterion": {
+      "thesis": 0,
+      "contextualization": 0,
+      "evidence": 0,
+      "analysis_reasoning": 0
+    },
+    "total_abs_diff": 0,
+    "agree_within_one_total": true,
+    "notes": "Vague opening does not weigh leading factors. No broader context. Thin specifics (~1970; local protests) for evidence 1. Explicit CCOT structuring \u2192 AR 1. Agreement."
+  },
+  {
+    "task_id": "v5-0184",
+    "your_scores": {
+      "thesis": 1,
+      "contextualization": 0,
+      "evidence": 2,
+      "analysis_reasoning": 1
+    },
+    "resolved_scores": {
+      "thesis": 1,
+      "contextualization": 0,
+      "evidence": 1,
+      "analysis_reasoning": 1
+    },
+    "absolute_diffs_per_criterion": {
+      "thesis": 0,
+      "contextualization": 0,
+      "evidence": 1,
+      "analysis_reasoning": 0
+    },
+    "total_abs_diff": 1,
+    "agree_within_one_total": true,
+    "notes": "Claim that national culture 'mattered' with Cooper ~1824 and Mormons ~1830 as line of reasoning. No context. Those two specifics are linked to the argument (1861 item is off-period) \u2192 evidence 2 vs resolved 1. Causation only \u2192 AR 1."
+  },
+  {
+    "task_id": "v5-0051",
+    "your_scores": {
+      "thesis": 0,
+      "contextualization": 1,
+      "evidence": 1,
+      "analysis_reasoning": 1
+    },
+    "resolved_scores": {
+      "thesis": 0,
+      "contextualization": 1,
+      "evidence": 1,
+      "analysis_reasoning": 1
+    },
+    "absolute_diffs_per_criterion": {
+      "thesis": 0,
+      "contextualization": 0,
+      "evidence": 0,
+      "analysis_reasoning": 0
+    },
+    "total_abs_diff": 0,
+    "agree_within_one_total": true,
+    "notes": "Thesis muddles the prompt: Vietnam/CRA/'Eastern Europe 1991' do not establish ways social order responded to economic changes. Earlier land/labor/authority framing \u2192 contextualization 1. Named examples present but poorly aligned \u2192 evidence 1. Comparison \u2192 AR 1. Agreement."
+  },
+  {
+    "task_id": "v5-0103",
+    "your_scores": {
+      "thesis": 0,
+      "contextualization": 0,
+      "evidence": 1,
+      "analysis_reasoning": 1
+    },
+    "resolved_scores": {
+      "thesis": 1,
+      "contextualization": 0,
+      "evidence": 1,
+      "analysis_reasoning": 1
+    },
+    "absolute_diffs_per_criterion": {
+      "thesis": 1,
+      "contextualization": 0,
+      "evidence": 0,
+      "analysis_reasoning": 0
+    },
+    "total_abs_diff": 1,
+    "agree_within_one_total": true,
+    "notes": "'This essay is about [prompt]' is an announcement, not a historically defensible thesis\u2014resolved thesis 1 is too generous. No context. Modern Republicanism + vague 1998 item \u2192 evidence 1. Causation template \u2192 AR 1."
+  },
+  {
+    "task_id": "v5-0226",
+    "your_scores": {
+      "thesis": 1,
+      "contextualization": 0,
+      "evidence": 2,
+      "analysis_reasoning": 1
+    },
+    "resolved_scores": {
+      "thesis": 1,
+      "contextualization": 0,
+      "evidence": 2,
+      "analysis_reasoning": 2
+    },
+    "absolute_diffs_per_criterion": {
+      "thesis": 0,
+      "contextualization": 0,
+      "evidence": 0,
+      "analysis_reasoning": 1
+    },
+    "total_abs_diff": 1,
+    "agree_within_one_total": true,
+    "notes": "Clear extent claim with two-factor preview. No context. Valtman ~1991 and 'By ~1941' named and used to support \u2192 evidence 2. Comparison only \u2192 AR 1; resolved AR 2 again looks inflated."
+  },
+  {
+    "task_id": "v5-0297",
+    "your_scores": {
+      "thesis": 1,
+      "contextualization": 0,
+      "evidence": 1,
+      "analysis_reasoning": 2
+    },
+    "resolved_scores": {
+      "thesis": 1,
+      "contextualization": 0,
+      "evidence": 1,
+      "analysis_reasoning": 1
+    },
+    "absolute_diffs_per_criterion": {
+      "thesis": 0,
+      "contextualization": 0,
+      "evidence": 0,
+      "analysis_reasoning": 1
+    },
+    "total_abs_diff": 1,
+    "agree_within_one_total": true,
+    "notes": "Thesis asserts importance with named factors (weak on true compare). No context. WWII-era names (Manhattan Project, Allies ~1941, etc.) are specific but poorly relevant to 1945\u20131980 social-reform causes \u2192 evidence 1. Causation plus explicit counterpoint/uneven change qualifies for AR 2; resolved AR 1 under-scores complexity."
+  },
+  {
+    "task_id": "v5-0144",
+    "your_scores": {
+      "thesis": 0,
+      "contextualization": 0,
+      "evidence": 0,
+      "analysis_reasoning": 0
+    },
+    "resolved_scores": {
+      "thesis": 1,
+      "contextualization": 0,
+      "evidence": 1,
+      "analysis_reasoning": 0
+    },
+    "absolute_diffs_per_criterion": {
+      "thesis": 1,
+      "contextualization": 0,
+      "evidence": 1,
+      "analysis_reasoning": 0
+    },
+    "total_abs_diff": 2,
+    "agree_within_one_total": false,
+    "notes": "Announcement thesis ('This essay is about\u2026') \u2192 0; resolved 1 is incorrect. In-period hardship talk is not broader context. Only one specific (Representative government ~1620) \u2192 evidence 0 not 1. No reasoning structure \u2192 AR 0."
+  }
+]

@@ -1,0 +1,51 @@
+{
+  "aggregate_style_audit": {
+    "golden_text_retained": false,
+    "metrics": {
+      "informal_marker_per_100": {
+        "allowed_delta": 0.5,
+        "candidate_mean": 0.067,
+        "golden_mean": 0.0176,
+        "passed": true
+      },
+      "paragraph_count": {
+        "allowed_delta": 0.5,
+        "candidate_mean": 1.0,
+        "golden_mean": 1.0,
+        "passed": true
+      },
+      "punctuation_per_100": {
+        "allowed_delta": 1.8915,
+        "candidate_mean": 4.1663,
+        "golden_mean": 3.1525,
+        "passed": true
+      },
+      "sentence_word_mean": {
+        "allowed_delta": 13.8292,
+        "candidate_mean": 11.7044,
+        "golden_mean": 19.7559,
+        "passed": true
+      },
+      "sentence_word_std": {
+        "allowed_delta": 6.7721,
+        "candidate_mean": 5.0701,
+        "golden_mean": 8.4651,
+        "passed": true
+      },
+      "word_count": {
+        "allowed_delta": 118.6132,
+        "candidate_mean": 166.081,
+        "golden_mean": 263.5849,
+        "passed": true
+      }
+    },
+    "passed": true
+  },
+  "approval_required_before_finalize": true,
+  "dev": 60,
+  "manual_review": 60,
+  "private_use_notice": "Private training use only. Do not redistribute essays, style excerpts, per-case labels, or review records. Aggregate audits may be shared.",
+  "redistribute_rows": false,
+  "selected": 600,
+  "train": 540
+}
