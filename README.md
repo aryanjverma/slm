@@ -88,7 +88,9 @@ python scripts/export_v5_generation_packets.py --fact-cards PATH_TO_PRIVATE_FACT
 # external writers + blind reviews return candidates
 python scripts/validate_v5_external_candidates.py --tasks ... --candidates ... --overlap-corpus ...
 python scripts/assemble_v5_dataset.py prepare-review --candidates ...
-# complete manual review + approval file, then:
+# Review every packet row interactively. Add --plain for screen readers/no color.
+python scripts/review_v5_manual_packet.py --reviewer YOUR_NAME
+# The reviewer writes a hash-bound approval only after all 60 rows pass, then:
 python scripts/assemble_v5_dataset.py finalize --candidates ...
 ```
 

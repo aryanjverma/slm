@@ -14,11 +14,13 @@ approval.
 4. Run `scripts/validate_v5_external_candidates.py` with the private task plan and repeat
    `--overlap-corpus` for the golden and v4 essay files. The validator restores trusted planning
    metadata, rejects copied or incomplete records, and writes an audit.
-5. Run `scripts/assemble_v5_dataset.py prepare-review` on the validated candidates. Review all
-   60 packet rows and record `manual_review.decision` as `accept` or `corrected`. Corrections may
-   contain only `scores` and/or `feedback`.
-6. Create `manual_review_approval_v5.json` with `approved: true`, a reviewer, timestamp, and the
-   SHA-256 of the completed packet. Run the assembler's `finalize` stage. Training remains blocked
+5. Run `scripts/assemble_v5_dataset.py prepare-review` on the validated candidates, then run
+   `python scripts/review_v5_manual_packet.py --reviewer YOUR_NAME`. The accessible terminal UI
+   displays every prompt, essay, reader score, resolved score, feedback field, and audit result.
+   It saves each action immediately and supports `--plain` for screen readers. Corrections may
+   contain only `scores` and/or `feedback`; rejected essays block approval until replaced.
+6. After the same human reviewer accepts or corrects all 60 rows, the CLI writes the hash-bound
+   `manual_review_approval_v5.json`. Run the assembler's `finalize` stage. Training remains blocked
    until the packet and approval hash match.
 
 All generated essays, excerpts, per-case labels, judgments, and packets are private and cannot be
