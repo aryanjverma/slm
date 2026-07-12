@@ -1,0 +1,6 @@
+{
+  "reset": true,
+  "reason": "v5_authentic_essay_regeneration",
+  "previous_packet": "manual_review_packet_v5.jsonl (contaminated corpus; do not use)",
+  "next_step": "After regeneration + judging + assemble prepare-review, review all 60 replacement rows."
+}

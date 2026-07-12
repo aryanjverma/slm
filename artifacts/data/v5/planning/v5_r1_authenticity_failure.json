@@ -1,0 +1,121 @@
+{
+  "artifact_category_counts": {
+    "generator_mattering_stub": 0,
+    "knowledge_admission": 169,
+    "memory_or_notes": 1253,
+    "physical_test_conditions": 925,
+    "planning_or_draft_process": 1486,
+    "prompt_or_instruction_leakage": 0,
+    "stock_classroom_filler": 0,
+    "timing_theater_filler": 49
+  },
+  "artifact_category_rates": {
+    "generator_mattering_stub": 0.0,
+    "knowledge_admission": 0.1127,
+    "memory_or_notes": 0.8353,
+    "physical_test_conditions": 0.6167,
+    "planning_or_draft_process": 0.9907,
+    "prompt_or_instruction_leakage": 0.0,
+    "stock_classroom_filler": 0.0,
+    "timing_theater_filler": 0.0327
+  },
+  "campaign": "v5_r1_authenticity_failure",
+  "contaminated_essays": 1500,
+  "contamination_rate": 1.0,
+  "corpus_status": "discarded_pending_regeneration",
+  "deterministic_composer_retired_from_production": true,
+  "essays_scanned": 1500,
+  "evaluation_53_case_note": "The final 53-case College Board evaluation is development-informed / contaminated because all 53 full essays are used as writer style references. Do not claim it is an independent generalization test.",
+  "private_essay_text_retained": false,
+  "redistribution_authorized": false,
+  "selected_split_audits": {
+    "dev_cases_v5.jsonl": {
+      "artifact_category_counts": {
+        "generator_mattering_stub": 0,
+        "knowledge_admission": 6,
+        "memory_or_notes": 53,
+        "physical_test_conditions": 38,
+        "planning_or_draft_process": 59,
+        "prompt_or_instruction_leakage": 0,
+        "stock_classroom_filler": 0,
+        "timing_theater_filler": 4
+      },
+      "artifact_category_rates": {
+        "generator_mattering_stub": 0.0,
+        "knowledge_admission": 0.1,
+        "memory_or_notes": 0.8833,
+        "physical_test_conditions": 0.6333,
+        "planning_or_draft_process": 0.9833,
+        "prompt_or_instruction_leakage": 0.0,
+        "stock_classroom_filler": 0.0,
+        "timing_theater_filler": 0.0667
+      },
+      "campaign": "v5_r1_authenticity_failure",
+      "contaminated_essays": 60,
+      "contamination_rate": 1.0,
+      "essays_scanned": 60,
+      "private_essay_text_retained": false,
+      "redistribution_authorized": false,
+      "why_previous_authenticity_judge_failed": "Feature-based authenticity readers rewarded informal/timed surface cues and missed systematic generator meta/process language (notes, outlines, memory admissions, timing theater, mattering stubs). Deterministic hard gates for those categories were absent, so contaminated essays passed into selection."
+    },
+    "selected_cases_v5_provisional.jsonl": {
+      "artifact_category_counts": {
+        "generator_mattering_stub": 0,
+        "knowledge_admission": 56,
+        "memory_or_notes": 501,
+        "physical_test_conditions": 361,
+        "planning_or_draft_process": 593,
+        "prompt_or_instruction_leakage": 0,
+        "stock_classroom_filler": 0,
+        "timing_theater_filler": 23
+      },
+      "artifact_category_rates": {
+        "generator_mattering_stub": 0.0,
+        "knowledge_admission": 0.0933,
+        "memory_or_notes": 0.835,
+        "physical_test_conditions": 0.6017,
+        "planning_or_draft_process": 0.9883,
+        "prompt_or_instruction_leakage": 0.0,
+        "stock_classroom_filler": 0.0,
+        "timing_theater_filler": 0.0383
+      },
+      "campaign": "v5_r1_authenticity_failure",
+      "contaminated_essays": 600,
+      "contamination_rate": 1.0,
+      "essays_scanned": 600,
+      "private_essay_text_retained": false,
+      "redistribution_authorized": false,
+      "why_previous_authenticity_judge_failed": "Feature-based authenticity readers rewarded informal/timed surface cues and missed systematic generator meta/process language (notes, outlines, memory admissions, timing theater, mattering stubs). Deterministic hard gates for those categories were absent, so contaminated essays passed into selection."
+    },
+    "train_cases_v5.jsonl": {
+      "artifact_category_counts": {
+        "generator_mattering_stub": 0,
+        "knowledge_admission": 50,
+        "memory_or_notes": 448,
+        "physical_test_conditions": 323,
+        "planning_or_draft_process": 534,
+        "prompt_or_instruction_leakage": 0,
+        "stock_classroom_filler": 0,
+        "timing_theater_filler": 19
+      },
+      "artifact_category_rates": {
+        "generator_mattering_stub": 0.0,
+        "knowledge_admission": 0.0926,
+        "memory_or_notes": 0.8296,
+        "physical_test_conditions": 0.5981,
+        "planning_or_draft_process": 0.9889,
+        "prompt_or_instruction_leakage": 0.0,
+        "stock_classroom_filler": 0.0,
+        "timing_theater_filler": 0.0352
+      },
+      "campaign": "v5_r1_authenticity_failure",
+      "contaminated_essays": 540,
+      "contamination_rate": 1.0,
+      "essays_scanned": 540,
+      "private_essay_text_retained": false,
+      "redistribution_authorized": false,
+      "why_previous_authenticity_judge_failed": "Feature-based authenticity readers rewarded informal/timed surface cues and missed systematic generator meta/process language (notes, outlines, memory admissions, timing theater, mattering stubs). Deterministic hard gates for those categories were absent, so contaminated essays passed into selection."
+    }
+  },
+  "why_previous_authenticity_judge_failed": "Feature-based authenticity readers rewarded informal/timed surface cues and missed systematic generator meta/process language (notes, outlines, memory admissions, timing theater, mattering stubs). Deterministic hard gates for those categories were absent, so contaminated essays passed into selection."
+}

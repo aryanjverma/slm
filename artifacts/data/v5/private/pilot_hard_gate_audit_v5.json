@@ -1,0 +1,10 @@
+{
+  "accepted": 30,
+  "extra_task_ids": [],
+  "missing_task_ids": [],
+  "pilot_count": 30,
+  "ready_for_human_review": true,
+  "rejected": 0,
+  "rejection_reasons": {},
+  "returned": 30
+}

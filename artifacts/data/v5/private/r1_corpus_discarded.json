@@ -1,0 +1,16 @@
+{
+  "discarded": true,
+  "reason": "v5_authentic_essay_regeneration",
+  "discarded_at": "2026-07-12T01:29:04Z",
+  "paths": [
+    "artifacts/data/v5/private/raw_essays",
+    "artifacts/data/v5/private/judged",
+    "artifacts/data/v5/private/validated_candidates_v5.jsonl",
+    "artifacts/data/v5/private/selected_cases_v5_provisional.jsonl",
+    "artifacts/data/v5/private/train_cases_v5.jsonl",
+    "artifacts/data/v5/private/dev_cases_v5.jsonl",
+    "artifacts/data/v5/packets"
+  ],
+  "replacement_packets": "artifacts/data/v5/packets_r2",
+  "replacement_essays": "artifacts/data/v5/private/raw_essays_r2"
+}

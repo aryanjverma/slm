@@ -1,0 +1,272 @@
+[
+  {
+    "task_id": "v5-0000",
+    "coverage_class": "golden_matched",
+    "boundary_type": "",
+    "contrast_side": "",
+    "period": 2,
+    "prompt": "Assess how far the expansion of Atlantic commerce remade British North American colonial social order from 1607 to 1776.",
+    "reference_word_count": 82
+  },
+  {
+    "task_id": "v5-0085",
+    "coverage_class": "boundary",
+    "boundary_type": "evidence_0_1",
+    "contrast_side": "upper",
+    "period": 2,
+    "prompt": "Rank the main causes of conflict among Europeans and Native Americans from 1500 to 1763.",
+    "reference_word_count": 60
+  },
+  {
+    "task_id": "v5-0097",
+    "coverage_class": "golden_matched",
+    "boundary_type": "",
+    "contrast_side": "",
+    "period": 4,
+    "prompt": "Trace how sectional rivalries shaped U.S. society from 1800 to 1848.",
+    "reference_word_count": 579
+  },
+  {
+    "task_id": "v5-0103",
+    "coverage_class": "golden_matched",
+    "boundary_type": "",
+    "contrast_side": "",
+    "period": 8,
+    "prompt": "Trace how U.S. society reacted to economic changes from 1960 to 2000.",
+    "reference_word_count": 507
+  },
+  {
+    "task_id": "v5-0127",
+    "coverage_class": "golden_matched",
+    "boundary_type": "",
+    "contrast_side": "",
+    "period": 3,
+    "prompt": "Determine whether settler territorial push reshaped North American lands from 1754 to 1800.",
+    "reference_word_count": 73
+  },
+  {
+    "task_id": "v5-0161",
+    "coverage_class": "boundary",
+    "boundary_type": "analysis_reasoning_1_2",
+    "contrast_side": "upper",
+    "period": 3,
+    "prompt": "Assess how far settler territorial push influenced North America from 1754 to 1800.",
+    "reference_word_count": 73
+  },
+  {
+    "task_id": "v5-0255",
+    "coverage_class": "golden_matched",
+    "boundary_type": "",
+    "contrast_side": "",
+    "period": 5,
+    "prompt": "Trace how varied U.S. reform movements reacted to industrial growth from 1820 to 1900.",
+    "reference_word_count": 222
+  },
+  {
+    "task_id": "v5-0395",
+    "coverage_class": "boundary",
+    "boundary_type": "evidence_0_1",
+    "contrast_side": "lower",
+    "period": 2,
+    "prompt": "Rank the main causes of conflict among Europeans and Native Americans from 1500 to 1763.",
+    "reference_word_count": 60
+  },
+  {
+    "task_id": "v5-0410",
+    "coverage_class": "boundary",
+    "boundary_type": "analysis_reasoning_0_1",
+    "contrast_side": "lower",
+    "period": 2,
+    "prompt": "Assess patterns of continuity and change in how British settlers in the Americas adapted to their environments from 1607 to 1754.",
+    "reference_word_count": 308
+  },
+  {
+    "task_id": "v5-0419",
+    "coverage_class": "boundary",
+    "boundary_type": "evidence_1_2",
+    "contrast_side": "lower",
+    "period": 2,
+    "prompt": "Assess how far the expansion of Atlantic commerce remade British North American colonial social order from 1607 to 1776.",
+    "reference_word_count": 82
+  },
+  {
+    "task_id": "v5-0420",
+    "coverage_class": "golden_matched",
+    "boundary_type": "",
+    "contrast_side": "",
+    "period": 7,
+    "prompt": "Trace how U.S. foreign policy reacted to changes in the world from 1890 to 1930.",
+    "reference_word_count": 236
+  },
+  {
+    "task_id": "v5-0473",
+    "coverage_class": "boundary",
+    "boundary_type": "analysis_reasoning_1_2",
+    "contrast_side": "lower",
+    "period": 3,
+    "prompt": "Judge the degree to which settler territorial push influenced North America from 1754 to 1800.",
+    "reference_word_count": 684
+  },
+  {
+    "task_id": "v5-0499",
+    "coverage_class": "boundary",
+    "boundary_type": "evidence_0_1",
+    "contrast_side": "upper",
+    "period": 2,
+    "prompt": "Weigh the leading factors behind conflict among Europeans and Native Americans from 1500 to 1763.",
+    "reference_word_count": 47
+  },
+  {
+    "task_id": "v5-0501",
+    "coverage_class": "boundary",
+    "boundary_type": "thesis_0_1",
+    "contrast_side": "lower",
+    "period": 2,
+    "prompt": "Judge the degree to which the expansion of Atlantic commerce changed colonial society in British North America from 1607 to 1776.",
+    "reference_word_count": 82
+  },
+  {
+    "task_id": "v5-0535",
+    "coverage_class": "boundary",
+    "boundary_type": "thesis_0_1",
+    "contrast_side": "lower",
+    "period": 2,
+    "prompt": "Assess how far the expansion of Atlantic commerce remade British North American colonial social order from 1607 to 1776.",
+    "reference_word_count": 82
+  },
+  {
+    "task_id": "v5-0710",
+    "coverage_class": "boundary",
+    "boundary_type": "evidence_1_2",
+    "contrast_side": "lower",
+    "period": 2,
+    "prompt": "Judge the degree to which shifts inside North American colonial communities from 1700 to 1776 helped drive the growth of a revolutionary movement.",
+    "reference_word_count": 50
+  },
+  {
+    "task_id": "v5-0714",
+    "coverage_class": "boundary",
+    "boundary_type": "thesis_0_1",
+    "contrast_side": "upper",
+    "period": 2,
+    "prompt": "Assess how far the expansion of Atlantic commerce remade British North American colonial social order from 1607 to 1776.",
+    "reference_word_count": 82
+  },
+  {
+    "task_id": "v5-0717",
+    "coverage_class": "boundary",
+    "boundary_type": "contextualization_0_1",
+    "contrast_side": "lower",
+    "period": 2,
+    "prompt": "Assess patterns of continuity and change in how Indigenous societies adapted to the presence of European colonists in North America from 1500 to 1754.",
+    "reference_word_count": 409
+  },
+  {
+    "task_id": "v5-0791",
+    "coverage_class": "boundary",
+    "boundary_type": "contextualization_0_1",
+    "contrast_side": "lower",
+    "period": 2,
+    "prompt": "Trace continuity and change as Indigenous societies adapted to the presence of European colonists in North America from 1500 to 1754.",
+    "reference_word_count": 362
+  },
+  {
+    "task_id": "v5-0842",
+    "coverage_class": "boundary",
+    "boundary_type": "contextualization_0_1",
+    "contrast_side": "upper",
+    "period": 2,
+    "prompt": "Trace continuity and change as Indigenous societies adapted to the presence of European colonists in North America from 1500 to 1754.",
+    "reference_word_count": 362
+  },
+  {
+    "task_id": "v5-0900",
+    "coverage_class": "boundary",
+    "boundary_type": "analysis_reasoning_0_1",
+    "contrast_side": "upper",
+    "period": 2,
+    "prompt": "Assess patterns of continuity and change in how British settlers in the Americas adapted to their environments from 1607 to 1754.",
+    "reference_word_count": 308
+  },
+  {
+    "task_id": "v5-0967",
+    "coverage_class": "boundary",
+    "boundary_type": "evidence_0_1",
+    "contrast_side": "lower",
+    "period": 2,
+    "prompt": "Weigh the leading factors behind conflict among Europeans and Native Americans from 1500 to 1763.",
+    "reference_word_count": 47
+  },
+  {
+    "task_id": "v5-1079",
+    "coverage_class": "boundary",
+    "boundary_type": "analysis_reasoning_0_1",
+    "contrast_side": "lower",
+    "period": 2,
+    "prompt": "Trace continuity and change as British settlers in the Americas adapted to their environments from 1607 to 1754.",
+    "reference_word_count": 631
+  },
+  {
+    "task_id": "v5-1168",
+    "coverage_class": "boundary",
+    "boundary_type": "contextualization_0_1",
+    "contrast_side": "upper",
+    "period": 2,
+    "prompt": "Assess patterns of continuity and change in how Indigenous societies adapted to the presence of European colonists in North America from 1500 to 1754.",
+    "reference_word_count": 409
+  },
+  {
+    "task_id": "v5-1191",
+    "coverage_class": "boundary",
+    "boundary_type": "analysis_reasoning_1_2",
+    "contrast_side": "lower",
+    "period": 3,
+    "prompt": "Assess how far settler territorial push influenced North America from 1754 to 1800.",
+    "reference_word_count": 73
+  },
+  {
+    "task_id": "v5-1305",
+    "coverage_class": "boundary",
+    "boundary_type": "evidence_1_2",
+    "contrast_side": "upper",
+    "period": 2,
+    "prompt": "Judge the degree to which shifts inside North American colonial communities from 1700 to 1776 helped drive the growth of a revolutionary movement.",
+    "reference_word_count": 50
+  },
+  {
+    "task_id": "v5-1309",
+    "coverage_class": "boundary",
+    "boundary_type": "thesis_0_1",
+    "contrast_side": "upper",
+    "period": 2,
+    "prompt": "Judge the degree to which the expansion of Atlantic commerce changed colonial society in British North America from 1607 to 1776.",
+    "reference_word_count": 82
+  },
+  {
+    "task_id": "v5-1316",
+    "coverage_class": "boundary",
+    "boundary_type": "analysis_reasoning_0_1",
+    "contrast_side": "upper",
+    "period": 2,
+    "prompt": "Trace continuity and change as British settlers in the Americas adapted to their environments from 1607 to 1754.",
+    "reference_word_count": 631
+  },
+  {
+    "task_id": "v5-1454",
+    "coverage_class": "boundary",
+    "boundary_type": "evidence_1_2",
+    "contrast_side": "upper",
+    "period": 2,
+    "prompt": "Assess how far the expansion of Atlantic commerce remade British North American colonial social order from 1607 to 1776.",
+    "reference_word_count": 82
+  },
+  {
+    "task_id": "v5-1468",
+    "coverage_class": "boundary",
+    "boundary_type": "analysis_reasoning_1_2",
+    "contrast_side": "upper",
+    "period": 3,
+    "prompt": "Judge the degree to which settler territorial push influenced North America from 1754 to 1800.",
+    "reference_word_count": 684
+  }
+]
