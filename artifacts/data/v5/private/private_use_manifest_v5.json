@@ -1,40 +1,77 @@
 {
   "aggregate_style_audit": {
     "golden_text_retained": false,
+    "length_realism": {
+      "metrics": {
+        "mean": {
+          "allowed_delta": 26.3585,
+          "candidate": 243.0643,
+          "golden": 263.5849,
+          "passed": true
+        },
+        "median": {
+          "allowed_delta": 54.0,
+          "candidate": 233.0,
+          "golden": 180.0,
+          "passed": true
+        },
+        "q1": {
+          "allowed_delta": 30.6,
+          "candidate": 109.0,
+          "golden": 102.0,
+          "passed": true
+        },
+        "q3": {
+          "allowed_delta": 103.8,
+          "candidate": 364.75,
+          "golden": 346.0,
+          "passed": true
+        }
+      },
+      "passed": true,
+      "private_essay_text_retained": false
+    },
     "metrics": {
       "informal_marker_per_100": {
         "allowed_delta": 0.5,
-        "candidate_mean": 0.067,
+        "candidate_mean": 0.0866,
         "golden_mean": 0.0176,
         "passed": true
       },
       "paragraph_count": {
-        "allowed_delta": 0.5,
-        "candidate_mean": 1.0,
+        "allowed_delta": null,
+        "candidate_mean": 1.9238,
         "golden_mean": 1.0,
-        "passed": true
+        "passed": true,
+        "skipped_reason": "golden_essays_lack_paragraph_breaks"
       },
       "punctuation_per_100": {
-        "allowed_delta": 1.8915,
-        "candidate_mean": 4.1663,
+        "allowed_delta": 0.4729,
+        "candidate_mean": 3.5031,
         "golden_mean": 3.1525,
         "passed": true
       },
       "sentence_word_mean": {
-        "allowed_delta": 13.8292,
-        "candidate_mean": 11.7044,
-        "golden_mean": 19.7559,
+        "allowed_delta": 2.9659,
+        "candidate_mean": 19.1352,
+        "golden_mean": 19.7729,
         "passed": true
       },
       "sentence_word_std": {
-        "allowed_delta": 6.7721,
-        "candidate_mean": 5.0701,
-        "golden_mean": 8.4651,
+        "allowed_delta": 2.9537,
+        "candidate_mean": 6.2678,
+        "golden_mean": 8.439,
+        "passed": true
+      },
+      "spelling_error_density_per_100": {
+        "allowed_delta": 0.5,
+        "candidate_mean": 0.0523,
+        "golden_mean": 0.0488,
         "passed": true
       },
       "word_count": {
-        "allowed_delta": 118.6132,
-        "candidate_mean": 166.081,
+        "allowed_delta": 26.3585,
+        "candidate_mean": 243.0643,
         "golden_mean": 263.5849,
         "passed": true
       }
@@ -44,7 +81,7 @@
   "approval_required_before_finalize": true,
   "dev": 60,
   "manual_review": 60,
-  "private_use_notice": "Private training use only. Do not redistribute essays, style excerpts, per-case labels, or review records. Aggregate audits may be shared.",
+  "private_use_notice": "Private training use only. Do not redistribute essays, style reference essays, per-case labels, or review records. Aggregate audits may be shared.",
   "redistribute_rows": false,
   "selected": 600,
   "train": 540

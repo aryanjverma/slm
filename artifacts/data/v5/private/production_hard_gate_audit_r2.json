@@ -1,0 +1,11 @@
+{
+  "accepted": 1470,
+  "expected": 1470,
+  "extra_task_ids_count": 0,
+  "missing_task_ids_count": 0,
+  "missing_task_ids_sample": [],
+  "ready_for_judging": true,
+  "rejected": 0,
+  "rejection_reason_counts": {},
+  "returned": 1470
+}

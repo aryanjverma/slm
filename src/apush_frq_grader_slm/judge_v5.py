@@ -27,7 +27,8 @@ FACT_CHECKER_ID = "facts-a"
 CONFIDENCE_ADJUDICATION_FLOOR = 0.85
 
 # Timed APUSH LEQ student length band (words).
-_STUDENT_LENGTH_LO = 90
+# Regeneration length gates allow short CB-matched essays down to ~70 words.
+_STUDENT_LENGTH_LO = 70
 _STUDENT_LENGTH_HI = 520
 
 _THESIS_CUES = re.compile(
