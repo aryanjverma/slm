@@ -79,9 +79,7 @@ def main() -> None:
             console.print(f"Private backup created: {backup}")
         if command == "a":
             notes = optional_input(console, "Optional note")
-            rows[index] = set_review_decision(
-                row, decision="accept", reviewer=reviewer, notes=notes
-            )
+            rows[index] = accept_reviewed_row(row, reviewer=reviewer, notes=notes)
         elif command == "r":
             notes = required_input(
                 console,
@@ -254,6 +252,19 @@ def prompt_corrections(console: Console, row: Mapping[str, Any]) -> dict[str, An
 
 def optional_input(console: Console, label: str) -> str:
     return console.input(f"{label}: ").strip()
+
+
+def accept_reviewed_row(
+    row: Mapping[str, Any], *, reviewer: str, notes: str = ""
+) -> dict[str, Any]:
+    corrections = dict((row.get("manual_review") or {}).get("corrections") or {})
+    return set_review_decision(
+        row,
+        decision="corrected" if corrections else "accept",
+        reviewer=reviewer,
+        notes=notes,
+        corrections=corrections or None,
+    )
 
 
 def required_input(console: Console, label: str) -> str:

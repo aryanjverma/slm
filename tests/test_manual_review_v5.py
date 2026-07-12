@@ -14,7 +14,11 @@ from apush_frq_grader_slm.manual_review_v5 import (
     set_review_decision,
     write_packet_atomic,
 )
-from scripts.review_v5_manual_packet import ACTION_OPTIONS, render_action_menu
+from scripts.review_v5_manual_packet import (
+    ACTION_OPTIONS,
+    accept_reviewed_row,
+    render_action_menu,
+)
 
 
 SCORES = {"thesis": 1, "contextualization": 1, "evidence": 1, "analysis_reasoning": 1}
@@ -100,3 +104,18 @@ def test_plain_action_menu_lists_every_option_before_input() -> None:
     assert "INPUT OPTIONS" in rendered
     for key, label, description in ACTION_OPTIONS:
         assert f"{key} - {label}: {description}" in rendered
+
+
+def test_accepting_preliminary_correction_preserves_it_for_human_reviewer() -> None:
+    preliminary = set_review_decision(
+        _row("one"),
+        decision="corrected",
+        reviewer="preliminary",
+        corrections={"scores": {**SCORES, "evidence": 2}},
+    )
+
+    accepted = accept_reviewed_row(preliminary, reviewer="human")
+
+    assert accepted["manual_review"]["decision"] == "corrected"
+    assert accepted["manual_review"]["reviewed_by"] == "human"
+    assert accepted["manual_review"]["corrections"]["scores"]["evidence"] == 2
