@@ -78,6 +78,11 @@ def main() -> None:
         help="Export only the 30-essay pilot packets (required before full production).",
     )
     parser.add_argument(
+        "--exclude-pilot",
+        action="store_true",
+        help="After pilot approval, export only the remaining 1,470 non-pilot packets.",
+    )
+    parser.add_argument(
         "--pilot-approval",
         type=Path,
         default=Path("artifacts/data/v5/private/pilot_approval_v5.json"),
@@ -90,6 +95,9 @@ def main() -> None:
     )
     parser.add_argument("--seed", type=int, default=51)
     args = parser.parse_args()
+
+    if args.pilot_only and args.exclude_pilot:
+        raise SystemExit("use only one of --pilot-only or --exclude-pilot")
 
     if not args.pilot_only:
         from apush_frq_grader_slm.dataset_v5 import assert_pilot_approval
@@ -111,6 +119,13 @@ def main() -> None:
             if args.output_dir.name == "packets"
             else args.output_dir
         )
+    elif args.exclude_pilot:
+        pilot_ids = {task.task_id for task in select_v5_pilot_tasks(planned, seed=args.seed)}
+        planned = [task for task in planned if task.task_id not in pilot_ids]
+        if len(planned) != 1470:
+            raise AssertionError(f"expected 1470 remaining tasks, got {len(planned)}")
+        if args.output_dir.name == "packets":
+            args.output_dir = args.output_dir.parent / "packets_r2"
 
     packets: dict[str, list[dict]] = defaultdict(list)
     for task in planned:
@@ -144,6 +159,7 @@ def main() -> None:
         "writer_sees_source_ids": False,
         "deterministic_composer_used": False,
         "pilot_only": bool(args.pilot_only),
+        "exclude_pilot": bool(args.exclude_pilot),
         "packet_count": sum(map(len, packets.values())),
         "shard_count": len(packets),
         "essay_only_contract": True,
@@ -152,24 +168,28 @@ def main() -> None:
     (args.output_dir / "README_PRIVATE.json").write_text(
         json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
-    if args.pilot_only:
-        index_path = args.output_dir / "pilot_task_index.json"
-        index_path.write_text(
-            json.dumps(
-                {
-                    "task_ids": [task.task_id for task in planned],
-                    "count": len(planned),
-                    "seed": args.seed,
-                },
-                indent=2,
-                sort_keys=True,
-            )
-            + "\n",
-            encoding="utf-8",
+    index_path = args.output_dir / (
+        "pilot_task_index.json" if args.pilot_only else "task_index.json"
+    )
+    index_path.write_text(
+        json.dumps(
+            {
+                "task_ids": [task.task_id for task in planned],
+                "count": len(planned),
+                "seed": args.seed,
+                "pilot_only": bool(args.pilot_only),
+                "exclude_pilot": bool(args.exclude_pilot),
+            },
+            indent=2,
+            sort_keys=True,
         )
+        + "\n",
+        encoding="utf-8",
+    )
     print(
         f"Exported {sum(map(len, packets.values()))} private writer packets "
-        f"(pilot_only={args.pilot_only}) to {args.output_dir}"
+        f"(pilot_only={args.pilot_only}, exclude_pilot={args.exclude_pilot}) "
+        f"to {args.output_dir}"
     )
 
 
