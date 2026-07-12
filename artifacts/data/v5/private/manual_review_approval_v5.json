@@ -1,9 +1,11 @@
 {
-  "approved": true,
-  "reviewer": "cursor-agent-v5-packet-review",
-  "approved_at": "2026-07-11T23:56:10Z",
-  "packet_sha256": "6fd394d86b7c06e3c9ad91aa0e16d6cf643acd07bf99878e9bd4410e193f9c1f",
-  "notes": "First-pass automated review of all 60 stratified packet rows after triple-blind judging. User should still spot-check before production training.",
-  "accept_count": 60,
-  "corrected_count": 0
+  "approved": false,
+  "reset_reason": "v5_authentic_essay_regeneration",
+  "reviewer": null,
+  "approved_at": null,
+  "packet_sha256": null,
+  "notes": "Previous contaminated-corpus approval voided. Manual review of 60 replacement rows is required after regeneration, judging, and assemble prepare-review.",
+  "accept_count": 0,
+  "corrected_count": 0,
+  "blocks_training": true
 }

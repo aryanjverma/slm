@@ -79,18 +79,24 @@ adapters. Runtime still returns one JSON object (`scores`, deterministic `total`
 `feedback`) via two internal passes. The dataset goal is **600 filtered cases** from ~1,500
 score-blind candidates (30×50 shards).
 
-**Data** (private rows stay out of git; see `docs/v5_external_data_contract.md`):
+**Data** (see `docs/v5_external_data_contract.md` and
+`docs/v5_authentic_essay_regeneration_plan.md`):
+
+The deterministic composer is retired from production. Writers receive full matched
+golden essays as style references. Full production stays blocked until a hash-bound
+30-essay pilot approval exists.
 
 ```powershell
 python scripts/plan_v5_tasks.py
-# Optional private helpers when present: build_v5_fact_cards.py, build_v5_adapted_prompts.py
-python scripts/export_v5_generation_packets.py --fact-cards PATH_TO_PRIVATE_FACT_CARDS
-# external writers + blind reviews return candidates
+python scripts/report_v5_r1_authenticity_failure.py
+python scripts/export_v5_generation_packets.py --fact-cards PATH_TO_PRIVATE_FACT_CARDS --pilot-only
+# independent cloud writers return {task_id, student_response}; then:
+python scripts/validate_v5_pilot_hard_gates.py --essays artifacts/data/v5/private/pilot_essays_v5.jsonl --audit artifacts/data/v5/private/pilot_hard_gate_audit_v5.json
+python scripts/review_v5_pilot.py --reviewer YOUR_NAME
+# After all 30 are accepted, export remaining packets (no --pilot-only), then:
 python scripts/validate_v5_external_candidates.py --tasks ... --candidates ... --overlap-corpus ...
 python scripts/assemble_v5_dataset.py prepare-review --candidates ...
-# Review every packet row interactively. Add --plain for screen readers/no color.
 python scripts/review_v5_manual_packet.py --reviewer YOUR_NAME
-# The reviewer writes a hash-bound approval only after all 60 rows pass, then:
 python scripts/assemble_v5_dataset.py finalize --candidates ...
 ```
 

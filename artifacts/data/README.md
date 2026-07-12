@@ -58,6 +58,20 @@ Outputs under `artifacts/data/v4/`:
 
 Hard invariant unchanged: real CB essays stay eval-only.
 
+## v5 regeneration (authentic rewrite)
+
+The r1 composer corpus is discarded (see `planning/v5_r1_authenticity_failure.json`).
+Pilot path:
+
+```powershell
+python scripts/export_v5_generation_packets.py --fact-cards artifacts/data/v5/planning/semantic_fact_cards_v5.jsonl --pilot-only
+python scripts/validate_v5_pilot_hard_gates.py --essays artifacts/data/v5/private/pilot_essays_v5.jsonl --audit artifacts/data/v5/private/pilot_hard_gate_audit_v5.json
+python scripts/review_v5_pilot.py --reviewer YOUR_NAME
+```
+
+Full production export/validation requires hash-bound `private/pilot_approval_v5.json`.
+See `docs/v5_pilot_review_ready.md`.
+
 ## v5 status (planning / private)
 
 V5 builds ~1,500 score-blind candidates (30×50 shards) and retains **600** accepted cases

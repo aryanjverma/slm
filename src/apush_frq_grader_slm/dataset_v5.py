@@ -17,6 +17,12 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
+from apush_frq_grader_slm.authenticity_gates_v5 import (
+    ESSAY_ONLY_CONTRACT,
+    aggregate_length_realism_audit,
+    hard_gate_reasons,
+    writer_instructions,
+)
 from apush_frq_grader_slm.dataset_v4 import CBSeedProfile
 from apush_frq_grader_slm.ingest.dedup import normalize_essay
 from apush_frq_grader_slm.filters import passes_quality_gate
@@ -32,13 +38,39 @@ V5_BOUNDARY_COUNT = 180
 V5_DEV_COUNT = 60
 V5_REPLAY_COUNT = 75
 V5_MANUAL_REVIEW_COUNT = 60
+V5_PILOT_COUNT = 30
+V5_PILOT_BOUNDARY_PAIRS_PER_TYPE = 2
+V5_PILOT_GOLDEN_MATCHED_COUNT = 6
+V5_FULL_AFTER_PILOT_COUNT = V5_CANDIDATE_COUNT - V5_PILOT_COUNT
 BOUNDARY_TYPES = (
     "thesis_0_1", "contextualization_0_1", "evidence_0_1",
     "evidence_1_2", "analysis_reasoning_0_1", "analysis_reasoning_1_2",
 )
 PRIVATE_USE_NOTICE = (
-    "Private training use only. Do not redistribute essays, style excerpts, "
+    "Private training use only. Do not redistribute essays, style reference essays, "
     "per-case labels, or review records. Aggregate audits may be shared."
+)
+WRITER_FORBIDDEN_PACKET_KEYS = frozenset(
+    {
+        "target_scores",
+        "target_total",
+        "scores",
+        "score",
+        "rubric_text",
+        "resolved_grade",
+        "reference_scores",
+        "reference_feedback",
+        "source_case_id",
+        "style_seed_id",
+        "seed_id",
+        "authenticity_reviews",
+        "rubric_reviews",
+        "fact_check",
+        "distribution_match",
+        "failure_type",
+        "tags",
+        "assistant_response",
+    }
 )
 
 
@@ -59,11 +91,16 @@ class V5GenerationTask:
     boundary_type: str = ""
     contrast_pair_id: str = ""
     contrast_side: str = ""
+    style_reference_essay: str = ""
+    reference_word_count: int | None = None
     private_use_notice: str = PRIVATE_USE_NOTICE
 
     def to_row(self) -> dict[str, Any]:
         row = asdict(self)
         row["amsco_chapter_ids"] = list(self.amsco_chapter_ids)
+        # Keep the full golden essay out of the shared task plan; attach only at
+        # private packet export. Persist word count for length gates.
+        row.pop("style_reference_essay", None)
         return row
 
 
@@ -164,6 +201,184 @@ def plan_v5_tasks(
     return tasks
 
 
+def select_v5_pilot_tasks(
+    tasks: Sequence[V5GenerationTask], *, seed: int = 51
+) -> list[V5GenerationTask]:
+    """Pick the hash-stable 30-essay pilot from the planned 1,500-task campaign.
+
+    Two lower/upper pairs for each of the six rubric boundaries (24) plus six
+    distribution-matched essays spanning periods and capability levels.
+    """
+    rng = random.Random(seed)
+    selected: list[V5GenerationTask] = []
+    used_ids: set[str] = set()
+
+    for boundary_type in BOUNDARY_TYPES:
+        pair_ids = sorted(
+            {
+                task.contrast_pair_id
+                for task in tasks
+                if task.coverage_class == "boundary" and task.boundary_type == boundary_type
+            }
+        )
+        if len(pair_ids) < V5_PILOT_BOUNDARY_PAIRS_PER_TYPE:
+            raise ValueError(f"need {V5_PILOT_BOUNDARY_PAIRS_PER_TYPE} pairs for {boundary_type}")
+        chosen_pairs = pair_ids[:V5_PILOT_BOUNDARY_PAIRS_PER_TYPE]
+        for pair_id in chosen_pairs:
+            pair_tasks = [
+                task
+                for task in tasks
+                if task.contrast_pair_id == pair_id and task.boundary_type == boundary_type
+            ]
+            sides = {task.contrast_side: task for task in pair_tasks}
+            if set(sides) != {"lower", "upper"}:
+                raise ValueError(f"pilot pair {pair_id} missing lower/upper")
+            for side in ("lower", "upper"):
+                task = sides[side]
+                selected.append(task)
+                used_ids.add(task.task_id)
+
+    golden = [task for task in tasks if task.coverage_class == "golden_matched"]
+    by_period: dict[int | None, list[V5GenerationTask]] = defaultdict(list)
+    for task in golden:
+        by_period[task.period].append(task)
+    periods = sorted(by_period.keys(), key=lambda value: (-1 if value is None else value))
+    golden_picks: list[V5GenerationTask] = []
+    period_cycle = list(periods) or [None]
+    capability_cycle = list(_CAPABILITIES)
+    cursor = 0
+    while len(golden_picks) < V5_PILOT_GOLDEN_MATCHED_COUNT:
+        period = period_cycle[cursor % len(period_cycle)]
+        capability = capability_cycle[cursor % len(capability_cycle)]
+        pool = [
+            task
+            for task in by_period.get(period, [])
+            if task.task_id not in used_ids
+            and task.capability_profile.get("historical_knowledge")
+            == capability["historical_knowledge"]
+        ]
+        if not pool:
+            pool = [task for task in by_period.get(period, []) if task.task_id not in used_ids]
+        if not pool:
+            pool = [task for task in golden if task.task_id not in used_ids]
+        if not pool:
+            raise ValueError("unable to select distribution-matched pilot tasks")
+        pick = sorted(pool, key=lambda task: task.task_id)[cursor % len(pool)]
+        golden_picks.append(pick)
+        used_ids.add(pick.task_id)
+        cursor += 1
+    selected.extend(golden_picks)
+
+    if len(selected) != V5_PILOT_COUNT:
+        raise AssertionError(f"pilot selection produced {len(selected)} tasks, expected {V5_PILOT_COUNT}")
+    # Stable order for review packets; rng reserved for future stratified reshuffles.
+    _ = rng
+    return sorted(selected, key=lambda task: task.task_id)
+
+
+def load_style_reference_essays(
+    seed_profiles_path: Path,
+    golden_cases_path: Path,
+) -> dict[str, dict[str, Any]]:
+    """Map style_seed_id -> {essay, word_count, source_case_id} for private packet export.
+
+    Uses cleaned student prose from the matched golden case. If that case has no
+    usable essay (commentary-only ingestion), falls back to another cleaned essay
+    from the same prompt family so writers still receive a full style reference.
+    """
+    from apush_frq_grader_slm.dataset_v4_seeds import clean_student_response
+    from apush_frq_grader_slm.io import read_jsonl
+
+    golden_by_id = {
+        str(row.get("id") or row.get("case_id") or ""): row
+        for row in read_jsonl(golden_cases_path)
+    }
+    seed_rows = list(read_jsonl(seed_profiles_path))
+    cleaned_by_source: dict[str, str] = {}
+    for source_id, case in golden_by_id.items():
+        essay = clean_student_response(str(case.get("student_response") or ""))
+        if len(essay.split()) >= 40:
+            cleaned_by_source[source_id] = essay
+        else:
+            # Some CB files store commentary only; keep raw only if it looks like prose.
+            raw = str(case.get("student_response") or "").strip()
+            if (
+                len(raw.split()) >= 40
+                and "scoring commentary" not in raw.lower()
+                and "long essay question" not in raw.lower()
+            ):
+                cleaned_by_source[source_id] = raw
+
+    family_to_sources: dict[str, list[str]] = defaultdict(list)
+    for row in seed_rows:
+        family = str(row.get("prompt_family_id") or "")
+        source_id = str(row.get("source_case_id") or "")
+        if family and source_id:
+            family_to_sources[family].append(source_id)
+
+    mapping: dict[str, dict[str, Any]] = {}
+    for row in seed_rows:
+        seed_id = str(row.get("seed_id") or "")
+        source_id = str(row.get("source_case_id") or "")
+        family = str(row.get("prompt_family_id") or "")
+        if not seed_id:
+            continue
+        essay = cleaned_by_source.get(source_id, "")
+        used_source = source_id
+        if not essay:
+            for alt in family_to_sources.get(family, []):
+                if alt in cleaned_by_source:
+                    essay = cleaned_by_source[alt]
+                    used_source = alt
+                    break
+        if not essay:
+            # Last resort: longest cleaned essay in the golden set.
+            if cleaned_by_source:
+                used_source, essay = max(
+                    cleaned_by_source.items(), key=lambda item: len(item[1].split())
+                )
+        if not essay:
+            continue
+        mapping[seed_id] = {
+            "style_reference_essay": essay,
+            "reference_word_count": len(essay.split()),
+            "source_case_id": used_source,
+            "requested_source_case_id": source_id,
+        }
+    return mapping
+
+
+def attach_style_reference(
+    task: V5GenerationTask, references: Mapping[str, Mapping[str, Any]]
+) -> V5GenerationTask:
+    """Return a copy of ``task`` with the matched full golden essay attached."""
+    ref = references.get(task.style_seed_id) or {}
+    essay = str(ref.get("style_reference_essay") or "").strip()
+    word_count = ref.get("reference_word_count")
+    if essay and word_count is None:
+        word_count = len(essay.split())
+    return V5GenerationTask(
+        task_id=task.task_id,
+        shard_id=task.shard_id,
+        prompt=task.prompt,
+        prompt_family_id=task.prompt_family_id,
+        style_seed_id=task.style_seed_id,
+        style_excerpt=task.style_excerpt,
+        period=task.period,
+        reasoning_skill=task.reasoning_skill,
+        capability_profile=dict(task.capability_profile),
+        composition_profile=dict(task.composition_profile),
+        amsco_chapter_ids=task.amsco_chapter_ids,
+        coverage_class=task.coverage_class,
+        boundary_type=task.boundary_type,
+        contrast_pair_id=task.contrast_pair_id,
+        contrast_side=task.contrast_side,
+        style_reference_essay=essay,
+        reference_word_count=(int(word_count) if word_count is not None else None),
+        private_use_notice=task.private_use_notice,
+    )
+
+
 def normalize_external_candidate(
     task: V5GenerationTask, external_row: Mapping[str, Any]
 ) -> dict[str, Any]:
@@ -182,33 +397,53 @@ def normalize_external_candidate(
             "boundary_type": task.boundary_type,
             "contrast_pair_id": task.contrast_pair_id,
             "contrast_side": task.contrast_side,
+            "reference_word_count": task.reference_word_count,
         }
     )
+    # Never persist the golden style essay onto candidate/training rows.
+    result.pop("style_reference_essay", None)
     return result
 
 
 def generator_packet(task: V5GenerationTask, fact_cards: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
-    """Create the score-blind packet shown to a cloud essay writer."""
+    """Create the score-blind private packet shown to a cloud essay writer.
+
+    Writers receive the full matched golden essay as a style reference, semantic
+    fact cards, capability/composition cues, and an essay-only contract. Scores,
+    feedback, source IDs, and evaluation annotations are never included.
+    """
+    if not task.style_reference_essay.strip():
+        raise ValueError(
+            f"task {task.task_id} missing style_reference_essay; attach the matched golden essay before export"
+        )
     cards = []
     for item in fact_cards:
         concept = str(item.get("concept") or item.get("fact") or "").strip()
         if concept:
-            cards.append({"concept": concept, "use": "paraphrase from memory; do not copy wording"})
-    return {
+            cards.append(
+                {
+                    "concept": concept,
+                    "use": "paraphrase in your own words; do not copy wording",
+                }
+            )
+    has_boundary = bool(task.capability_profile.get("observable_writing_behavior"))
+    packet = {
         "task_id": task.task_id,
         "prompt": task.prompt,
-        "student_capability": task.capability_profile,
-        "timed_composition_style": task.composition_profile,
-        "style_reference": task.style_excerpt,
+        "student_capability": dict(task.capability_profile),
+        "timed_composition_style": dict(task.composition_profile),
+        "style_reference_essay": task.style_reference_essay,
+        "reference_word_count": task.reference_word_count
+        or len(task.style_reference_essay.split()),
         "semantic_fact_cards": cards,
-        "instructions": (
-            "Write one authentic timed APUSH student essay. Follow the student's capability and "
-            "composition profile. Paraphrase remembered evidence; do not quote fact cards or imitate "
-            "the reference verbatim. Let grammar, spelling, fragments, repetition, and uncertainty "
-            "arise naturally rather than mechanically corrupting polished prose. Return only the essay."
-        ),
+        "essay_only_contract": dict(ESSAY_ONLY_CONTRACT),
+        "instructions": writer_instructions(has_boundary_behavior=has_boundary),
         "private_use_notice": task.private_use_notice,
     }
+    leaked = WRITER_FORBIDDEN_PACKET_KEYS & set(packet)
+    if leaked:
+        raise AssertionError(f"writer packet leaked forbidden keys: {sorted(leaked)}")
+    return packet
 
 
 def _ngrams(text: str, n: int = 8) -> set[tuple[str, ...]]:
@@ -367,14 +602,31 @@ def candidate_gate_reasons(
     source_texts: Iterable[str] = (),
     allowed_phrases: Iterable[str] = (),
     overlap_index: OverlapIndex | None = None,
+    style_reference_essay: str = "",
+    reference_word_count: int | None = None,
 ) -> list[str]:
-    """Apply blind authenticity, rubric-consensus, fact, and copying gates."""
+    """Apply blind authenticity, rubric-consensus, fact, copying, and hard gates."""
     reasons: list[str] = []
     essay = str(row.get("student_response") or row.get("essay") or "").strip()
     if overlap_index is not None:
         reasons.extend(overlap_index.reasons_for(essay))
     else:
         reasons.extend(overlap_reasons(essay, source_texts, allowed_phrases=allowed_phrases))
+
+    ref_words = reference_word_count
+    if ref_words is None and row.get("reference_word_count") is not None:
+        try:
+            ref_words = int(row["reference_word_count"])
+        except (TypeError, ValueError):
+            ref_words = None
+    style_ref = style_reference_essay or str(row.get("style_reference_essay") or "")
+    reasons.extend(
+        hard_gate_reasons(
+            essay,
+            style_reference_essay=style_ref,
+            reference_word_count=ref_words,
+        )
+    )
 
     auth = list(row.get("authenticity_reviews") or [])
     if len(auth) < 2:
@@ -627,16 +879,39 @@ def _matched_score_sample(
     return selected
 
 
+_STYLE_TOLERANCES: dict[str, float] = {
+    # Regeneration plan: aggregate mean within ~10%; sentence/punct/error bands tighter
+    # than the failed permissive audit.
+    "word_count": 0.10,
+    "paragraph_count": 0.15,
+    "sentence_word_mean": 0.15,
+    "sentence_word_std": 0.15,
+    "informal_marker_per_100": 0.50,
+    "punctuation_per_100": 0.15,
+    "spelling_error_density_per_100": 0.50,
+}
+
+
 def style_features(text: str) -> dict[str, float]:
     """Extract transparent timed-writing features without retaining golden wording."""
-
-    words = re.findall(r"[A-Za-z]+(?:'[A-Za-z]+)?", text)
-    sentences = [part for part in re.split(r"[.!?]+", text) if part.strip()]
-    sentence_lengths = [len(re.findall(r"[A-Za-z]+", part)) for part in sentences] or [0]
-    paragraphs = [part for part in re.split(r"\n\s*\n", text) if part.strip()]
-    denominator = max(len(words), 1) / 100
-    informal = re.findall(r"\b(?:wasnt|didnt|couldnt|wouldnt|dont|cant|alot|goverment)\b", text.lower())
+    words = re.findall(r"[A-Za-z']+", text)
+    paragraphs = [part for part in re.split(r"\n\s*\n", text.strip()) if part.strip()]
+    sentences = [part.strip() for part in re.split(r"(?<=[.!?])\s+|\n+", text.strip()) if part.strip()]
+    sentence_lengths = [len(re.findall(r"[A-Za-z']+", sentence)) or 1 for sentence in sentences] or [1]
+    informal = re.findall(
+        r"\b(?:wasnt|didnt|couldnt|wouldnt|dont|cant|wont|alot|goverment|kinda|gonna|wanna|tho|bc)\b",
+        text,
+        flags=re.I,
+    )
     lowercase_i = re.findall(r"(?<![A-Za-z])i(?![A-Za-z])", text)
+    # Lightweight misspelling proxy: common APUSH student misspellings + repeated letters.
+    spelling = re.findall(
+        r"\b(?:goverment|seperate|occured|becuase|enviroment|knowlege|arguement|"
+        r"neccessary|recieve|wich|teh|thier)\b",
+        text,
+        flags=re.I,
+    )
+    denominator = max(len(words) / 100.0, 0.01)
     return {
         "word_count": float(len(words)),
         "paragraph_count": float(len(paragraphs) or bool(text.strip())),
@@ -644,17 +919,8 @@ def style_features(text: str) -> dict[str, float]:
         "sentence_word_std": float(statistics.pstdev(sentence_lengths)),
         "informal_marker_per_100": float((len(informal) + len(lowercase_i)) / denominator),
         "punctuation_per_100": float(len(re.findall(r"[,;:!?]", text)) / denominator),
+        "spelling_error_density_per_100": float(len(spelling) / denominator),
     }
-
-
-_STYLE_TOLERANCES: dict[str, float] = {
-    "word_count": 0.45,  # timed synthetic essays run shorter than CB samples
-    "paragraph_count": 0.50,
-    "sentence_word_mean": 0.70,
-    "sentence_word_std": 0.80,
-    "informal_marker_per_100": 1.50,
-    "punctuation_per_100": 0.60,
-}
 
 
 def style_distribution_audit(
@@ -671,7 +937,7 @@ def style_distribution_audit(
     for key, relative_tolerance in _STYLE_TOLERANCES.items():
         candidate_mean = sum(item[key] for item in candidate_features) / len(candidate_features)
         golden_mean = sum(item[key] for item in golden_features) / len(golden_features)
-        floor = 0.5 if key in {"paragraph_count", "informal_marker_per_100"} else 0.1
+        floor = 0.5 if key in {"paragraph_count", "informal_marker_per_100", "spelling_error_density_per_100"} else 0.1
         allowed_delta = max(abs(golden_mean) * relative_tolerance, floor)
         metric_passed = abs(candidate_mean - golden_mean) <= allowed_delta
         passed = passed and metric_passed
@@ -681,7 +947,17 @@ def style_distribution_audit(
             "allowed_delta": round(allowed_delta, 4),
             "passed": metric_passed,
         }
-    return {"passed": passed, "metrics": metrics, "golden_text_retained": False}
+    length_audit = aggregate_length_realism_audit(
+        [int(item["word_count"]) for item in candidate_features],
+        [int(item["word_count"]) for item in golden_features],
+    )
+    passed = passed and bool(length_audit.get("passed"))
+    return {
+        "passed": passed,
+        "metrics": metrics,
+        "length_realism": length_audit,
+        "golden_text_retained": False,
+    }
 
 
 def compute_distribution_match(
@@ -891,3 +1167,74 @@ def assert_manual_approval(packet_path: Path, approval_path: Path) -> dict[str, 
     if len(rows) != 60 or any((r.get("manual_review") or {}).get("decision") not in {"accept", "corrected"} for r in rows):
         raise PermissionError("all 60 manual review decisions must be accept or corrected")
     return approval
+
+
+def assert_pilot_approval(
+    pilot_essays_path: Path,
+    approval_path: Path,
+    *,
+    expected_count: int = V5_PILOT_COUNT,
+) -> dict[str, Any]:
+    """Block full 1,470 generation until all 30 pilot essays are hash-bound accepted."""
+    if not approval_path.exists():
+        raise PermissionError(
+            "v5 pilot approval is missing; full production generation remains blocked"
+        )
+    approval = json.loads(approval_path.read_text(encoding="utf-8"))
+    if not approval.get("approved") or not approval.get("reviewer") or not approval.get("approved_at"):
+        raise PermissionError("v5 pilot approval is incomplete")
+    if approval.get("pilot_essays_sha256") != file_sha256(pilot_essays_path):
+        raise PermissionError("v5 pilot essays changed after approval")
+    rows = [
+        json.loads(line)
+        for line in pilot_essays_path.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    if len(rows) != expected_count:
+        raise PermissionError(
+            f"pilot approval expects {expected_count} essays; found {len(rows)}"
+        )
+    decisions = approval.get("decisions") or {}
+    if len(decisions) != expected_count:
+        raise PermissionError("pilot approval must include a decision for every essay")
+    for row in rows:
+        task_id = str(row.get("task_id") or "")
+        decision = decisions.get(task_id)
+        if decision not in {"accept", "corrected"}:
+            raise PermissionError(
+                f"pilot task {task_id} is not accepted (decision={decision!r})"
+            )
+    if approval.get("accepted_count") != expected_count:
+        raise PermissionError("pilot approval accepted_count must equal the pilot size")
+    return approval
+
+
+def build_pilot_approval(
+    *,
+    reviewer: str,
+    approved_at: str,
+    pilot_essays_path: Path,
+    decisions: Mapping[str, str],
+) -> dict[str, Any]:
+    """Create a hash-bound pilot approval document after human review."""
+    rows = [
+        json.loads(line)
+        for line in pilot_essays_path.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    if len(rows) != V5_PILOT_COUNT:
+        raise ValueError(f"pilot essays file must contain {V5_PILOT_COUNT} rows")
+    normalized = {str(task_id): str(decision) for task_id, decision in decisions.items()}
+    for row in rows:
+        task_id = str(row["task_id"])
+        if normalized.get(task_id) not in {"accept", "corrected"}:
+            raise ValueError(f"missing accept/corrected decision for {task_id}")
+    return {
+        "approved": True,
+        "reviewer": reviewer,
+        "approved_at": approved_at,
+        "pilot_essays_sha256": file_sha256(pilot_essays_path),
+        "accepted_count": V5_PILOT_COUNT,
+        "decisions": dict(sorted(normalized.items())),
+        "blocks_full_generation_until_valid": True,
+    }

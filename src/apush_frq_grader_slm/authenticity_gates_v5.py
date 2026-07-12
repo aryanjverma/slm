@@ -8,7 +8,7 @@ invalid length. Accepted regeneration candidates must pass every check.
 from __future__ import annotations
 
 import re
-from typing import Any, Iterable, Mapping, Sequence
+from typing import Any, Mapping, Sequence
 
 from apush_frq_grader_slm.filters import contains_generation_leakage
 from apush_frq_grader_slm.ingest.dedup import normalize_essay

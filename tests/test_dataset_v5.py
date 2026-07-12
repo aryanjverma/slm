@@ -61,10 +61,22 @@ class V5DatasetTests(unittest.TestCase):
         tasks = plan_v5_tasks([_seed()])
         self.assertEqual(len(tasks), 1500)
         self.assertEqual({sum(t.shard_id == shard for t in tasks) for shard in {t.shard_id for t in tasks}}, {50})
-        packet = generator_packet(tasks[0], [{"concept": "Transportation reduced shipping costs."}])
+        task = tasks[0]
+        task = type(task)(
+            **{
+                **task.__dict__,
+                "style_reference_essay": (
+                    "Farmers moved grain slowly before canals. The Erie Canal cut costs "
+                    "and tied western farms to eastern ports. Growth was uneven across regions."
+                ),
+                "reference_word_count": 35,
+            }
+        )
+        packet = generator_packet(task, [{"concept": "Transportation reduced shipping costs."}])
         self.assertLessEqual(len(tasks[0].style_excerpt), 400)
         self.assertFalse({"target_scores", "target_total", "rubric_text"} & packet.keys())
-        self.assertIn("paraphrase", packet["semantic_fact_cards"][0]["use"])
+        self.assertIn("paraphrase in your own words", packet["semantic_fact_cards"][0]["use"])
+        self.assertIn("style_reference_essay", packet)
         self.assertEqual(sum(task.coverage_class == "boundary" for task in tasks), 432)
         pairs = {
             (task.boundary_type, task.contrast_pair_id)

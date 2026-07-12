@@ -12,7 +12,10 @@ from apush_frq_grader_slm.dataset_v5 import (
     OverlapIndex,
     V5GenerationTask,
     annotate_distribution_match,
+    assert_pilot_approval,
+    attach_style_reference,
     candidate_gate_reasons,
+    load_style_reference_essays,
     normalize_external_candidate,
 )
 from apush_frq_grader_slm.compose_v5 import COMPOSER_STOCK_EXEMPTIONS
@@ -43,6 +46,7 @@ def task_from_row(row: dict) -> V5GenerationTask:
         boundary_type=row.get("boundary_type", ""),
         contrast_pair_id=row.get("contrast_pair_id", ""),
         contrast_side=row.get("contrast_side", ""),
+        reference_word_count=row.get("reference_word_count"),
     )
 
 
@@ -68,7 +72,13 @@ def collect_allowed_phrases(args: argparse.Namespace) -> list[str]:
 
 def main() -> None:
     args = parse_args()
-    tasks = {row["task_id"]: task_from_row(row) for row in read_jsonl(args.tasks)}
+    if args.require_pilot_approval:
+        assert_pilot_approval(args.pilot_essays, args.pilot_approval)
+    references = load_style_reference_essays(args.seed_profiles, args.golden_cases)
+    tasks = {
+        row["task_id"]: attach_style_reference(task_from_row(row), references)
+        for row in read_jsonl(args.tasks)
+    }
     returned_rows = read_jsonl(args.candidates)
     returned: dict[str, dict] = {}
     duplicate_ids: list[str] = []
@@ -100,13 +110,9 @@ def main() -> None:
     golden_cases: list[FRQCase] = []
     if args.golden_cases and Path(args.golden_cases).exists():
         golden_cases = [FRQCase.model_validate(row) for row in read_jsonl(args.golden_cases)]
-    # 8-gram source-copy index: AMSCO/fact cards/golden prose only (plan wording).
+    # 8-gram source-copy index: AMSCO/fact cards only. Style-reference copying uses
+    # the dedicated hard-gate quota (allows one short borrowed span).
     source_copy_texts: list[str] = []
-    if args.golden_cases and Path(args.golden_cases).exists():
-        source_copy_texts.extend(
-            str(row.get("student_response") or row.get("essay") or "")
-            for row in read_jsonl(args.golden_cases)
-        )
     if args.amsco_kb and Path(args.amsco_kb).exists():
         for chapter in load_kb(args.amsco_kb):
             source_copy_texts.extend(str(x) for x in (chapter.get("key_facts") or []))
@@ -122,7 +128,8 @@ def main() -> None:
     accepted: list[dict] = []
     rejected: dict[str, list[str]] = {}
     for task_id in sorted(set(returned) & set(tasks)):
-        row = normalize_external_candidate(tasks[task_id], returned[task_id])
+        task = tasks[task_id]
+        row = normalize_external_candidate(task, returned[task_id])
         if golden_cases:
             row = annotate_distribution_match([row], golden_cases)[0]
         essay = str(row.get("student_response") or row.get("essay") or "")
@@ -137,11 +144,18 @@ def main() -> None:
                 essay, check_exact=True, check_near=True, check_eight_gram=False
             )
         )
-        # Non-overlap gates (pass empty sources; overlap already handled).
+        # Non-overlap gates + meta/process + style-copy + length hard gates.
         reasons.extend(
             reason
-            for reason in candidate_gate_reasons(row, source_texts=(), allowed_phrases=())
-            if reason not in {
+            for reason in candidate_gate_reasons(
+                row,
+                source_texts=(),
+                allowed_phrases=(),
+                style_reference_essay=task.style_reference_essay,
+                reference_word_count=task.reference_word_count,
+            )
+            if reason
+            not in {
                 "essay_too_short_for_overlap_audit",
                 "exact_duplicate",
                 "near_duplicate",
@@ -166,6 +180,7 @@ def main() -> None:
         "rejection_reasons": dict(sorted(reason_counts.items())),
         "coverage": dict(sorted(Counter(row["selection_class"] for row in accepted).items())),
         "allowed_phrase_count": len(allowed_phrases),
+        "hard_gates_enabled": True,
         "contains_private_rows": True,
         "redistribution_authorized": False,
     }
@@ -186,6 +201,11 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=Path("artifacts/data/eval_cb_cases.jsonl"),
         help="Golden FRQCase JSONL used to recompute distribution_match before gating",
+    )
+    parser.add_argument(
+        "--seed-profiles",
+        type=Path,
+        default=Path("artifacts/data/v5/planning/cb_seed_profiles_v5.jsonl"),
     )
     parser.add_argument(
         "--allowed-phrases",
@@ -213,6 +233,22 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--require-complete", action=argparse.BooleanOptionalAction, default=True
+    )
+    parser.add_argument(
+        "--require-pilot-approval",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Require hash-bound pilot approval before accepting a full campaign return",
+    )
+    parser.add_argument(
+        "--pilot-approval",
+        type=Path,
+        default=Path("artifacts/data/v5/private/pilot_approval_v5.json"),
+    )
+    parser.add_argument(
+        "--pilot-essays",
+        type=Path,
+        default=Path("artifacts/data/v5/private/pilot_essays_v5.jsonl"),
     )
     return parser.parse_args()
 
