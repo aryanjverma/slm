@@ -1,11 +1,9 @@
 {
-  "approved": false,
-  "reset_reason": "v5_authentic_essay_regeneration",
-  "reviewer": null,
-  "approved_at": null,
-  "packet_sha256": null,
-  "notes": "Previous contaminated-corpus approval voided. Manual review of 60 replacement rows is required after regeneration, judging, and assemble prepare-review.",
-  "accept_count": 0,
+  "accept_count": 60,
+  "approved": true,
+  "approved_at": "2026-07-12T20:27:51Z",
   "corrected_count": 0,
-  "blocks_training": true
+  "notes": "Human terminal review completed for every packet row.",
+  "packet_sha256": "b5ae4d76339c5d26986f93d655eff2abafc0887f5d092293b7127679e1498321",
+  "reviewer": "Aryan"
 }

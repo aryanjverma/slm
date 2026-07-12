@@ -72,12 +72,13 @@ python scripts/review_v5_pilot.py --reviewer YOUR_NAME
 Full production export/validation requires hash-bound `private/pilot_approval_v5.json`.
 See `docs/v5_pilot_review_ready.md`.
 
-## v5 status (planning / private)
+## v5 status (private dataset finalized)
 
-V5 builds ~1,500 score-blind candidates (30×50 shards) and retains **600** accepted cases
+V5 built ~1,500 score-blind candidates (30×50 shards) and retains **600** accepted cases
 (420 golden-matched + 180 boundary) plus 75 v4 replay rows for training. Private essay rows,
-style excerpts, labels, and review packets **must not be committed**. Rebuild commands below are
-for planning only — run them locally; keep outputs under the private tree.
+style excerpts, labels, and review packets must remain private. On 2026-07-12 all 60 replacement
+review rows were accepted; final 540/60/75 assembly and the strict approval/hash/leakage preflight
+passed. GPU training remains pending.
 
 Expected private layout (gitignored):
 
@@ -89,7 +90,7 @@ artifacts/data/v5/
     fact_cards_v5.jsonl              # semantic AMSCO cards (private)
     adapted_prompts_v5.jsonl         # adapted prompt families (private, if used)
     external_candidates_v5.jsonl     # returned essays + blind reviews
-    validated_candidates_v5.jsonl    # validator output
+    validated_candidates_r2.jsonl    # replacement validator output
     candidate_audit_v5.json          # aggregate reject/accept audit
     selected_cases_v5_provisional.jsonl
     manual_review_packet_v5.jsonl
@@ -97,6 +98,7 @@ artifacts/data/v5/
     train_cases_v5.jsonl             # 540 after finalize
     dev_cases_v5.jsonl               # 60 after finalize
     replay_cases_v4_for_v5.jsonl     # 75
+    train_cases_v5_with_replay.jsonl # audited 615-row combined corpus
     assembly_audit_v5.json           # aggregate audit (safe to share if scrubbed)
 ```
 
@@ -109,19 +111,22 @@ python scripts/export_v5_generation_packets.py --fact-cards artifacts/data/v5/pr
 python scripts/validate_v5_external_candidates.py `
   --tasks artifacts/data/v5/planning/generation_tasks_v5.jsonl `
   --candidates artifacts/data/v5/private/external_candidates_v5.jsonl `
-  --output artifacts/data/v5/private/validated_candidates_v5.jsonl `
+  --output artifacts/data/v5/private/validated_candidates_r2.jsonl `
   --audit artifacts/data/v5/private/candidate_audit_v5.json `
   --overlap-corpus artifacts/data/v4/train_cases_v4.jsonl `
   --overlap-corpus artifacts/data/eval_cb_cases.jsonl
 python scripts/assemble_v5_dataset.py prepare-review `
-  --candidates artifacts/data/v5/private/validated_candidates_v5.jsonl
+  --candidates artifacts/data/v5/private/validated_candidates_r2.jsonl
 # review packet + write manual_review_approval_v5.json, then:
 python scripts/assemble_v5_dataset.py finalize `
-  --candidates artifacts/data/v5/private/validated_candidates_v5.jsonl
+  --candidates artifacts/data/v5/private/validated_candidates_r2.jsonl
 ```
 
 Contract details: `docs/v5_external_data_contract.md`. CPU smoke:
 `python scripts/smoke_v5_pipeline.py`.
+
+The redistribution-safe public companion lives at `artifacts/public/apush-leq-grader-public/` and
+is built only from project-authored synthetic baseline data. It is not the private v5 corpus.
 
 ## v2 status
 

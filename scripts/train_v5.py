@@ -16,12 +16,17 @@ from apush_frq_grader_slm.training_v5 import (
     build_v5_chat_row,
     sha256_tree,
     tokenize_v5_row,
+    validate_v5_training_preflight,
     weighted_causal_lm_loss,
 )
 
 
 def main() -> None:
     args = parse_args()
+    preflight = validate_v5_training_preflight(
+        args.private_dir, data_path=args.data, golden_cases_path=args.golden_cases
+    )
+    print(f"v5 approval/hash preflight passed: {json.dumps(preflight, sort_keys=True)}", flush=True)
     try:
         import torch
         from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
@@ -156,6 +161,7 @@ def main() -> None:
         "best_checkpoint": trainer.state.best_model_checkpoint,
         "best_metric": trainer.state.best_metric,
         "train_metrics": train_result.metrics,
+        "v5_preflight": preflight,
     }
     (final_dir / "v5_training_metadata.json").write_text(
         json.dumps(metadata, indent=2, sort_keys=True) + "\n", encoding="utf-8"
@@ -187,6 +193,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model", required=True, help="Merged v5 inherited base path")
     parser.add_argument("--data", type=Path, required=True)
     parser.add_argument("--eval-data", type=Path)
+    parser.add_argument("--private-dir", type=Path, required=True,
+                        help="Finalized private v5 directory containing approval and audit artifacts")
+    parser.add_argument("--golden-cases", type=Path, required=True,
+                        help="Private golden cases used only for zero-leakage preflight")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--max-seq-length", type=int, default=V5_MAX_SEQ_LENGTH)
     parser.add_argument("--score-token-weight", type=float, default=V5_SCORE_TOKEN_WEIGHT)

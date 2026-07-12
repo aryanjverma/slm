@@ -16,14 +16,27 @@ Behavior spec:
 - `artifacts/eval/`: deterministic baseline vs reference eval results.
 - `docs/`: behavior spec, litmus test, eval report, and submission notes.
 
-## Quick Start
+## Current V5 Status
+
+V5 data is **approved and finalized**: 60/60 replacement rows passed human review and assembly
+produced the hash-bound 540 train / 60 development / 75 replay corpus. The strict preflight passes
+with zero golden leakage. GPU training, development comparison, golden evaluation, and publication
+remain pending.
+
+## V5 Quick Start
 
 ```powershell
 python -m pip install -e .
-python -m apush_frq_grader_slm.cli.generate_dataset --train-count 1000 --eval-count 200 --output-dir artifacts/data
-python -m apush_frq_grader_slm.cli.run_eval --eval-path artifacts/data/eval_cases.jsonl --output-dir artifacts/eval
-python -m apush_frq_grader_slm.cli.demo
+python scripts/review_v5_manual_packet.py --reviewer YOUR_NAME
+python scripts/assemble_v5_dataset.py finalize --candidates artifacts/data/v5/private/validated_candidates_r2.jsonl
+python scripts/smoke_v5_pipeline.py
+python -m pytest
 ```
+
+Then run `notebooks/colab_train_v5.ipynb` with the finalized private directory and completed v4
+adapter in `/content/drive/MyDrive/apush-frq-grader-v5`. See
+[`docs/v5_final_runbook.md`](docs/v5_final_runbook.md) for exact paths, frozen settings, evaluation
+policy, privacy rules, and release commands.
 
 ## Data v2 Pipeline
 
@@ -82,9 +95,9 @@ score-blind candidates (30×50 shards).
 **Data** (see `docs/v5_external_data_contract.md` and
 `docs/v5_authentic_essay_regeneration_plan.md`):
 
-The deterministic composer is retired from production. Writers receive full matched
-golden essays as style references. Full production stays blocked until a hash-bound
-30-essay pilot approval exists.
+The deterministic composer is retired from production. Writers received full matched golden
+essays as private style references. Generation and pilot review are complete; the remaining gate
+is personal review of all 60 replacement rows and a new hash-bound finalization.
 
 ```powershell
 python scripts/plan_v5_tasks.py
@@ -95,9 +108,9 @@ python scripts/validate_v5_pilot_hard_gates.py --essays artifacts/data/v5/privat
 python scripts/review_v5_pilot.py --reviewer YOUR_NAME
 # After all 30 are accepted, export remaining packets (no --pilot-only), then:
 python scripts/validate_v5_external_candidates.py --tasks ... --candidates ... --overlap-corpus ...
-python scripts/assemble_v5_dataset.py prepare-review --candidates ...
+python scripts/assemble_v5_dataset.py prepare-review --candidates artifacts/data/v5/private/validated_candidates_r2.jsonl
 python scripts/review_v5_manual_packet.py --reviewer YOUR_NAME
-python scripts/assemble_v5_dataset.py finalize --candidates ...
+python scripts/assemble_v5_dataset.py finalize --candidates artifacts/data/v5/private/validated_candidates_r2.jsonl
 ```
 
 **Training / release** (GPU / Colab):
@@ -105,8 +118,8 @@ python scripts/assemble_v5_dataset.py finalize --candidates ...
 ```powershell
 # notebooks/colab_train_v5.ipynb orchestrates the full Colab path
 python scripts/merge_v4_adapter.py --v4-adapter PATH --output artifacts/models/v5-inherited-base
-python scripts/train_v5.py --task scorer --data PATH --output artifacts/models/v5-scorer
-python scripts/train_v5.py --task feedback --data PATH --output artifacts/models/v5-feedback
+python scripts/train_v5.py --task scorer --model PATH --data PRIVATE/train_cases_v5_with_replay.jsonl --eval-data PRIVATE/dev_cases_v5.jsonl --private-dir PRIVATE --golden-cases artifacts/data/eval_cb_cases.jsonl --output artifacts/models/v5-scorer
+python scripts/train_v5.py --task feedback --model PATH --data PRIVATE/train_cases_v5_with_replay.jsonl --eval-data PRIVATE/dev_cases_v5.jsonl --private-dir PRIVATE --golden-cases artifacts/data/eval_cb_cases.jsonl --output artifacts/models/v5-feedback
 python scripts/rank_v5_checkpoints.py   # scorer/feedback checkpoint selection
 python scripts/package_v5_bundle.py --bundle PATH --inherited-base ... --scorer ... --feedback ...
 python scripts/eval_v5.py --bundle PATH --eval-path PATH --output-dir artifacts/eval/v5
@@ -123,6 +136,16 @@ mean predicted total within 0.50 of the golden mean, structured validity ≥ 98%
 
 **Golden eval note:** the 53-case golden evaluation is **development-informed** because capped
 style excerpts shaped synthetic generation; treat it as contaminated relative to a fully blind holdout.
+
+**Frozen configuration:** scorer 4 epochs / 1e-4 / score-token weight 4.0; feedback 2 epochs /
+5e-5; LoRA rank 16; batch 1; gradient accumulation 4; warmup 0.03; max length 4096; seed 13.
+
+**Public targets (not yet published):** model `aryanjverma/apush-frq-grader-v5`, companion dataset
+`aryanjverma/apush-leq-grader-public`, and Space `aryanjverma/apush-frq-grader-v5-demo`. The built
+companion under `artifacts/public/apush-leq-grader-public/` contains 1,000 project-authored
+synthetic baseline rows and is explicitly **not** the private v5 corpus. Current run status is in
+[`docs/v5_run_report.md`](docs/v5_run_report.md); the demo outline is
+[`docs/v5_demo_storyboard.md`](docs/v5_demo_storyboard.md).
 
 ## Day 2 Smoke Test (50 cases, full loop)
 

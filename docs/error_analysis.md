@@ -1,5 +1,16 @@
 # Error Analysis — APUSH LEQ Grader
 
+## V5 analysis status
+
+No v5 error claims are available yet: the replacement corpus is awaiting human approval and the
+GPU development/golden runs have not occurred. The final report must analyze aggregate scorer
+confusions, evidence 0/1/2 errors, calibration by essay length and reference total, feedback
+fallback/grounding, adversarial score drift, and bootstrap uncertainty. Per-case private essays or
+predictions must not be published.
+
+The release decision is fail-closed. If any locked metric misses its threshold, the correct
+conclusion is non-production-ready—not a new hyperparameter search against the golden cases.
+
 ## Primary Failure Modes (Prompted / Inflated Baseline)
 
 ### 1. Score inflation on weak essays

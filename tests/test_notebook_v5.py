@@ -39,7 +39,9 @@ def test_v5_notebook_enforces_approval_freeze_and_release_gates() -> None:
     _, source = _notebook_source()
 
     assert "manual_review_approval_v5.json" in source
-    assert "approval.get('approved') is True" in source
+    assert "validate_v5_training_preflight" in source
+    assert "--private-dir" in source
+    assert "--golden-cases" in source
     assert "assert FROZEN_CONFIG.exists()" in source
     assert "scripts/check_v5_release.py" in source
     assert "Non-production-ready; do not retune on golden answers." in source

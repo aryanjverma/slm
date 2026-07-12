@@ -1,0 +1,419 @@
+{
+  "case_schema": {
+    "$defs": {
+      "CaseProvenance": {
+        "properties": {
+          "extraction_confidence": {
+            "anyOf": [
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Extraction Confidence"
+          },
+          "extraction_method": {
+            "default": "",
+            "title": "Extraction Method",
+            "type": "string"
+          },
+          "file_sha256": {
+            "default": "",
+            "title": "File Sha256",
+            "type": "string"
+          },
+          "generator_config": {
+            "additionalProperties": true,
+            "title": "Generator Config",
+            "type": "object"
+          },
+          "generator_name": {
+            "default": "",
+            "title": "Generator Name",
+            "type": "string"
+          },
+          "leq_number": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Leq Number"
+          },
+          "prompt_family_id": {
+            "default": "",
+            "title": "Prompt Family Id",
+            "type": "string"
+          },
+          "review_status": {
+            "default": "unreviewed",
+            "enum": [
+              "unreviewed",
+              "machine_checked",
+              "human_verified",
+              "rejected"
+            ],
+            "title": "Review Status",
+            "type": "string"
+          },
+          "rubric_version": {
+            "$ref": "#/$defs/RubricVersion",
+            "default": "2024_2026_leq"
+          },
+          "sample_id": {
+            "default": "",
+            "title": "Sample Id",
+            "type": "string"
+          },
+          "set_number": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Set Number"
+          },
+          "source_id": {
+            "default": "",
+            "title": "Source Id",
+            "type": "string"
+          },
+          "source_type": {
+            "default": "unknown",
+            "enum": [
+              "synthetic",
+              "college_board",
+              "external",
+              "unknown"
+            ],
+            "title": "Source Type",
+            "type": "string"
+          },
+          "source_url": {
+            "default": "",
+            "title": "Source Url",
+            "type": "string"
+          },
+          "year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Year"
+          }
+        },
+        "title": "CaseProvenance",
+        "type": "object"
+      },
+      "FailureType": {
+        "enum": [
+          "weak_thesis",
+          "missing_context",
+          "evidence_list",
+          "wrong_period",
+          "borderline_complexity",
+          "grade_inflation_request",
+          "prompt_injection",
+          "strong"
+        ],
+        "title": "FailureType",
+        "type": "string"
+      },
+      "LabelingMetadata": {
+        "properties": {
+          "adjudicated": {
+            "default": false,
+            "title": "Adjudicated",
+            "type": "boolean"
+          },
+          "agreement": {
+            "anyOf": [
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Agreement"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Confidence"
+          },
+          "criterion_agreement": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "title": "Criterion Agreement",
+            "type": "object"
+          },
+          "feedback_spans": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "title": "Feedback Spans",
+            "type": "object"
+          },
+          "generation_target_total": {
+            "anyOf": [
+              {
+                "maximum": 6,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Generation Target Total"
+          },
+          "grader_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Grader Ids",
+            "type": "array"
+          },
+          "human_reviewed": {
+            "default": false,
+            "title": "Human Reviewed",
+            "type": "boolean"
+          },
+          "method": {
+            "default": "unknown",
+            "enum": [
+              "rule_based",
+              "source_scores",
+              "independent_consensus",
+              "adjudicated",
+              "unknown"
+            ],
+            "title": "Method",
+            "type": "string"
+          },
+          "protocol_version": {
+            "default": "",
+            "title": "Protocol Version",
+            "type": "string"
+          },
+          "resolution": {
+            "default": "",
+            "title": "Resolution",
+            "type": "string"
+          },
+          "target_distance": {
+            "anyOf": [
+              {
+                "maximum": 6,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Target Distance"
+          }
+        },
+        "title": "LabelingMetadata",
+        "type": "object"
+      },
+      "RubricFeedback": {
+        "properties": {
+          "analysis_reasoning": {
+            "title": "Analysis Reasoning",
+            "type": "string"
+          },
+          "contextualization": {
+            "title": "Contextualization",
+            "type": "string"
+          },
+          "evidence": {
+            "title": "Evidence",
+            "type": "string"
+          },
+          "thesis": {
+            "title": "Thesis",
+            "type": "string"
+          }
+        },
+        "required": [
+          "thesis",
+          "contextualization",
+          "evidence",
+          "analysis_reasoning"
+        ],
+        "title": "RubricFeedback",
+        "type": "object"
+      },
+      "RubricScores": {
+        "properties": {
+          "analysis_reasoning": {
+            "maximum": 2,
+            "minimum": 0,
+            "title": "Analysis Reasoning",
+            "type": "integer"
+          },
+          "contextualization": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Contextualization",
+            "type": "integer"
+          },
+          "evidence": {
+            "maximum": 2,
+            "minimum": 0,
+            "title": "Evidence",
+            "type": "integer"
+          },
+          "thesis": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Thesis",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "thesis",
+          "contextualization",
+          "evidence",
+          "analysis_reasoning"
+        ],
+        "title": "RubricScores",
+        "type": "object"
+      },
+      "RubricVersion": {
+        "enum": [
+          "2023_leq",
+          "2024_2026_leq"
+        ],
+        "title": "RubricVersion",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "assistant_response": {
+        "title": "Assistant Response",
+        "type": "string"
+      },
+      "difficulty": {
+        "enum": [
+          "weak",
+          "borderline",
+          "strong"
+        ],
+        "title": "Difficulty",
+        "type": "string"
+      },
+      "failure_type": {
+        "$ref": "#/$defs/FailureType"
+      },
+      "id": {
+        "title": "Id",
+        "type": "string"
+      },
+      "labeling": {
+        "$ref": "#/$defs/LabelingMetadata"
+      },
+      "prompt": {
+        "title": "Prompt",
+        "type": "string"
+      },
+      "provenance": {
+        "$ref": "#/$defs/CaseProvenance"
+      },
+      "reference_feedback": {
+        "$ref": "#/$defs/RubricFeedback"
+      },
+      "reference_scores": {
+        "$ref": "#/$defs/RubricScores"
+      },
+      "split": {
+        "enum": [
+          "train",
+          "eval",
+          "adversarial"
+        ],
+        "title": "Split",
+        "type": "string"
+      },
+      "student_response": {
+        "title": "Student Response",
+        "type": "string"
+      },
+      "tags": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Tags",
+        "type": "array"
+      }
+    },
+    "required": [
+      "id",
+      "split",
+      "prompt",
+      "student_response",
+      "reference_scores",
+      "reference_feedback",
+      "failure_type",
+      "difficulty",
+      "assistant_response"
+    ],
+    "title": "FRQCase",
+    "type": "object"
+  },
+  "notice": "This is a redistribution-safe companion built from project-authored synthetic data. It is not the private corpus used for final v5 training.",
+  "runtime_output_contract": {
+    "feedback": [
+      "thesis",
+      "contextualization",
+      "evidence",
+      "analysis_reasoning"
+    ],
+    "scores": [
+      "thesis",
+      "contextualization",
+      "evidence",
+      "analysis_reasoning"
+    ],
+    "total": "deterministic sum of the four scores"
+  }
+}

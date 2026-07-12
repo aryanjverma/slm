@@ -1,0 +1,29 @@
+{
+  "artifacts": {
+    "public_cases.jsonl": "9ce7292b39efccef543ccb1015163d8434c036a1770a2e4665b84fbcf1b1be10",
+    "schema.json": "907403f9ed5d5b80b4e24c5417ffadeaedeaab8bb50771a4c5a65d9a867e3ec0"
+  },
+  "contains": {
+    "college_board_essays": false,
+    "manual_review_records": false,
+    "per_case_v5_predictions": false,
+    "private_v5_labels": false,
+    "style_references": false
+  },
+  "failure_type_distribution": {
+    "borderline_complexity": 92,
+    "evidence_list": 113,
+    "grade_inflation_request": 128,
+    "missing_context": 109,
+    "prompt_injection": 143,
+    "strong": 187,
+    "weak_thesis": 139,
+    "wrong_period": 89
+  },
+  "format": "apush-leq-grader-public-companion-v1",
+  "intended_hub_repo": "aryanjverma/apush-leq-grader-public",
+  "notice": "This is a redistribution-safe companion built from project-authored synthetic data. It is not the private corpus used for final v5 training.",
+  "private_v5_training_corpus": false,
+  "row_count": 1000,
+  "source": "project-authored deterministic synthetic generator output"
+}

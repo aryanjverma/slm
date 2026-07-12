@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 import sys
 from collections import Counter
+from dataclasses import replace
 
 from apush_frq_grader_slm.data import generate_cases
 from apush_frq_grader_slm.dataset_v4 import CBSeedProfile
@@ -47,6 +48,14 @@ def _assert_plan(tasks: list) -> dict:
 
 
 def _assert_score_blind_packet(task) -> dict:
+    task = replace(
+        task,
+        style_reference_essay=(
+            "Farmers once moved grain slowly over rough roads. The Erie Canal lowered "
+            "shipping costs and connected western farms to eastern ports, although the "
+            "benefits of the new market links remained uneven across regions."
+        ),
+    )
     packet = generator_packet(
         task,
         [{"chapter_id": "ch10", "concept": "Improved waterways lowered freight costs between regions."}],

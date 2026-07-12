@@ -89,10 +89,12 @@ def main() -> None:
     train_path = args.output_dir / "train_cases_v5.jsonl"
     dev_path = args.output_dir / "dev_cases_v5.jsonl"
     replay_path = args.output_dir / "replay_cases_v4_for_v5.jsonl"
+    combined_path = args.output_dir / "train_cases_v5_with_replay.jsonl"
     write_jsonl(train_path, train)
     write_jsonl(dev_path, dev)
     write_jsonl(replay_path, replay)
     train_and_replay = list(train) + list(replay)
+    write_jsonl(combined_path, train_and_replay)
     chat_paths = {
         "train_chat_v5_scorer.jsonl": export_v5_chat_rows(train_and_replay, "scorer"),
         "train_chat_v5_feedback.jsonl": export_v5_chat_rows(train_and_replay, "feedback"),
@@ -103,6 +105,7 @@ def main() -> None:
         "train_cases_v5.jsonl": file_sha256(train_path),
         "dev_cases_v5.jsonl": file_sha256(dev_path),
         "replay_cases_v4_for_v5.jsonl": file_sha256(replay_path),
+        "train_cases_v5_with_replay.jsonl": file_sha256(combined_path),
     }
     for name, rows in chat_paths.items():
         path = args.output_dir / name
@@ -112,6 +115,9 @@ def main() -> None:
         "approved": True, "new_train": len(train), "new_dev": len(dev),
         "v4_replay": len(replay), "training_rows_total": len(train) + len(replay),
         "golden_eval_rows_in_training": 0,
+        "manual_review_packet_sha256": file_sha256(packet_path),
+        "manual_review_approval_sha256": file_sha256(args.approval),
+        "combined_training_sha256": file_sha256(combined_path),
         "artifacts": artifacts,
     })
     print("Finalized 540 v5 train, 60 v5 dev, and 75 v4 replay rows.")

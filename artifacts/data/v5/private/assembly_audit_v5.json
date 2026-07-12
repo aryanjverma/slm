@@ -1,15 +1,19 @@
 {
   "approved": true,
   "artifacts": {
-    "dev_cases_v5.jsonl": "68366771b24a9ecda520b8d80d64beafd0ef16c9095894ec143d6ff41c4d6e93",
-    "dev_chat_v5_feedback.jsonl": "a0176db2e5a6cc54a245cd07f587a0a4d1381c3643e57ca01e6d25347d9615ee",
-    "dev_chat_v5_scorer.jsonl": "20292ba7fa2898b8b3f28dd0f1d25df730cd0abf6c704f21347949ed6b311be6",
+    "dev_cases_v5.jsonl": "de4b18e088153fa104fce20521295c4f29bb90ae3edde337ec34edae6ca28a76",
+    "dev_chat_v5_feedback.jsonl": "06a64f6840cf39eb9ad187c0647f9c6a2e64b6a966be27be204c00d0ed232bdf",
+    "dev_chat_v5_scorer.jsonl": "e92d392f940e9daf41b1a3ae74c792027edb937895f537f300e9dc9a9c475dd0",
     "replay_cases_v4_for_v5.jsonl": "117fe5799bde57c2326371c92901f68009675b67583f674e9e65f482e91dcb00",
-    "train_cases_v5.jsonl": "9c9253aaaedf36f90c2492da8ffec1672a177f5c37f7606efe0a8400bd4251af",
-    "train_chat_v5_feedback.jsonl": "7dedb3c1dde081c57f8fd51cd2537272e93b06aca541e94aac27b43f94c21dbf",
-    "train_chat_v5_scorer.jsonl": "b53afbf433d30c72752a2b73b585af5bd050a139f162e14a6c31187c80784690"
+    "train_cases_v5.jsonl": "5a5f95f6fece4e509a70e8dc1e953dc9190673ae0d88f16ce04a6cc9d4f57edb",
+    "train_cases_v5_with_replay.jsonl": "0de79600ad2a4479732c74a485986e03b7ca8ea1a4285268ee1765834a0c23ae",
+    "train_chat_v5_feedback.jsonl": "6ce2201600b0a7c18737d7632ba61adf3f19f686175ae8e1cd6a04e78c7863ab",
+    "train_chat_v5_scorer.jsonl": "07d65eb3e9dd5bca91de6a450e8c6c2ad442e8455686a63fe36f7ce6d192f9a3"
   },
+  "combined_training_sha256": "0de79600ad2a4479732c74a485986e03b7ca8ea1a4285268ee1765834a0c23ae",
   "golden_eval_rows_in_training": 0,
+  "manual_review_approval_sha256": "f121f7676349630aae96335f83546463de24fa85998ce92719f9222fdee3c1d8",
+  "manual_review_packet_sha256": "b5ae4d76339c5d26986f93d655eff2abafc0887f5d092293b7127679e1498321",
   "new_dev": 60,
   "new_train": 540,
   "training_rows_total": 615,

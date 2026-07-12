@@ -29,6 +29,119 @@ V5_PROMPT_FILES = {
     "rubric": "prompts/rubric.txt",
 }
 
+V5_PRIVATE_COUNTS = {
+    "train_cases_v5.jsonl": 540,
+    "dev_cases_v5.jsonl": 60,
+    "replay_cases_v4_for_v5.jsonl": 75,
+    "train_cases_v5_with_replay.jsonl": 615,
+    "train_chat_v5_scorer.jsonl": 615,
+    "train_chat_v5_feedback.jsonl": 615,
+    "dev_chat_v5_scorer.jsonl": 60,
+    "dev_chat_v5_feedback.jsonl": 60,
+}
+
+
+def _jsonl_rows(path: Path) -> list[dict[str, Any]]:
+    with path.open(encoding="utf-8") as stream:
+        return [json.loads(line) for line in stream if line.strip()]
+
+
+def _file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def validate_v5_training_preflight(
+    private_dir: Path,
+    *,
+    data_path: Path | None = None,
+    golden_cases_path: Path | None = None,
+) -> dict[str, Any]:
+    """Fail closed unless the private v5 corpus matches its human approval and audit."""
+    from apush_frq_grader_slm.dataset_v5 import assert_manual_approval
+
+    private_dir = private_dir.resolve()
+    manifest_path = private_dir / "private_use_manifest_v5.json"
+    audit_path = private_dir / "assembly_audit_v5.json"
+    approval_path = private_dir / "manual_review_approval_v5.json"
+    packet_path = private_dir / "manual_review_packet_v5.jsonl"
+    required = [manifest_path, audit_path, approval_path, packet_path]
+    required.extend(private_dir / name for name in V5_PRIVATE_COUNTS)
+    missing = [str(path) for path in required if not path.is_file()]
+    if missing:
+        raise PermissionError(f"v5 preflight missing required artifacts: {missing}")
+
+    approval = assert_manual_approval(packet_path, approval_path)
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    audit = json.loads(audit_path.read_text(encoding="utf-8"))
+    expected_manifest = {"selected": 600, "train": 540, "dev": 60, "manual_review": 60}
+    for key, expected in expected_manifest.items():
+        if manifest.get(key) != expected:
+            raise PermissionError(f"v5 manifest {key}={manifest.get(key)!r}; expected {expected}")
+    expected_audit = {
+        "approved": True,
+        "new_train": 540,
+        "new_dev": 60,
+        "v4_replay": 75,
+        "training_rows_total": 615,
+        "golden_eval_rows_in_training": 0,
+    }
+    for key, expected in expected_audit.items():
+        if audit.get(key) != expected:
+            raise PermissionError(f"v5 audit {key}={audit.get(key)!r}; expected {expected}")
+    if (
+        audit.get("manual_review_packet_sha256") != approval.get("packet_sha256")
+        or audit.get("manual_review_packet_sha256") != _file_sha256(packet_path)
+    ):
+        raise PermissionError("assembly audit is not bound to the approved manual-review packet")
+    if audit.get("manual_review_approval_sha256") != _file_sha256(approval_path):
+        raise PermissionError("assembly audit is not bound to the manual-review approval receipt")
+
+    artifact_hashes = audit.get("artifacts") or {}
+    for name, expected_count in V5_PRIVATE_COUNTS.items():
+        path = private_dir / name
+        rows = _jsonl_rows(path)
+        if len(rows) != expected_count:
+            raise PermissionError(f"v5 artifact {name} has {len(rows)} rows; expected {expected_count}")
+        actual_hash = _file_sha256(path)
+        if artifact_hashes.get(name) != actual_hash:
+            raise PermissionError(f"v5 artifact hash mismatch: {name}")
+
+    combined = private_dir / "train_cases_v5_with_replay.jsonl"
+    combined_hash = _file_sha256(combined)
+    if audit.get("combined_training_sha256") != combined_hash:
+        raise PermissionError("615-row combined training hash does not match the assembly audit")
+    if data_path is not None and _file_sha256(data_path.resolve()) != combined_hash:
+        raise PermissionError("--data is not the audited 615-row combined v5 training corpus")
+
+    if golden_cases_path is None or not golden_cases_path.is_file():
+        raise PermissionError("golden cases are required to verify zero training leakage")
+    golden_rows = _jsonl_rows(golden_cases_path)
+    golden_ids = {str(row.get("id") or row.get("task_id") or "") for row in golden_rows}
+    golden_text = {
+        hashlib.sha256(str(row.get("student_response") or row.get("essay") or "").strip().encode()).hexdigest()
+        for row in golden_rows
+        if str(row.get("student_response") or row.get("essay") or "").strip()
+    }
+    for row in _jsonl_rows(combined):
+        row_id = str(row.get("id") or row.get("task_id") or "")
+        essay = str(row.get("student_response") or row.get("essay") or "").strip()
+        essay_hash = hashlib.sha256(essay.encode()).hexdigest() if essay else ""
+        if (row_id and row_id in golden_ids) or (essay_hash and essay_hash in golden_text):
+            raise PermissionError("golden evaluation row detected in v5 training corpus")
+
+    return {
+        "approved": True,
+        "review_packet_sha256": approval["packet_sha256"],
+        "combined_training_sha256": combined_hash,
+        "training_rows": 615,
+        "development_rows": 60,
+        "golden_eval_rows_in_training": 0,
+    }
+
 
 def build_v5_chat_row(case: FRQCase, task: Literal["scorer", "feedback"]) -> dict[str, Any]:
     scores = case.reference_scores.model_dump()

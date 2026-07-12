@@ -1,5 +1,17 @@
 # Eval Report — APUSH LEQ Grader
 
+## V5 final evaluation status
+
+The final v5 evaluation has **not run** because human approval of the 60-row replacement packet is
+pending. After the 60-case development comparison and configuration freeze, the 53-case
+College Board-derived track may be evaluated exactly once. It is explicitly
+**development-informed**, not an untouched holdout.
+
+The locked v5 release gates are QWK ≥ 0.40, total MAE ≤ 1.50, totals-within-one ≥ 60%, every
+criterion exact-match rate above v4, mean-total drift ≤ 0.50, structured validity ≥ 98%, and
+grounding ≥ 85%. Any failure is reported as non-production-ready without retuning on golden cases.
+Only aggregate summaries and diagnostics may be published.
+
 ## Metrics
 
 | Metric | Definition | Pass condition |

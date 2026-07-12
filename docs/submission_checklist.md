@@ -1,66 +1,38 @@
-# Submission Checklist
+# V5 Submission Checklist
 
-## Core Deliverables
+## Data and training
 
-- [x] **Brainlift** — [`brainlift.md`](../brainlift.md) at repo root (APUSH LEQ grader focus, DOK 2–4)
-- [x] **Behavior spec** — [`docs/behavior_spec.md`](behavior_spec.md)
-- [x] **Litmus test** — [`docs/litmus_test.md`](litmus_test.md) with deterministic baseline numbers
-- [x] **Eval harness** — `src/apush_frq_grader_slm/eval.py`
-- [x] **Data pipeline** — `src/apush_frq_grader_slm/data.py`, `filters.py`
-- [x] **Train/eval artifacts** — `artifacts/data/`, `artifacts/eval/`
-- [x] **QLoRA script** — `scripts/train_qlora.py`
-- [x] **Day 2 smoke loop** — `scripts/run_smoke_pipeline.py`, `scripts/train_smoke.py`, `artifacts/smoke/`, `artifacts/smoke_eval/`
-- [ ] **Trained model** — `artifacts/models/apush-frq-grader-v1` (requires GPU run)
+- [x] Human reviewer accepts/corrects all 60 replacement rows.
+- [x] Approval receipt matches the packet SHA-256.
+- [x] Finalization rebuilds 540 train, 60 development, and 75 replay rows from
+  `validated_candidates_r2.jsonl`.
+- [x] Direct-script preflight passes all counts, hashes, combined-corpus binding, and
+  zero-golden-leakage checks.
+- [x] CPU v5 contract smoke is an automated test.
+- [ ] Ten-case GPU smoke passes.
+- [ ] Full 60-case base/v4/v5 development comparison passes review.
+- [ ] Configuration is frozen before golden evaluation.
+- [ ] The 53-case development-informed golden evaluation is run exactly once.
 
-## Commands
+## Release gates
 
-```powershell
-# Install
-python -m pip install -e .
+- [ ] QWK ≥ 0.40 and MAE ≤ 1.50.
+- [ ] Totals-within-one ≥ 60% and mean-total drift ≤ 0.50.
+- [ ] Every criterion exact rate exceeds v4.
+- [ ] Structured validity ≥ 98% and grounding ≥ 85%.
+- [ ] Failed gates are disclosed as non-production-ready without golden retuning.
 
-# Generate data
-python -m apush_frq_grader_slm.cli.generate_dataset --train-count 1000 --eval-count 200
+## Public deliverables
 
-# Deterministic eval
-python -m apush_frq_grader_slm.cli.run_eval
+- [x] Redistribution-safe companion generated locally and clearly distinguished from private v5.
+- [ ] Model bundle: `aryanjverma/apush-frq-grader-v5`.
+- [ ] Companion dataset: `aryanjverma/apush-leq-grader-public`.
+- [ ] Running Space: `aryanjverma/apush-frq-grader-v5-demo`.
+- [ ] Aggregate evaluation report and release receipt linked from README.
+- [x] Brainlift updated with v5 evidence policy.
+- [x] 3–5 minute demo storyboard prepared.
+- [ ] Demo video recorded and linked.
+- [ ] README contains live model, dataset, Space, report, Brainlift, and video links.
 
-# Day 2 smoke loop (30 train / 20 eval, CPU-friendly)
-python scripts/run_smoke_pipeline.py
-
-# Demo (paste LEQ prompt + essay → JSON grade)
-python -m apush_frq_grader_slm.cli.demo
-
-# Train (GPU)
-python -m pip install -e ".[train]"
-python scripts/train_qlora.py --data artifacts/data/train_chat.jsonl --output artifacts/models/apush-frq-grader-v1
-
-# HF eval
-python scripts/eval_hf_model.py --model Qwen/Qwen2.5-0.5B-Instruct --model-name qwen_base_prompted
-python scripts/eval_hf_model.py --model artifacts/models/apush-frq-grader-v1 --model-name apush_frq_grader_v1
-```
-
-## Package
-
-| Item | Value |
-|------|-------|
-| Package | `apush-frq-grader-slm` |
-| Module | `src/apush_frq_grader_slm/` |
-| CLI | `apush-grader-generate`, `apush-grader-eval`, `apush-grader-demo` |
-| Model output | `artifacts/models/apush-frq-grader-v1` |
-
-## Docs
-
-- [x] `README.md`
-- [x] `spec.md` (framework + structured JSON grader example)
-- [x] `docs/eval_report.md`
-- [x] `docs/error_analysis.md`
-- [x] `artifacts/dataset_card.md`
-- [x] `artifacts/model_card.md`
-
-## Pre-Submit Verification
-
-- [x] `python -m pytest tests/ -v` passes
-- [x] `apush_grader_reference` scores 1.00 on held-out eval
-- [x] `inflated_prompted_base` scores below reference (litmus gap documented)
-- [x] Smoke loop runs end-to-end (`scripts/run_smoke_pipeline.py`)
-- [ ] Tuned model beats baseline on grounding + robustness (after GPU train)
+Private essays, review packets, style references, labels, and per-case predictions must not appear
+in any public repository, archive, report, demo asset, or video.

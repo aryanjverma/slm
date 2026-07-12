@@ -1,5 +1,17 @@
 # Brainlift: APUSH LEQ Grader SLM
 
+## V5 Final Evidence Addendum (2026-07-12)
+
+The final design separates scoring from feedback generation, computes totals deterministically,
+and makes human approval plus content hashes prerequisites to loading weights. This prevents a
+revoked review or stale assembly audit from silently becoming the training corpus.
+
+The release claim is deliberately narrow. The 53-case College Board-derived evaluation is
+development-informed because aggregate style characteristics shaped synthetic generation. V5 is
+production-ready only if every locked calibration, agreement, validity, and grounding gate passes;
+otherwise the aggregate result is published as non-production-ready without retuning. Public data
+is a separate project-authored synthetic companion, never the private v5 corpus.
+
 Structured context for training and evaluating a tiny open model that reliably grades APUSH Long Essay Questions (LEQs) with rubric-aligned JSON and evidence-grounded feedback.
 
 ## Owners
