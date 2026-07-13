@@ -24,6 +24,9 @@ def test_v5_notebook_cells_are_valid_python() -> None:
 def test_v5_notebook_runs_the_locked_two_pass_pipeline() -> None:
     _, source = _notebook_source()
 
+    assert "SLM_GIT_REF','main'" in source
+    assert "'checkout','--detach','FETCH_HEAD'" in source
+    assert "private_repo/artifacts/data/v5/private" in source
     assert "scripts/merge_v4_adapter.py" in source
     assert "scripts/train_v5.py" in source
     assert "train('scorer'" in source
