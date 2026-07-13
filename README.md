@@ -20,8 +20,57 @@ Behavior spec:
 
 V5 data is **approved and finalized**: 60/60 replacement rows passed human review and assembly
 produced the hash-bound 540 train / 60 development / 75 replay corpus. The strict preflight passes
-with zero golden leakage. GPU training, development comparison, golden evaluation, and publication
-remain pending.
+with zero golden leakage. GPU training and evaluation are complete. The strict release gate failed,
+so v5 is **not production-ready**, but the independent practice comparison below shows clear
+improvement over its Qwen base model.
+
+## Base Qwen vs Tuned V5 — Nine-Essay Practice Result
+
+The same nine human-scored essays from `LEQ_Grading_Practice.docx` were graded by prompted
+`Qwen/Qwen2.5-0.5B-Instruct` and the frozen two-pass v5 bundle. These essays were not used for
+training or checkpoint selection.
+
+### LLM Litmus Test — Exact Total Scores
+
+Each entry is the number of essays for which the model's predicted 6-point LEQ total exactly
+matched the human score. The test uses three essays from each of 2023 LEQ 2 set 1, 2024 LEQ 3
+set 2, and 2025 LEQ 3 set 1.
+
+| LLM | 2023 | 2024 | 2025 | Total |
+|---|---:|---:|---:|---:|
+| Claude Sonnet 5 | 1/3 | 2/3 | 1/3 | 4/9 |
+| ChatGPT (web) | 2/3 | 2/3 | 0/3 | 4/9 |
+| Opus 4.8 | 3/3 | 2/3 | 1/3 | 6/9 |
+| GPT 5.6 Sol | 3/3 | 2/3 | 1/3 | 6/9 |
+| Qwen2.5-0.5B-Instruct | 0/3 | 0/3 | 1/3 | 1/9 |
+| **USLM (tuned v5)** | **1/3** | **0/3** | **2/3** | **3/9** |
+
+```mermaid
+flowchart LR
+    E["9 human-scored LEQ essays<br/>Reference scores: 1–6"]
+    B["Base Qwen2.5-0.5B<br/>MAE: 1.222<br/>Within 1: 7/9<br/>Valid JSON: 1/9<br/>QWK: 0.607"]
+    V["Tuned APUSH Grader v5<br/>MAE: 0.667<br/>Within 1: 9/9<br/>Valid JSON: 9/9<br/>QWK: 0.864"]
+    I["Observed improvement<br/>45.4% lower MAE<br/>+22.2 points within-one<br/>+88.9 points valid output<br/>+0.257 QWK"]
+
+    E --> B
+    E --> V
+    B --> I
+    V --> I
+```
+
+| Metric | Base Qwen | Tuned v5 | Change |
+|---|---:|---:|---:|
+| Mean absolute error | 1.222 | **0.667** | **45.4% lower** |
+| Exact total score | 1/9 (11.1%) | **3/9 (33.3%)** | **+22.2 points** |
+| Total within one point | 7/9 (77.8%) | **9/9 (100%)** | **+22.2 points** |
+| Exact rubric rows | 16/36 (44.4%) | **26/36 (72.2%)** | **+27.8 points** |
+| Quadratic weighted kappa | 0.607 | **0.864** | **+0.257** |
+| Structurally valid output | 1/9 (11.1%) | **9/9 (100%)** | **+88.9 points** |
+
+Video takeaway: fine-tuning produced a substantially better **grader**—more calibrated scores,
+better rubric-row agreement, and reliable structured output. This is a directional external check
+on only nine essays, not evidence of production readiness; the separate locked release gate still
+failed and must be reported alongside this improvement.
 
 ## V5 Quick Start
 
